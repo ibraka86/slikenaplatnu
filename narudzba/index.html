@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Završi Narudžbu | Slike na Platnu</title>
+
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400;1,6..72,500&family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <style>
+        :root {
+            --magenta:   #E91E8C;
+            --crimson:   #C62828;
+            --amber:     #FF8F00;
+            --violet:    #7B1FA2;
+            --cobalt:    #1565C0;
+            --teal:      #00838F;
+            --ink:       #1A1A1A;
+            --ink-soft:  #3D3D3D;
+            --mute:      #7A7875;
+            --line:      #E3E1DB;
+            --paper:     #FAF8F3;
+            --white:     #FFFFFF;
+            --grad-full: linear-gradient(135deg,#E91E8C 0%,#C62828 22%,#FF8F00 42%,#7B1FA2 62%,#1565C0 80%,#00838F 100%);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { 
+            font-family: 'Schibsted Grotesk', sans-serif; 
+            background: var(--paper); 
+            color: var(--ink); 
+            line-height: 1.5; 
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+        /* HEADER */
+        .site-header { position: sticky; top: 0; z-index: 100; background: var(--white); border-bottom: 1px solid var(--line); }
+        .header-inner { height: 76px; display: flex; align-items: center; justify-content: space-between; max-width: 1280px; margin: 0 auto; padding: 0 48px; }
+        .logo-wrap img { height: 40px; width: auto; display: block; }
+
+        /* CHECKOUT LAYOUT */
+        .checkout-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; padding: 60px 0 120px; align-items: start; }
+        @media(max-width: 900px) { .checkout-grid { grid-template-columns: 1fr; } }
+
+        .checkout-card { background: var(--white); padding: 40px; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
+        
+        .display { font-family: 'Newsreader', serif; font-weight: 300; line-height: 1.1; margin-bottom: 32px; }
+        
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--mute); margin-bottom: 8px; }
+        .form-input { 
+            width: 100%; padding: 14px 16px; font-family: inherit; font-size: 15px;
+            border: 1px solid var(--line); border-radius: 4px; outline: none; transition: border-color .2s;
+        }
+        .form-input:focus { border-color: var(--magenta); }
+        textarea.form-input { min-height: 100px; resize: vertical; }
+
+        .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media(max-width: 600px) { .row-2 { grid-template-columns: 1fr; } }
+
+        /* ORDER SUMMARY */
+        .summary-card { background: var(--white); padding: 32px; border-radius: 8px; border: 1px solid var(--line); position: sticky; top: 116px; }
+        .summary-title { font-size: 18px; font-weight: 600; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+        
+        .item-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+        .item-row:last-child { border-bottom: none; }
+        .item-label { color: var(--mute); }
+        .item-value { font-weight: 500; color: var(--ink); }
+
+        .total-row { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; padding-top: 24px; border-top: 2px solid var(--ink); }
+        .total-label { font-size: 16px; font-weight: 600; }
+        .total-value { font-family: 'Newsreader', serif; font-size: 28px; font-weight: 500; color: var(--magenta); }
+
+        .btn-grad {
+            width: 100%; padding: 18px; background: var(--grad-full); background-size: 200% 200%;
+            color: #fff; border: none; font-weight: 600; text-transform: uppercase; letter-spacing: .05em;
+            cursor: pointer; margin-top: 32px; transition: transform .2s; display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .btn-grad:hover { transform: translateY(-2px); }
+
+        /* SUCCESS STATE */
+        #success-msg { display: none; text-align: center; padding: 60px 20px; }
+        .success-icon { font-size: 64px; color: #4CAF50; margin-bottom: 24px; }
+
+        .payment-note { margin-top: 20px; font-size: 12px; color: var(--mute); display: flex; gap: 8px; align-items: flex-start; line-height: 1.4; }
+
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="header-inner">
+        <a href="../" class="logo-wrap" style="position:relative;width:128px;height:100%;display:flex;align-items:center;flex-shrink:0;">
+            <img src="../logo1.png"
+                 alt="Slike na Platnu Logo"
+                 style="position:absolute;top:0px;left:-6px;width:105px;height:auto;object-fit:contain;transform:rotate(12deg) translateY(8px);z-index:60;transition:transform .5s ease;"
+                 onmouseover="this.style.transform='rotate(0deg) translateY(2px) scale(1.05)'"
+                 onmouseout="this.style.transform='rotate(12deg) translateY(8px)'"/>
+        </a>
+        <a href="../" style="text-decoration:none; color:var(--ink); font-size:14px; font-weight:500; display:flex; align-items:center; gap:6px;">
+            <span class="ms" style="font-size:18px">arrow_back</span>
+            Nazad na početnu
+        </a>
+    </div>
+</header>
+
+<div class="container">
+    
+    <!-- MAIN CHECKOUT CONTENT -->
+    <div id="checkout-main">
+        <div class="checkout-grid">
+            
+            <!-- LEFT: FORM -->
+            <div class="checkout-card rv">
+                <h1 class="display" style="font-size: 40px;">Podaci za dostavu</h1>
+                
+                <form id="orderForm" action="https://api.web3forms.com/submit" method="POST">
+                    <!-- Replace with your Access Key -->
+                    <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
+                    <input type="hidden" name="subject" value="Nova narudžba - Slike na Platnu">
+                    <input type="hidden" name="from_name" value="Web Prodavnica">
+                    
+                    <!-- Hidden Order Details -->
+                    <input type="hidden" name="Order_Details" id="hiddenOrderDetails">
+                    <input type="hidden" name="Total_Price" id="hiddenTotalPrice">
+
+                    <div class="form-group">
+                        <label class="form-label">Ime i Prezime</label>
+                        <input type="text" name="Ime_i_Prezime" class="form-input" placeholder="npr. Marko Marković" required>
+                    </div>
+
+                    <div class="row-2">
+                        <div class="form-group">
+                            <label class="form-label">Email adresa</label>
+                            <input type="email" name="Email" class="form-input" placeholder="vas@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Broj telefona</label>
+                            <input type="tel" name="Telefon" class="form-input" placeholder="06x xxx xxx" required>
+                        </div>
+                    </div>
+
+                    <div class="row-2">
+                        <div class="form-group">
+                            <label class="form-label">Grad</label>
+                            <input type="text" name="Grad" class="form-input" placeholder="npr. Sarajevo" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Poštanski broj</label>
+                            <input type="text" name="Postanski_Broj" class="form-input" placeholder="npr. 71000" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Adresa i broj</label>
+                        <input type="text" name="Adresa" class="form-input" placeholder="npr. Maršala Tita 123" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Napomena (opcionalno)</label>
+                        <textarea name="Napomena" class="form-input" placeholder="Napišite ako imate posebne želje..."></textarea>
+                    </div>
+
+                    <div class="payment-note">
+                        <span class="ms" style="font-size:18px; color:var(--magenta)">info</span>
+                        <span><strong>Plaćanje pouzećem:</strong> Narudžbu plaćate kuriru u gotovini prilikom preuzimanja paketa. Nema skrivenih troškova.</span>
+                    </div>
+
+                    <button type="submit" class="btn-grad" id="submitBtn">
+                        <span class="ms">verified_user</span>
+                        Završi Narudžbu
+                    </button>
+                </form>
+            </div>
+
+            <!-- RIGHT: SUMMARY -->
+            <div class="summary-card rv">
+                <h2 class="summary-title">
+                    <span class="ms" style="color:var(--magenta)">shopping_basket</span>
+                    Pregled narudžbe
+                </h2>
+                
+                <div id="order-items">
+                    <!-- Items injected by JS -->
+                </div>
+
+                <div class="total-row">
+                    <span class="total-label">Ukupno za platiti</span>
+                    <span class="total-value" id="finalPrice">0 KM</span>
+                </div>
+
+                <div style="margin-top:20px; font-size:12px; color:var(--mute); text-align:center;">
+                    Dostava: <span style="color:var(--ink); font-weight:600;">BESPLATNA</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SUCCESS MESSAGE -->
+    <div id="success-msg">
+        <span class="ms success-icon">check_circle</span>
+        <h2 class="display" style="font-size: 48px;">Hvala na narudžbi!</h2>
+        <p style="color:var(--ink-soft); font-size:18px; margin-bottom:40px;">
+            Vaša narudžba je uspješno zaprimljena. Uskoro ćemo vas kontaktirati radi potvrde.
+        </p>
+        <a href="../" class="btn-grad" style="display:inline-flex; width:auto; padding:15px 40px;">
+            Povratak na početnu
+        </a>
+    </div>
+
+</div>
+
+<script>
+    // Load Order from LocalStorage
+    const orderData = JSON.parse(localStorage.getItem('canvas_order') || '{}');
+    const itemsContainer = document.getElementById('order-items');
+    const finalPrice = document.getElementById('finalPrice');
+    const hiddenOrderDetails = document.getElementById('hiddenOrderDetails');
+    const hiddenTotalPrice = document.getElementById('hiddenTotalPrice');
+
+    if (orderData.product) {
+        itemsContainer.innerHTML = `
+            <div class="item-row"><span class="item-label">Proizvod:</span> <span class="item-value">${orderData.product}</span></div>
+            <div class="item-row"><span class="item-label">Dimenzija:</span> <span class="item-value">${orderData.size} cm</span></div>
+            <div class="item-row"><span class="item-label">Okvir:</span> <span class="item-value">${orderData.depth}</span></div>
+            <div class="item-row"><span class="item-label">Razmak:</span> <span class="item-value">${orderData.gap}</span></div>
+            ${orderData.image ? `<div class="item-row"><span class="item-label">Slika:</span> <span class="item-value">Učitana (Custom)</span></div>` : ''}
+        `;
+        finalPrice.textContent = orderData.price;
+        
+        // Prepare hidden fields for Web3Forms
+        hiddenOrderDetails.value = `Proizvod: ${orderData.product}, Dimenzija: ${orderData.size}, Okvir: ${orderData.depth}, Razmak: ${orderData.gap}`;
+        hiddenTotalPrice.value = orderData.price;
+    } else {
+        itemsContainer.innerHTML = '<p style="color:red">Vaša korpa je prazna. Molimo odaberite proizvod.</p>';
+        document.getElementById('submitBtn').disabled = true;
+    }
+
+    // Handle Form Submit
+    const form = document.getElementById('orderForm');
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="ms">sync</span> Obrađujem...';
+
+        const formData = new FormData(form);
+        const object = Object.fromEntries(formData);
+        const json = JSON.stringify(object);
+
+        fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: json
+        })
+        .then(async (response) => {
+            let res = await response.json();
+            if (response.status == 200) {
+                // Success
+                document.getElementById('checkout-main').style.display = 'none';
+                document.getElementById('success-msg').style.display = 'block';
+                localStorage.removeItem('canvas_order'); // Clear cart
+            } else {
+                console.log(response);
+                alert('Došlo je do greške: ' + res.message);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<span class="ms">verified_user</span> Završi Narudžbu';
+            }
+        })
+        .catch(error => {
+            console.log(error);
+            alert('Greška pri slanju. Provjerite internet konekciju.');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span class="ms">verified_user</span> Završi Narudžbu';
+        });
+    });
+
+    // Simple reveal
+    gsap.from('.rv', { y: 20, opacity: 0, duration: 0.6, stagger: 0.1, ease: 'power2.out' });
+
+</script>
+
+</body>
+</html>

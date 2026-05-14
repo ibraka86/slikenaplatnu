@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Kreiraj Sliku | Slike na Platnu</title>
+    <link rel="icon" type="image/png" href="../favicon.png"/>
+
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400;1,6..72,500&family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        :root {
+            --magenta:   #E91E8C;
+            --crimson:   #C62828;
+            --amber:     #FF8F00;
+            --violet:    #7B1FA2;
+            --cobalt:    #1565C0;
+            --teal:      #00838F;
+            --ink:       #1A1A1A;
+            --ink-soft:  #3D3D3D;
+            --mute:      #7A7875;
+            --line:      #E3E1DB;
+            --paper:     #FAF8F3;
+            --white:     #FFFFFF;
+            --grad-full: linear-gradient(135deg,#E91E8C 0%,#C62828 22%,#FF8F00 42%,#7B1FA2 62%,#1565C0 80%,#00838F 100%);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { 
+            font-family: 'Schibsted Grotesk', sans-serif; 
+            background: var(--white); 
+            color: var(--ink); 
+            line-height: 1.5; 
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 48px; }
+        @media(max-width:768px){ .container{ padding: 0 24px; } }
+
+        .grad-bar { height: 2px; background: var(--grad-full); }
+
+        /* HEADER */
+        .site-header { position: sticky; top: 0; z-index: 100; background: var(--white); border-bottom: 1px solid var(--line); }
+        .header-inner { 
+            max-width: 1280px; margin: 0 auto; padding: 0 48px;
+            height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 40px;
+        }
+        .logo-wrap img { height: 40px; width: auto; display: block; }
+        .site-nav { display: flex; align-items: center; gap: 40px; }
+        .site-nav a { font-size: 14px; font-weight: 500; color: var(--ink-soft); text-decoration: none; transition: color .2s; position: relative; }
+        .site-nav a:hover { color: var(--ink); }
+        .site-nav a.active { color: var(--magenta); }
+        .site-nav a.active::after {
+            content: ''; position: absolute; bottom: -6px; left: 0; right: 0;
+            height: 2px; background: var(--magenta);
+        }
+
+        @keyframes shimmer {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .btn-grad {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, #E91E8C, #C62828, #FF8F00, #7B1FA2, #1565C0, #00838F, #E91E8C);
+            background-size: 200% 200%;
+            color: var(--white);
+            font-family: 'Schibsted Grotesk', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 0;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all .4s cubic-bezier(.16,1,.3,1);
+            position: relative;
+            overflow: hidden;
+            animation: shimmer 8s ease infinite;
+        }
+        .btn-grad:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(233, 30, 140, .2);
+        }
+        .btn-grad .ms { font-size: 18px; transition: transform .3s; }
+        .btn-grad:hover .ms { transform: translateX(4px); }
+
+
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 40px;
+            background: transparent;
+            color: var(--ink);
+            font-family: 'Schibsted Grotesk', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            border: 1px solid var(--line);
+            border-radius: 0;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all .4s cubic-bezier(.16,1,.3,1);
+        }
+        .btn-outline:hover {
+            background: var(--ink);
+            color: var(--white);
+            border-color: var(--ink);
+            transform: translateY(-2px);
+        }
+
+
+        .ms { font-family: 'Material Symbols Outlined'; font-size: 20px; line-height: 1; }
+
+        .header-icons { display: flex; align-items: center; gap: 4px; }
+        .icon-btn {
+            width: 40px; height: 40px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            background: none; border: none; cursor: pointer; color: var(--ink);
+            transition: background .2s; position: relative;
+        }
+        .icon-btn:hover { background: var(--paper); }
+        .menu-btn { display: none; }
+
+        @media(max-width:768px){
+            .site-nav { display: none; }
+            .menu-btn { display: flex; }
+            .header-inner { padding: 0 24px; }
+            .header-cta-btn { display: none; }
+        }
+
+        /* ── Mobile Menu Panel ── */
+        .mobile-menu {
+            display: none;
+            position: fixed; top: 76px; left: 0; right: 0; bottom: 0;
+            background: var(--white);
+            z-index: 99;
+            flex-direction: column;
+            padding: 32px 24px;
+            border-top: 1px solid var(--line);
+            overflow-y: auto;
+        }
+        .mobile-menu.open { display: flex; }
+        .mobile-nav-link {
+            font-size: 22px; font-weight: 500;
+            font-family: 'Newsreader', serif;
+            color: var(--ink); text-decoration: none;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--line);
+            display: block;
+        }
+
+        /* HERO / TITLE */
+        .page-intro { padding: 80px 0 60px; text-align: center; }
+        .display { font-family: 'Newsreader', serif; font-weight: 300; font-size: clamp(48px, 6vw, 84px); letter-spacing: -.03em; }
+
+        /* PRODUCT GRID */
+        .catalog-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 40px; 
+            margin-bottom: 100px;
+        }
+        @media(max-width: 1024px) { .catalog-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media(max-width: 640px) { .catalog-grid { grid-template-columns: 1fr; gap: 32px; } }
+
+        /* PRODUCT CARD */
+        .product-card {
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+            transition: transform .3s ease;
+        }
+        .product-card:hover { transform: translateY(-8px); }
+        
+        .card-img-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            overflow: hidden;
+            background: var(--paper);
+            border-radius: 4px;
+            margin-bottom: 24px;
+        }
+        .card-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform .6s cubic-bezier(0.2, 0, 0.2, 1);
+        }
+        .product-card:hover .card-img-wrap img { transform: scale(1.05); }
+
+        .card-info { text-align: left; }
+        .card-title { font-size: 20px; font-weight: 500; margin-bottom: 6px; }
+        .card-price { font-size: 14px; color: var(--mute); letter-spacing: .02em; margin-bottom: 20px; display: block; }
+
+
+        /* FOOTER */
+        .site-footer {
+            background: var(--ink);
+            padding: 100px 0 0;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+        .footer-inner {
+            max-width: 1280px; margin: 0 auto; padding: 0 48px;
+            position: relative; z-index: 1;
+        }
+        .footer-grad {
+            position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: var(--grad-full); opacity: 0.3;
+        }
+        .footer-grid {
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px;
+            margin-bottom: 80px;
+        }
+        .footer-tagline {
+            color: rgba(255,255,255,.5); font-size: 15px; line-height: 1.6; max-width: 300px;
+        }
+        .footer-col-title {
+            display: block; font-size: 11px; font-weight: 600; text-transform: uppercase;
+            letter-spacing: .12em; color: var(--magenta); margin-bottom: 24px;
+        }
+        .footer-links { list-style: none; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a {
+            color: rgba(255,255,255,.7); text-decoration: none; font-size: 14px;
+            transition: color .2s;
+        }
+        .footer-links a:hover { color: #fff; }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,.08); padding: 32px 0;
+            display: flex; justify-content: space-between; align-items: center; gap: 16px;
+        }
+        .footer-copy {
+            font-size: 11px; letter-spacing: .06em; color: rgba(255,255,255,.25);
+        }
+        @media(max-width:1024px){ .footer-grid { grid-template-columns: 1fr 1fr; } }
+        @media(max-width:768px){
+            .footer-inner { padding: 0 24px; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+        }
+
+        /* ── REVEAL ────────────────────────── */
+        .rv { opacity: 0; transform: translateY(36px); }
+
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="header-inner">
+        <a href="../" class="logo-wrap" style="position:relative;width:128px;height:100%;display:flex;align-items:center;flex-shrink:0;">
+            <img src="../logo1.png"
+                 alt="Slike na Platnu Logo"
+                 style="position:absolute;top:0px;left:-6px;width:105px;height:auto;object-fit:contain;transform:rotate(12deg) translateY(8px);z-index:60;transition:transform .5s ease;"
+                 onmouseover="this.style.transform='rotate(0deg) translateY(2px) scale(1.05)'"
+                 onmouseout="this.style.transform='rotate(12deg) translateY(8px)'"/>
+        </a>
+
+        <nav class="site-nav">
+            <a href="../nasi-radovi/">Naši radovi</a>
+            <a href="../vrste-slika/">Vrste slika</a>
+            <a href="../nacin-izrade/">Kako to radimo</a>
+            <a href="../#">Uramljivanje</a>
+            <a href="../kontakt/">Kontakt</a>
+        </nav>
+
+        <div class="header-icons">
+            <a href="#catalog" class="btn-grad header-cta-btn" style="padding:11px 24px;font-size:13px;letter-spacing:.05em;">
+                <span class="ms" style="font-size:18px">photo_camera</span>
+                Kreiraj sliku
+            </a>
+            <button class="icon-btn menu-btn" id="menuBtn" aria-label="Otvori meni">
+                <span class="ms" id="menuIcon">menu</span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<!-- ── Mobile Menu ── -->
+<div class="mobile-menu" id="mobileMenu">
+    <a href="../nasi-radovi/" class="mobile-nav-link">Naši radovi</a>
+    <a href="../vrste-slika/" class="mobile-nav-link">Vrste slika</a>
+    <a href="../nacin-izrade/" class="mobile-nav-link">Kako to radimo</a>
+    <a href="../#" class="mobile-nav-link">Uramljivanje</a>
+    <a href="../kontakt/" class="mobile-nav-link">Kontakt</a>
+    <div class="mobile-menu-cta">
+        <a href="#catalog" class="btn-grad" style="width:100%;justify-content:center;">
+            <span class="ms" style="font-size:18px">photo_camera</span>
+            Kreiraj sliku
+        </a>
+    </div>
+</div>
+
+<div class="grad-bar"></div>
+
+<section class="page-intro">
+    <div class="container">
+        <h1 class="display rv">Kreiraj sliku</h1>
+        <p style="color: var(--mute); margin-top: 16px; max-width: 600px; margin-left: auto; margin-right: auto;" class="rv">
+            Prikazano je svih 11 dostupnih modela. Odaberite željeni raspored i započnite personalizaciju.
+        </p>
+    </div>
+</section>
+
+<section class="catalog-section" id="catalog">
+    <div class="container">
+        <div class="catalog-grid">
+            
+            <!-- 1. Četverodijelna Kvadratna -->
+            <a href="./cetverodijelna-kvadratna/" class="product-card rv">
+                <div class="card-img-wrap">
+                    <img src="../KVADRATNA-300x229.jpg" alt="Četverodijelna kvadratna"/>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Četverodijelna kvadratna</h3>
+                    <span class="card-price">80 KM – 210 KM</span>
+                    <span class="btn-outline">Kreiraj sliku</span>
+                </div>
+            </a>
+
+            <!-- 2. Četverodijelna Ravnomjerna -->
+            <a href="./cetverodijelna-ravnomjerna/" class="product-card rv">
+                <div class="card-img-wrap">
+                    <img src="../CETVORODELNA-RAVNOMERNA-300x229.png" alt="Četverodijelna ravnomjerna"/>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Četverodijelna ravnomjerna</h3>
+                    <span class="card-price">140 KM – 330 KM</span>
+                    <span class="btn-outline">Kreiraj sliku</span>
+                </div>
+            </a>
+
+            <!-- 3. Četverodijelna Sa Dvije Manje -->
+            <a href="./cetverodijelna-sa-dvije-manje/" class="product-card rv">
+                <div class="card-img-wrap">
+                    <img src="../CETVORODELNA-SA-DVE-MANJE-300x229.png" alt="Četverodijelna sa dvije manje"/>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Četverodijelna sa dvije manje</h3>
+                    <span class="card-price">110 KM – 230 KM</span>
+                    <span class="btn-outline">Kreiraj sliku</span>
+                </div>
+            </a>
+
+            <!-- 4. Romboidi -->
+            <a href="./romboidi/" class="product-card rv">
+                <div class="card-img-wrap">
+                    <img src="../romboidi-300x225.png" alt="Romboidi"/>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Romboidi</h3>
+                    <span class="card-price">120 KM – 310 KM</span>
+                    <span class="btn-outline">Kreiraj sliku</span>
+                </div>
+            </a>
+
+            <!-- 5. Panorama -->
+            <a href="./panorama/" class="product-card rv">
+                <div class="card-img-wrap">
+                    <img src="../panorama2-300x229.png" alt="Panorama"/>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Panorama</h3>
+                    <span class="card-price">90 KM – 260 KM</span>
+                    <span class="btn-outline">Kreiraj sliku</span>
+                </div>
+            </a>
+
+            <!-- 6. Trodijelna -->
+            <a href="./trodijelna/" class="product-card rv">
+                <div class="card-img-wrap">
+                    <img src="../TRODELNA-300x229.png" alt="Trodijelna"/>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Trodijelna</h3>
+                    <span class="card-price">70 KM – 180 KM</span>
+                    <span class="btn-outline">Kreiraj sliku</span>
+                </div>
+            </a>
+
+            <!-- 7. Petodijelna -->
+            <a href="./petodijelna/" class="product-card rv">
+                <div class="card-img-wrap">
+                    <img src="../PETODELNA-1-300x229.png" alt="Petodijelna"/>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Petodijelna</h3>
+                    <span class="card-price">120 KM – 320 KM</span>
+                    <span class="btn-outline">Kreiraj sliku</span>
+                </div>
+            </a>
+
+            <!-- 8. Jednodijelna Pravougaona -->
+            <a href="./jednodijelna-pravougaona/" class="product-card rv">
+                <div class="card-img-wrap">
+                    <img src="../pejzaz-proizvod-300x229.png" alt="Jednodijelna"/>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Jednodijelna Pravougaona</h3>
+                    <span class="card-price">40 KM – 150 KM</span>
+                    <span class="btn-outline">Kreiraj sliku</span>
+                </div>
+            </a>
+
+            <!-- 9. Portret -->
+            <a href="./portret/" class="product-card rv">
+                <div class="card-img-wrap">
+                    <img src="../PORTRET-300x229.jpg" alt="Portret"/>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Portret</h3>
+                    <span class="card-price">30 KM – 110 KM</span>
+                    <span class="btn-outline">Kreiraj sliku</span>
+                </div>
+            </a>
+
+            <!-- 10. Trodijelna sa dvije manje -->
+            <a href="./trodijelna-sa-dvije-manje/" class="product-card rv">
+                <div class="card-img-wrap">
+                    <img src="../TRODELNA-DVE-MANJE-300x229.png" alt="Trodijelna sa dvije manje"/>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Trodijelna sa dvije manje</h3>
+                    <span class="card-price">60 KM – 180 KM</span>
+                    <span class="btn-outline">Kreiraj sliku</span>
+                </div>
+            </a>
+
+            <!-- 11. Kvadrat -->
+            <a href="./kvadrat/" class="product-card rv">
+                <div class="card-img-wrap">
+                    <img src="../KVADRATNA-300x229.jpg" alt="Kvadrat"/>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Kvadrat</h3>
+                    <span class="card-price">25 KM – 110 KM</span>
+                    <span class="btn-outline">Kreiraj sliku</span>
+                </div>
+            </a>
+
+        </div>
+    </div>
+</section>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-grad"></div>
+        <div class="footer-grid">
+            <div>
+                <img src="../logo1.png"
+                     alt="Slike na Platnu Logo"
+                     style="width:100px;height:auto;display:block;margin-bottom:18px;filter:brightness(0) invert(1);"/>
+                <p class="footer-tagline">Pretvaramo vaše zidove u kurirane galerije pomoću premium štampe na platnu.</p>
+            </div>
+            <div>
+                <span class="footer-col-title">Prodavnica</span>
+                <ul class="footer-links">
+                    <li><a href="../">Najprodavanije</a></li>
+                    <li><a href="../#">Po Mjeri</a></li>
+                    <li><a href="../#">Poklon Kartice</a></li>
+                    <li><a href="../#">Sve Kolekcije</a></li>
+                </ul>
+            </div>
+            <div>
+                <span class="footer-col-title">Podrška</span>
+                <ul class="footer-links">
+                    <li><a href="../#">Dostava</a></li>
+                    <li><a href="../#">Povrat Robe</a></li>
+                    <li><a href="../kontakt/">Kontakt</a></li>
+                    <li><a href="../#">FAQ</a></li>
+                </ul>
+            </div>
+            <div>
+                <span class="footer-col-title">Pravno</span>
+                <ul class="footer-links">
+                    <li><a href="../#">Uslovi Korišćenja</a></li>
+                    <li><a href="../#">Politika Privatnosti</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span class="footer-copy">© 2026 Slike na Platnu · Sva prava zadržana.</span>
+            <span class="footer-copy">Premium Canvas Prints · Handcrafted</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    // ── Reveal Animations ──
+    document.querySelectorAll('.rv').forEach(el => {
+        gsap.fromTo(el,
+            { y: 40, opacity: 0 },
+            { 
+                y: 0, 
+                opacity: 1, 
+                duration: 0.9, 
+                ease: 'power3.out',
+                scrollTrigger: { 
+                    trigger: el, 
+                    start: 'top 88%', 
+                    once: true 
+                } 
+            }
+        );
+    });
+
+    // ── Mobile Menu Toggle ──
+    (function() {
+        const btn  = document.getElementById('menuBtn');
+        const menu = document.getElementById('mobileMenu');
+        const icon = document.getElementById('menuIcon');
+        if (!btn || !menu) return;
+
+        btn.addEventListener('click', () => {
+            const open = menu.classList.toggle('open');
+            icon.textContent = open ? 'close' : 'menu';
+            document.body.style.overflow = open ? 'hidden' : '';
+        });
+
+        // Close on link click
+        menu.querySelectorAll('a').forEach(a => {
+            a.addEventListener('click', () => {
+                menu.classList.remove('open');
+                icon.textContent = 'menu';
+                document.body.style.overflow = '';
+            });
+        });
+    })();
+</script>
+
+</body>
+</html>

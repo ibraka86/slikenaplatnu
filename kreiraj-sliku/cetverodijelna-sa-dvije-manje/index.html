@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Četverodijelna sa dvije manje | Slike na Platnu</title>
+    <link rel="icon" type="image/png" href="../../favicon.png"/>
+
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400;1,6..72,500&family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <style>
+        :root {
+            --magenta:   #E91E8C;
+            --crimson:   #C62828;
+            --amber:     #FF8F00;
+            --violet:    #7B1FA2;
+            --cobalt:    #1565C0;
+            --teal:      #00838F;
+            --ink:       #1A1A1A;
+            --ink-soft:  #3D3D3D;
+            --mute:      #7A7875;
+            --line:      #E3E1DB;
+            --paper:     #FAF8F3;
+            --white:     #FFFFFF;
+            --grad-full: linear-gradient(135deg,#E91E8C 0%,#C62828 22%,#FF8F00 42%,#7B1FA2 62%,#1565C0 80%,#00838F 100%);
+            --grad-short:linear-gradient(90deg,#E91E8C,#1565C0);
+            --gap-width: 12px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Schibsted Grotesk', sans-serif;
+            background: var(--white);
+            color: var(--ink);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── UTILS ─────────────────────────── */
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 48px; }
+        @media(max-width:768px){ .container{ padding: 0 24px; } }
+
+        .grad-bar { height: 2px; background: var(--grad-full); }
+
+        .text-grad {
+            background: var(--grad-full);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .display {
+            font-family: 'Newsreader', serif;
+            font-weight: 300;
+            color: var(--ink);
+            line-height: 1.05;
+            letter-spacing: -.02em;
+        }
+
+        @keyframes shimmer {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .btn-grad {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, #E91E8C, #C62828, #FF8F00, #7B1FA2, #1565C0, #00838F, #E91E8C);
+            background-size: 200% 200%;
+            color: var(--white);
+            font-family: 'Schibsted Grotesk', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 0;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all .4s cubic-bezier(.16,1,.3,1);
+            position: relative;
+            overflow: hidden;
+            animation: shimmer 8s ease infinite;
+        }
+        .btn-grad:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(233, 30, 140, .2);
+        }
+        .btn-grad .ms { font-size: 18px; transition: transform .3s; }
+        .btn-grad:hover .ms { transform: translateX(4px); }
+
+        /* ── DESIGN MODAL ─────────────────── */
+        .design-modal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(26,26,26,0.9);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+        .design-modal.open { display: flex; }
+        .design-modal-content {
+            background: var(--white);
+            width: 100%;
+            max-width: 1000px;
+            max-height: 80vh;
+            position: relative;
+            padding: 60px;
+            overflow-y: auto;
+        }
+        .close-modal {
+            position: absolute;
+            top: 24px; right: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--ink);
+            transition: transform .3s;
+        }
+        .close-modal:hover { transform: rotate(90deg); }
+        .design-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+        .design-item {
+            aspect-ratio: 3/2;
+            background: var(--paper);
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid var(--line);
+            transition: all .4s cubic-bezier(.16,1,.3,1);
+        }
+        .design-item img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform .6s;
+        }
+        .design-item:hover { transform: translateY(-8px); border-color: var(--magenta); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .design-item:hover img { transform: scale(1.1); }
+        .design-item-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(233, 30, 140, 0.1);
+            opacity: 0;
+            transition: opacity .3s;
+        }
+        .design-item:hover .design-item-overlay { opacity: 1; }
+
+
+
+
+        .ms { font-family: 'Material Symbols Outlined'; font-size: 20px; line-height: 1; }
+
+        /* ── HEADER ────────────────────────── */
+        .site-header {
+            position: sticky; top: 0; z-index: 100;
+            background: var(--white);
+            border-bottom: 1px solid var(--line);
+        }
+        .header-inner {
+            max-width: 1280px; margin: 0 auto; padding: 0 48px;
+            height: 76px;
+            display: flex; align-items: center; justify-content: space-between; gap: 40px;
+        }
+        .logo-wrap img { height: 40px; width: auto; display: block; }
+
+        .site-nav { display: flex; align-items: center; gap: 40px; }
+        .site-nav a {
+            font-size: 14px; font-weight: 500; color: var(--ink-soft);
+            text-decoration: none; letter-spacing: .02em;
+            transition: color .2s; position: relative;
+        }
+        .site-nav a:hover { color: var(--ink); }
+        .site-nav a.active { color: var(--magenta); }
+        .site-nav a.active::after {
+            content: ''; position: absolute; bottom: -6px; left: 0; right: 0;
+            height: 2px; background: var(--magenta);
+        }
+
+        .header-icons { display: flex; align-items: center; gap: 4px; }
+        .icon-btn {
+            width: 40px; height: 40px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            background: none; border: none; cursor: pointer; color: var(--ink);
+            transition: background .2s; position: relative;
+        }
+        .icon-btn:hover { background: var(--paper); }
+        .menu-btn { display: none; }
+
+        @media(max-width:768px){
+            .site-nav { display: none; }
+            .menu-btn { display: flex; }
+            .header-inner { padding: 0 24px; }
+            .header-cta-btn { display: none; }
+        }
+
+        /* ── Mobile Menu Panel ── */
+        .mobile-menu {
+            display: none;
+            position: fixed; top: 76px; left: 0; right: 0; bottom: 0;
+            background: var(--white);
+            z-index: 99;
+            flex-direction: column;
+            padding: 32px 24px;
+            border-top: 1px solid var(--line);
+            overflow-y: auto;
+        }
+        .mobile-menu.open { display: flex; }
+        .mobile-nav-link {
+            font-size: 22px; font-weight: 500;
+            font-family: 'Newsreader', serif;
+            color: var(--ink); text-decoration: none;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--line);
+            display: block;
+        }
+
+        /* ── PRODUCT CONFIGURATOR ────────────────────────── */
+        .product-section {
+            padding: 60px 0 120px;
+            background: var(--white);
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 60px;
+            align-items: start;
+        }
+        @media(max-width: 1024px) {
+            .product-grid { grid-template-columns: 1fr; gap: 40px; }
+        }
+
+        /* EDITOR TOOLBAR */
+        .editor-wrapper {
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--line);
+        }
+        .editor-toolbar {
+            display: flex;
+            background: #232323; /* Dark modern toolbar */
+        }
+        .toolbar-btn {
+            flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 18px 10px; background: none; border: none; color: #fff; cursor: pointer;
+            transition: background 0.2s; font-family: 'Schibsted Grotesk'; font-size: 12px;
+            letter-spacing: .05em; font-weight: 600; text-transform: uppercase;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+        .toolbar-btn:last-child { border-right: none; }
+        .toolbar-btn:hover { background: rgba(255,255,255,0.08); color: var(--magenta); }
+        .toolbar-btn .ms { font-size: 20px; }
+
+        /* REALISTIC ROOM MOCKUP */
+        .preview-area {
+            width: 100%;
+            aspect-ratio: 1 / 1; /* Generated room_mockup is square */
+            height: auto;
+            position: relative;
+            overflow: hidden;
+            border-radius: 0 0 8px 8px;
+            background-image: url('room_mockup.png');
+            background-size: cover;
+            background-position: center;
+            border-bottom: 4px solid var(--ink);
+        }
+
+        /* CANVAS (4 PANELA) — Positioned on the wall */
+        .canvas-container-wrap {
+            position: absolute;
+            top: 10%; 
+            left: 54%;
+            transform: translateX(-50%);
+            width: 65%; 
+            aspect-ratio: 2 / 1.1;
+            z-index: 3;
+            filter: drop-shadow(0 20px 50px rgba(0,0,0,0.3));
+            transition: transform 0.3s ease;
+        }
+        
+        /* FOUR PANEL GRID — 4 columns, central ones are taller */
+        .panels-grid {
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-template-rows: 1fr;
+            gap: var(--gap-width);
+            align-items: center; /* Centers shorter panels vertically */
+        }
+        .panel-canvas:nth-child(1), .panel-canvas:nth-child(4) { height: 70%; }
+        .panel-canvas:nth-child(2), .panel-canvas:nth-child(3) { height: 100%; }
+        .panel-canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .panels-grid:active .panel-canvas { cursor: grabbing; }
+
+        /* SIDE TOOLS (Zoom, Delete) */
+
+        /* SIDE TOOLS (Zoom, Delete) */
+        .side-tools {
+            position: absolute;
+            right: 16px; top: 16px;
+            display: flex; flex-direction: column; gap: 8px;
+            z-index: 20;
+        }
+        .side-btn {
+            width: 40px; height: 40px; border-radius: 4px;
+            background: rgba(255,255,255,0.9); border: 1px solid rgba(0,0,0,0.1);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.2s; color: var(--ink);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .side-btn:hover { background: #fff; color: var(--magenta); transform: translateX(-2px); }
+
+        /* OPTIONS */
+        .options-group { margin-bottom: 24px; }
+        .options-group-title {
+            font-size: 14px; font-weight: 600; text-transform: uppercase;
+            letter-spacing: .05em; color: var(--ink-soft);
+            margin-bottom: 12px; display: block;
+        }
+        .select-box {
+            width: 100%; padding: 14px 16px; font-family: 'Schibsted Grotesk', sans-serif;
+            font-size: 15px; color: var(--ink); background: var(--white);
+            border: 1px solid var(--line); border-radius: 4px; outline: none;
+            appearance: none; cursor: pointer;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%231A1A1A%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat; background-position: right 16px top 50%;
+            background-size: 10px auto; transition: border-color 0.2s;
+        }
+        .select-box:focus { border-color: var(--magenta); }
+
+        .price-wrap {
+            margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--line);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .price-label { font-size: 14px; color: var(--mute); text-transform: uppercase; letter-spacing: .05em; }
+        .price-amount { font-family: 'Newsreader', serif; font-size: 36px; font-weight: 500; color: var(--ink); }
+
+        /* ── FOOTER ────────────────────────── */
+        .site-footer { background: var(--ink); padding: 80px 0 40px; }
+        .footer-inner { max-width: 1280px; margin: 0 auto; padding: 0 48px; }
+        .footer-grad { height: 2px; background: var(--grad-full); margin-bottom: 72px; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 72px; }
+        .footer-brand-name { display: block; margin-bottom: 14px; }
+        .footer-tagline { font-size: 14px; line-height: 1.7; color: rgba(255,255,255,.38); max-width: 240px; }
+        .footer-col-title { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.28); display: block; margin-bottom: 24px; }
+        .footer-links { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+        .footer-links a { font-size: 14px; color: rgba(255,255,255,.55); text-decoration: none; transition: color .2s; }
+        .footer-links a:hover { color: #fff; }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,.08); padding-top: 32px; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+        .footer-copy { font-size: 11px; letter-spacing: .06em; color: rgba(255,255,255,.25); }
+        @media(max-width:1024px){ .footer-grid { grid-template-columns: 1fr 1fr; } }
+        @media(max-width:768px){ .footer-inner { padding: 0 24px; } .footer-grid { grid-template-columns: 1fr; } .footer-bottom { flex-direction: column; text-align: center; } }
+        
+        /* .rv initial state handled by GSAP */
+    </style>
+</head>
+<body>
+
+<!-- ═══════════════════════ HEADER ═══════════════════════ -->
+<header class="site-header">
+    <div class="header-inner">
+        <a href="../../" class="logo-wrap" style="position:relative;width:128px;height:100%;display:flex;align-items:center;flex-shrink:0;">
+            <img src="../../logo1.png"
+                 alt="Slike na Platnu Logo"
+                 style="position:absolute;top:0px;left:-6px;width:105px;height:auto;object-fit:contain;transform:rotate(12deg) translateY(8px);z-index:60;transition:transform .5s ease;"
+                 onmouseover="this.style.transform='rotate(0deg) translateY(2px) scale(1.05)'"
+                 onmouseout="this.style.transform='rotate(12deg) translateY(8px)'"/>
+        </a>
+
+        <nav class="site-nav">
+            <a href="../../nasi-radovi/">Naši radovi</a>
+            <a href="../../vrste-slika/">Vrste slika</a>
+            <a href="../../nacin-izrade/">Kako to radimo</a>
+            <a href="../../#">Uramljivanje</a>
+            <a href="../../kontakt/">Kontakt</a>
+        </nav>
+
+        <div class="header-icons">
+            <a href="../" class="btn-grad header-cta-btn" style="padding:11px 24px;font-size:13px;letter-spacing:.05em;">
+                <span class="ms" style="font-size:18px">photo_camera</span>
+                Kreiraj sliku
+            </a>
+            <button class="icon-btn menu-btn" id="menuBtn" aria-label="Otvori meni">
+                <span class="ms" id="menuIcon">menu</span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<!-- ── Mobile Menu ── -->
+<div class="mobile-menu" id="mobileMenu">
+    <a href="../../nasi-radovi/" class="mobile-nav-link">Naši radovi</a>
+    <a href="../../vrste-slika/" class="mobile-nav-link">Vrste slika</a>
+    <a href="../../nacin-izrade/" class="mobile-nav-link">Kako to radimo</a>
+    <a href="../../#" class="mobile-nav-link">Uramljivanje</a>
+    <a href="../../kontakt/" class="mobile-nav-link">Kontakt</a>
+    <div class="mobile-menu-cta" style="margin-top: 32px;">
+        <a href="../" class="btn-grad" style="width:100%;justify-content:center;">
+            <span class="ms" style="font-size:18px">photo_camera</span>
+            Kreiraj sliku
+        </a>
+    </div>
+</div>
+
+<div class="grad-bar"></div>
+
+<!-- ═══════════════════════ PRODUCT ════════════════════════ -->
+<section class="product-section">
+    <div class="container">
+        
+        <div style="margin-bottom: 40px;" class="rv">
+            <a href="../" style="text-decoration: none; color: var(--mute); font-size: 14px; display: inline-flex; align-items: center; gap: 6px;">
+                <span class="ms" style="font-size: 16px;">arrow_back</span>
+                Nazad na kreiranje slike
+            </a>
+            <h1 class="display" style="font-size: clamp(32px, 4vw, 56px); margin-top: 16px;">Četverodijelna sa dvije manje</h1>
+            <p style="color: var(--ink-soft); max-width: 600px; margin-top: 12px; line-height: 1.6; font-size: 16px;">
+                Pretvorite fotografije u umjetnička djela! Dodajte sliku, napišite posvetu i uredite platno tačno onako kako ste zamislili.
+            </p>
+        </div>
+
+        <div class="product-grid">
+            
+            <!-- LEFT: EDITOR -->
+            <div class="editor-wrapper rv">
+                
+                <!-- Toolbar -->
+                <div class="editor-toolbar">
+                    <button class="toolbar-btn" id="btnAddImage">
+                        <span class="ms">add_photo_alternate</span>
+                        Dodaj Sliku
+                    </button>
+                    <button class="toolbar-btn" id="btnAddText">
+                        <span class="ms">title</span>
+                        Dodaj Tekst
+                    </button>
+                    <button class="toolbar-btn" id="btnAddDesign">
+                        <span class="ms">auto_awesome_mosaic</span>
+                        Naš Dizajn
+                    </button>
+                </div>
+
+                <!-- REALISTIC ROOM PREVIEW -->
+                <div class="preview-area">
+                    
+                    <div class="side-tools">
+                        <button class="side-btn" id="btnZoomIn" title="Uveličaj sloj"><span class="ms">zoom_in</span></button>
+                        <button class="side-btn" id="btnZoomOut" title="Umanji sloj"><span class="ms">zoom_out</span></button>
+                        <button class="side-btn" id="btnRotate" title="Rotiraj"><span class="ms">rotate_right</span></button>
+                        <button class="side-btn" id="btnDelete" title="Obriši" style="color: var(--crimson)"><span class="ms">delete</span></button>
+                    </div>
+
+                    <!-- 4-Panel Canvas on the wall -->
+                    <div class="canvas-container-wrap" id="panelWrap">
+                        <div class="panels-grid" id="panelsGrid">
+                            <canvas class="panel-canvas"></canvas>
+                            <canvas class="panel-canvas"></canvas>
+                            <canvas class="panel-canvas"></canvas>
+                            <canvas class="panel-canvas"></canvas>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <!-- RIGHT: CONTROLS -->
+            <div class="controls-area rv">
+                
+                <!-- Hidden file input -->
+                <input type="file" id="imageUpload" style="display: none;" accept="image/*">
+
+                <div class="options-group">
+                    <label class="options-group-title">Ukupna dimenzija (cm)</label>
+                    <select class="select-box" id="sizeSelect">
+                        <option value="110x70" data-price="120">110x70 cm (2x 30x70, 2x 25x50)</option>
+                        <option value="130x80" data-price="165" selected>130x80 cm (2x 35x80, 2x 30x60)</option>
+                        <option value="150x90" data-price="240">150x90 cm (2x 40x90, 2x 35x70)</option>
+                        <option value="180x110" data-price="320">180x110 cm (2x 50x110, 2x 40x80)</option>
+                    </select>
+                </div>
+
+                <div class="options-group">
+                    <label class="options-group-title">Debljina okvira (cm)</label>
+                    <select class="select-box" id="depthSelect">
+                        <option value="standard" data-price-modifier="0" selected>Standardni (2 cm)</option>
+                        <option value="gallery" data-price-modifier="20">Galerijski (4 cm) - Premium</option>
+                    </select>
+                </div>
+                
+                <div class="options-group" style="margin-top: 30px;">
+                    <label class="options-group-title" style="display:flex; justify-content:space-between; align-items:center;">
+                        Razmak između slika na zidu
+                        <span id="gapValue" style="color: var(--magenta); font-weight: 500;">12px</span>
+                    </label>
+                    <input type="range" id="gapRange" min="2" max="40" value="12" style="width: 100%; accent-color: var(--magenta);">
+                </div>
+
+                <div class="price-wrap">
+                    <span class="price-label">Ukupna cijena</span>
+                    <span class="price-amount" id="priceDisplay">165 KM</span>
+                </div>
+
+                <button class="btn-grad" style="width: 100%; margin-top: 30px; padding: 18px; font-size: 16px;">
+                    <span class="ms">shopping_cart</span>
+                    Dodaj u korpu
+                </button>
+                
+                <div style="margin-top: 24px; display: flex; align-items: center; justify-content: center; gap: 8px; color: var(--mute); font-size: 12px; text-transform: uppercase; letter-spacing: .05em;">
+                    <span class="ms" style="font-size: 16px;">local_shipping</span>
+                    Besplatna dostava za narudžbe preko 100 KM
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════ FOOTER ══════════════════════ -->
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-grad"></div>
+        <div class="footer-grid">
+            <div>
+                <img src="../../logo1.png"
+                     alt="Slike na Platnu Logo"
+                     style="width:100px;height:auto;display:block;margin-bottom:18px;filter:brightness(0) invert(1);"/>
+                <p class="footer-tagline">Pretvaramo vaše zidove u kurirane galerije pomoću premium štampe na platnu.</p>
+            </div>
+            <div>
+                <span class="footer-col-title">Prodavnica</span>
+                <ul class="footer-links">
+                    <li><a href="#">Najprodavanije</a></li>
+                    <li><a href="#">Po Mjeri</a></li>
+                    <li><a href="#">Poklon Kartice</a></li>
+                    <li><a href="#">Sve Kolekcije</a></li>
+                </ul>
+            </div>
+            <div>
+                <span class="footer-col-title">Podrška</span>
+                <ul class="footer-links">
+                    <li><a href="#">Dostava</a></li>
+                    <li><a href="#">Povrat Robe</a></li>
+                    <li><a href="../../kontakt/">Kontakt</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            <div>
+                <span class="footer-col-title">Pravno</span>
+                <ul class="footer-links">
+                    <li><a href="#">Uslovi korištenja</a></li>
+                    <li><a href="#">Politika privatnosti</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span class="footer-copy">© 2026 Slike na Platnu · Sva prava pridržana.</span>
+            <span class="footer-copy">Premium Canvas Prints · Handcrafted</span>
+        </div>
+    </div>
+</footer>
+
+<!-- ── DESIGN MODAL HTML ──────────────── -->
+<div class="design-modal" id="designModal">
+    <div class="design-modal-content rv">
+        <button class="close-modal" id="btnCloseModal"><span class="ms" style="font-size:32px;">close</span></button>
+        <h2 class="display" style="font-size: 40px;">Naš Dizajn</h2>
+        <p style="color: var(--mute); margin-top: 12px;">Odaberite jedan od naših kuriranih motiva za vašu sliku.</p>
+        
+        <div class="design-grid">
+            <div class="design-item" data-src="../../nas-dizajn/panorama2-300x229.png">
+                <img src="../../nas-dizajn/panorama2-300x229.png" alt="Dizajn 1">
+                <div class="design-item-overlay"></div>
+            </div>
+            <div class="design-item" data-src="../../nas-dizajn/pejzaz-proizvod-300x229.png">
+                <img src="../../nas-dizajn/pejzaz-proizvod-300x229.png" alt="Dizajn 2">
+                <div class="design-item-overlay"></div>
+            </div>
+            <div class="design-item" data-src="../../nas-dizajn/CETVORODELNA-RAVNOMERNA-300x229.png">
+                <img src="../../nas-dizajn/CETVORODELNA-RAVNOMERNA-300x229.png" alt="Dizajn 3">
+                <div class="design-item-overlay"></div>
+            </div>
+            <div class="design-item" data-src="../../nas-dizajn/PETODELNA-1-300x229.png">
+                <img src="../../nas-dizajn/PETODELNA-1-300x229.png" alt="Dizajn 4">
+                <div class="design-item-overlay"></div>
+            </div>
+            <div class="design-item" data-src="../../nas-dizajn/romboidi-300x225.png">
+                <img src="../../nas-dizajn/romboidi-300x225.png" alt="Dizajn 5">
+                <div class="design-item-overlay"></div>
+            </div>
+            <div class="design-item" data-src="../../logo.png">
+                <img src="../../logo.png" alt="Dizajn 6" style="object-fit: contain; padding: 20px;">
+                <div class="design-item-overlay"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    // Reveal Animations
+    if (typeof gsap !== 'undefined') {
+        gsap.from('.rv', 
+            { y: 30, opacity: 0, duration: 0.8, stagger: 0.1, ease: 'power3.out', delay: 0.2 }
+        );
+    }
+
+    // Mobile Menu
+    const btn  = document.getElementById('menuBtn');
+    const menu = document.getElementById('mobileMenu');
+    const icon = document.getElementById('menuIcon');
+    if (btn && menu) {
+        btn.addEventListener('click', () => {
+            const open = menu.classList.toggle('open');
+            icon.textContent = open ? 'close' : 'menu';
+            document.body.style.overflow = open ? 'hidden' : '';
+        });
+        menu.querySelectorAll('a').forEach(a => {
+            a.addEventListener('click', () => {
+                menu.classList.remove('open');
+                icon.textContent = 'menu';
+                document.body.style.overflow = '';
+            });
+        });
+    }
+
+    // ──────────────────────────────────────────────────────────
+    // PRODUCT LOGIC — 4-PANEL CANVAS SYSTEM
+    // ──────────────────────────────────────────────────────────
+
+    const sizeSelect   = document.getElementById('sizeSelect');
+    const depthSelect  = document.getElementById('depthSelect');
+    const gapRange     = document.getElementById('gapRange');
+    const gapValue     = document.getElementById('gapValue');
+    const priceDisplay = document.getElementById('priceDisplay');
+    const imageUpload  = document.getElementById('imageUpload');
+
+    const panelsGrid = document.getElementById('panelsGrid');
+    const panelEls   = Array.from(document.querySelectorAll('.panel-canvas'));
+
+    let gapPx    = 12;
+    let srcImg   = null;
+    let imgScale = 1;
+    let imgAngle = 0;
+    let imgPanX  = 0, imgPanY = 0;
+    let dragging = false, dragX = 0, dragY = 0;
+
+    function render() {
+        const pw = panelEls[0].offsetWidth; // Width of one panel col
+        const vh = panelEls[1].offsetHeight; // Height of tallest panel
+        if (!pw || !vh) return;
+
+        const vw = pw * 4 + gapPx * 3;
+        
+        // Offset mapping for 4 panels in a row with different heights
+        // [offset_x, offset_y, current_panel_height]
+        const hSmall = panelEls[0].offsetHeight;
+        const hLarge = vh;
+        const yOffS  = (hLarge - hSmall) / 2;
+
+        const panelConfig = [
+            { ox: 0,               oy: yOffS, ph: hSmall },
+            { ox: pw + gapPx,      oy: 0,     ph: hLarge },
+            { ox: pw*2 + gapPx*2,  oy: 0,     ph: hLarge },
+            { ox: pw*3 + gapPx*3,  oy: yOffS, ph: hSmall }
+        ];
+
+        panelEls.forEach((canvas, i) => {
+            const ctx = canvas.getContext('2d');
+            const conf = panelConfig[i];
+            
+            // Sync internal canvas size to CSS size
+            if (canvas.width !== canvas.offsetWidth) canvas.width = canvas.offsetWidth;
+            if (canvas.height !== canvas.offsetHeight) canvas.height = canvas.offsetHeight;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            if (!srcImg) return;
+
+            const baseS = Math.max(vw / srcImg.naturalWidth, vh / srcImg.naturalHeight);
+            const fs = baseS * imgScale;
+            const iw = srcImg.naturalWidth  * fs;
+            const ih = srcImg.naturalHeight * fs;
+            const ix = (vw - iw) / 2 + imgPanX;
+            const iy = (vh - ih) / 2 + imgPanY;
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(0, 0, canvas.width, canvas.height);
+            ctx.clip();
+            ctx.translate(-conf.ox, -conf.oy);
+            ctx.translate(vw / 2, vh / 2);
+            ctx.rotate(imgAngle * Math.PI / 180);
+            ctx.translate(-vw / 2, -vh / 2);
+            ctx.drawImage(srcImg, ix, iy, iw, ih);
+            ctx.restore();
+        });
+    }
+
+    requestAnimationFrame(() => { render(); });
+    window.addEventListener('resize', () => { render(); });
+
+    // Drag to pan image
+    panelsGrid.addEventListener('mousedown', e => {
+        if (!srcImg) return;
+        dragging = true; dragX = e.clientX; dragY = e.clientY;
+        e.preventDefault();
+    });
+    window.addEventListener('mousemove', e => {
+        if (!dragging) return;
+        imgPanX += e.clientX - dragX; imgPanY += e.clientY - dragY;
+        dragX = e.clientX; dragY = e.clientY;
+        render();
+    });
+    window.addEventListener('mouseup', () => { dragging = false; });
+
+    panelsGrid.addEventListener('touchstart', e => {
+        if (!srcImg) return;
+        const t = e.touches[0];
+        dragging = true; dragX = t.clientX; dragY = t.clientY;
+    }, {passive: true});
+    window.addEventListener('touchmove', e => {
+        if (!dragging) return;
+        const t = e.touches[0];
+        imgPanX += t.clientX - dragX; imgPanY += t.clientY - dragY;
+        dragX = t.clientX; dragY = t.clientY;
+        render();
+    }, {passive: true});
+    window.addEventListener('touchend', () => { dragging = false; });
+
+    // Upload image
+    document.getElementById('btnAddImage').addEventListener('click', () => imageUpload.click());
+    imageUpload.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = ev => {
+            const img = new Image();
+            img.onload = () => {
+                srcImg = img; imgScale = 1; imgAngle = 0; imgPanX = 0; imgPanY = 0;
+                render();
+            };
+            img.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+        e.target.value = '';
+    });
+
+    // Toolbar
+    document.getElementById('btnAddText').addEventListener('click', () => {
+        alert('Funkcija dodavanja teksta dolazi uskoro!');
+    });
+    // Design Modal — dinamičko učitavanje iz nas-dizajn/manifest.json
+    const designModal = document.getElementById('designModal');
+    const btnAddDesign = document.getElementById('btnAddDesign');
+    const btnCloseModal = document.getElementById('btnCloseModal');
+
+    function applyDesignImage(src) {
+        const img = new Image();
+        img.onload = () => {
+            srcImg = img; imgScale = 1; imgAngle = 0; imgPanX = 0; imgPanY = 0;
+            render();
+            designModal.classList.remove('open');
+            document.body.style.overflow = '';
+        };
+        img.src = src;
+    }
+
+    async function loadDesignGallery() {
+        const grid = document.querySelector('.design-grid');
+        grid.innerHTML = '<p style="color:var(--mute);text-align:center;padding:40px;">Učitavanje...</p>';
+        
+        const oldScript = document.getElementById('manifestScript');
+        if (oldScript) oldScript.remove();
+
+        const script = document.createElement('script');
+        script.id = 'manifestScript';
+        script.src = '../../nas-dizajn/manifest.js?t=' + Date.now();
+        script.onload = () => {
+            const files = window.nasDizajnManifest;
+            if (!files || files.length === 0) {
+                grid.innerHTML = '<p style="color:var(--mute);text-align:center;padding:40px;grid-column:1/-1;">Nema slika. Dodajte slike u <strong>nas-dizajn</strong> folder i pokrenite <strong>obnovi-dizajne.bat</strong>.</p>';
+                return;
+            }
+            grid.innerHTML = '';
+            files.forEach(name => {
+                const src = '../../nas-dizajn/' + name;
+                const div = document.createElement('div');
+                div.className = 'design-item';
+                div.innerHTML = '<img src="' + src + '" alt="' + name + '"><div class="design-item-overlay"></div>';
+                div.addEventListener('click', () => applyDesignImage(src));
+                grid.appendChild(div);
+            });
+        };
+        script.onerror = () => {
+            grid.innerHTML = '<p style="color:var(--mute);text-align:center;padding:40px;grid-column:1/-1;">Greška pri učitavanju. Provjerite da li postoji <strong>nas-dizajn/manifest.js</strong>.</p>';
+        };
+        document.head.appendChild(script);
+    }
+
+    btnAddDesign.addEventListener('click', () => {
+        designModal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        loadDesignGallery();
+    });
+
+    btnCloseModal.addEventListener('click', () => {
+        designModal.classList.remove('open');
+        document.body.style.overflow = '';
+    });
+
+
+    // Side tools
+    document.getElementById('btnZoomIn').addEventListener('click',  () => { imgScale *= 1.15; render(); });
+    document.getElementById('btnZoomOut').addEventListener('click', () => { imgScale = Math.max(0.2, imgScale * 0.87); render(); });
+    document.getElementById('btnRotate').addEventListener('click',  () => { imgAngle = (imgAngle + 15) % 360; render(); });
+    document.getElementById('btnDelete').addEventListener('click',  () => {
+        srcImg = null; imgScale = 1; imgAngle = 0; imgPanX = 0; imgPanY = 0; render();
+    });
+
+    // Gap slider
+    gapRange.addEventListener('input', function(e) {
+        gapPx = parseInt(e.target.value);
+        gapValue.textContent = gapPx + 'px';
+        document.documentElement.style.setProperty('--gap-width', gapPx + 'px');
+        requestAnimationFrame(() => { render(); });
+    });
+
+    // Price calculator
+    function updatePrice() {
+        const sOpt  = sizeSelect.options[sizeSelect.selectedIndex];
+        const dOpt  = depthSelect.options[depthSelect.selectedIndex];
+        const base  = parseInt(sOpt.getAttribute('data-price') || 0);
+        const mod   = parseInt(dOpt.getAttribute('data-price-modifier') || 0);
+        const sizeW = parseInt(sOpt.value.split('x')[0]) || 130;
+        const total = base + (dOpt.value === 'gallery' ? mod * sizeW / 110 : mod);
+        priceDisplay.textContent = total.toLocaleString('bs-BA') + ' KM';
+        if (typeof gsap !== 'undefined') {
+            gsap.fromTo(priceDisplay, {scale:1.1, color:'#E91E8C'}, {scale:1, color:'#1A1A1A', duration:0.4});
+        }
+    }
+    sizeSelect.addEventListener('change', updatePrice);
+    depthSelect.addEventListener('change', updatePrice);
+    updatePrice();
+
+</script>
+    <script src="../../js/cart-logic.js"></script>
+</body>
+</html>

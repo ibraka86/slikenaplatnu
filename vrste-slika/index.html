@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Vrste slika | Slike na Platnu</title>
+
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400;1,6..72,500&family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        :root {
+            --magenta:   #E91E8C;
+            --crimson:   #C62828;
+            --amber:     #FF8F00;
+            --violet:    #7B1FA2;
+            --cobalt:    #1565C0;
+            --teal:      #00838F;
+            --ink:       #1A1A1A;
+            --ink-soft:  #3D3D3D;
+            --mute:      #7A7875;
+            --line:      #E3E1DB;
+            --paper:     #FAF8F3;
+            --white:     #FFFFFF;
+            --grad-full: linear-gradient(135deg,#E91E8C 0%,#C62828 22%,#FF8F00 42%,#7B1FA2 62%,#1565C0 80%,#00838F 100%);
+            --grad-short:linear-gradient(90deg,#E91E8C,#1565C0);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Schibsted Grotesk', sans-serif;
+            background: var(--white);
+            color: var(--ink);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── UTILS ─────────────────────────── */
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 48px; }
+        @media(max-width:768px){ .container{ padding: 0 24px; } }
+
+        .grad-bar { height: 2px; background: var(--grad-full); }
+
+        .text-grad {
+            background: var(--grad-full);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .label {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--mute);
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .display {
+            font-family: 'Newsreader', serif;
+            font-weight: 300;
+            color: var(--ink);
+            line-height: 1.05;
+            letter-spacing: -.02em;
+        }
+
+        @keyframes shimmer {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .btn-grad {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 36px;
+            background: linear-gradient(135deg, #E91E8C, #C62828, #FF8F00, #7B1FA2, #1565C0, #00838F, #E91E8C);
+            background-size: 300% 300%;
+            animation: shimmer 5s ease infinite;
+            color: #fff;
+            font-family: 'Schibsted Grotesk', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 0;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform .2s, box-shadow .25s;
+            box-shadow: 0 2px 0 rgba(0,0,0,.18);
+        }
+        .btn-grad:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.2); }
+
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 36px;
+            background: none;
+            color: var(--ink);
+            font-family: 'Schibsted Grotesk', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            border: 2px solid var(--ink);
+            border-radius: 0;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background .2s, color .2s;
+        }
+        .btn-outline:hover { background: var(--ink); color: var(--white); }
+
+        .ms { font-family: 'Material Symbols Outlined'; font-size: 20px; line-height: 1; }
+
+        /* ── PAINT BLOBS ───────────────────── */
+        .blobs { position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+        .b {
+            position: absolute;
+            mix-blend-mode: multiply;
+            border-radius: 50%;
+        }
+        /* Content always above blobs */
+        .container, .hero-grid, .stats-inner { position: relative; z-index: 1; }
+
+        /* ── HEADER ────────────────────────── */
+        .site-header {
+            position: sticky; top: 0; z-index: 100;
+            background: var(--white);
+            border-bottom: 1px solid var(--line);
+        }
+        .header-inner {
+            max-width: 1280px; margin: 0 auto; padding: 0 48px;
+            height: 76px;
+            display: flex; align-items: center; justify-content: space-between; gap: 40px;
+        }
+        .logo-wrap img { height: 40px; width: auto; display: block; }
+
+        .site-nav { display: flex; align-items: center; gap: 40px; }
+        .site-nav a {
+            font-size: 14px; font-weight: 500; color: var(--ink-soft);
+            text-decoration: none; letter-spacing: .02em;
+            transition: color .2s; position: relative;
+        }
+        .site-nav a:hover { color: var(--ink); }
+        .site-nav a.active { color: var(--magenta); }
+        .site-nav a.active::after {
+            content: ''; position: absolute; bottom: -6px; left: 0; right: 0;
+            height: 2px; background: var(--magenta);
+        }
+
+        .header-icons { display: flex; align-items: center; gap: 4px; }
+        .icon-btn {
+            width: 40px; height: 40px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            background: none; border: none; cursor: pointer; color: var(--ink);
+            transition: background .2s; position: relative;
+        }
+        .icon-btn:hover { background: var(--paper); }
+        .cart-dot {
+            position: absolute; top: 7px; right: 7px;
+            width: 7px; height: 7px; border-radius: 50%;
+            background: var(--magenta);
+        }
+        .menu-btn { display: none; }
+
+        /* Mobile CTA — sakrij iz headera na mobilnom */
+        @media(max-width:768px){
+            .site-nav { display: none; }
+            .menu-btn { display: flex; }
+            .header-inner { padding: 0 24px; }
+            .header-cta-btn { display: none; }
+        }
+
+        /* ── Mobile Menu Panel ── */
+        .mobile-menu {
+            display: none;
+            position: fixed; top: 76px; left: 0; right: 0; bottom: 0;
+            background: var(--white);
+            z-index: 99;
+            flex-direction: column;
+            padding: 32px 24px;
+            border-top: 1px solid var(--line);
+            overflow-y: auto;
+        }
+        .mobile-menu.open { display: flex; }
+        .mobile-nav-link {
+            font-size: 22px; font-weight: 500;
+            font-family: 'Newsreader', serif;
+            color: var(--ink); text-decoration: none;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--line);
+            display: block;
+        }
+        .mobile-nav-link.active { color: var(--magenta); }
+        .mobile-menu-cta {
+            margin-top: 32px;
+        }
+
+        /* ── HERO ──────────────────────────── */
+        .hero-section {
+            position: relative; overflow: hidden;
+            background: var(--white);
+            min-height: 100vh;
+            display: flex; align-items: stretch;
+        }
+
+        /* Diagonal bg — desna strana */
+        .hero-section::before {
+            content: '';
+            position: absolute; top: 0; right: 0;
+            width: 52%; height: 100%;
+            background: var(--white);
+            clip-path: polygon(12% 0, 100% 0, 100% 100%, 0% 100%);
+            z-index: 0;
+        }
+
+        .hero-grid {
+            position: relative; z-index: 1;
+            display: grid; grid-template-columns: 1fr 1fr;
+            align-items: center; gap: 0;
+            max-width: 1280px; margin: 0 auto; padding: 100px 48px;
+            width: 100%;
+        }
+
+        .hero-title { font-size: clamp(56px, 6.5vw, 108px); font-weight: 500; margin-bottom: 16px; }
+        .hero-title em { font-style: italic; }
+        .hero-tagline {
+            font-family: 'Newsreader', serif;
+            font-size: clamp(22px, 2.8vw, 40px);
+            font-weight: 300;
+            font-style: italic;
+            color: var(--ink-soft);
+            margin-bottom: 28px;
+            line-height: 1.3;
+        }
+        .hero-tagline em { font-style: normal; }
+
+        .hero-body {
+            font-size: 18px; line-height: 1.75; color: var(--ink-soft);
+            max-width: 460px; margin-bottom: 36px;
+        }
+
+        .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 36px; }
+
+        .hero-trust { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+        .trust-item {
+            font-size: 11px; font-weight: 500; letter-spacing: .1em;
+            text-transform: uppercase; color: var(--mute);
+        }
+        .trust-sep { width: 3px; height: 3px; border-radius: 50%; background: var(--line); flex-shrink: 0; }
+
+        /* Hero video — desna kolona, bez boxa */
+        .hero-visual {
+            position: relative;
+            align-self: stretch;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .hero-video-wrap {
+            position: relative;
+            width: 100%; height: 100%;
+            display: flex; align-items: center;
+        }
+        .hero-video-wrap video {
+            width: 100%; height: 100%;
+            object-fit: contain;
+            display: block;
+            max-height: 90vh;
+        }
+        .hero-frame-bar {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            height: 3px; background: var(--grad-full);
+        }
+
+        .hero-badge {
+            position: absolute; bottom: 32px; left: 0;
+            background: var(--white); border: 1px solid var(--line);
+            padding: 20px 24px; border-radius: 2px;
+            box-shadow: 0 8px 40px rgba(0,0,0,.08);
+        }
+        .badge-num {
+            font-family: 'Newsreader', serif; font-weight: 300;
+            font-size: 38px; line-height: 1; color: var(--ink);
+        }
+        .badge-lbl {
+            font-size: 10px; letter-spacing: .1em;
+            text-transform: uppercase; color: var(--mute);
+            margin-top: 4px;
+        }
+
+        @media(max-width:1024px){
+            .hero-grid { grid-template-columns: 1fr; padding: 80px 24px; gap: 48px; }
+            .hero-section::before { display: none; }
+            .hero-visual { align-self: auto; min-height: 320px; }
+            .hero-video-wrap video { max-height: 320px; }
+            .hero-badge { left: auto; right: 0; bottom: -24px; }
+        }
+        @media(max-width:768px){
+            .hero-grid { padding: 60px 24px; }
+            .hero-ctas { flex-direction: column; }
+            .hero-frame img { height: 320px; }
+        }
+
+        /* ── STATS ─────────────────────────── */
+        .stats-section {
+            position: relative; overflow: hidden;
+            background: var(--paper);
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            padding: 56px 0;
+        }
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(4,1fr); gap: 40px;
+        }
+        .stat { text-align: center; }
+        .stat-num {
+            font-family: 'Newsreader', serif; font-weight: 300;
+            font-size: clamp(36px, 4vw, 60px); line-height: 1;
+            color: var(--ink); margin-bottom: 8px;
+        }
+        .stat-num sup { font-size: .45em; vertical-align: super; }
+        .stat-lbl {
+            font-size: 11px; letter-spacing: .1em;
+            text-transform: uppercase; color: var(--mute);
+        }
+        @media(max-width:768px){ .stats-grid { grid-template-columns: repeat(2,1fr); } }
+
+        /* ── COLLECTIONS ───────────────────── */
+        .collections-section { padding: 120px 0; }
+        .coll-header {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            margin-bottom: 56px;
+        }
+        .coll-title { font-size: clamp(40px, 5vw, 72px); }
+        .view-all {
+            font-size: 14px; font-weight: 500; color: var(--ink);
+            text-decoration: none; letter-spacing: .02em;
+            display: flex; align-items: center; gap: 6px;
+            border-bottom: 1px solid var(--ink); padding-bottom: 3px;
+            transition: color .2s, border-color .2s; white-space: nowrap;
+        }
+        .view-all:hover { color: var(--magenta); border-color: var(--magenta); }
+
+        /* Interactive Selector */
+        .coll-selector {
+            display: flex;
+            height: 500px;
+            gap: 4px;
+            overflow: hidden;
+        }
+
+        .coll-panel {
+            position: relative;
+            flex: 1;
+            overflow: hidden;
+            cursor: pointer;
+            background-size: cover;
+            background-position: center;
+            transition: flex .75s cubic-bezier(.4,0,.2,1), box-shadow .4s;
+            opacity: 0;
+            transform: translateX(-60px);
+            box-shadow: 0 4px 20px rgba(0,0,0,.15);
+        }
+
+        .coll-panel.active {
+            flex: 6;
+            box-shadow: 0 12px 48px rgba(0,0,0,.25);
+        }
+
+        /* gradient top border on active */
+        .coll-panel::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--grad-full);
+            opacity: 0;
+            transition: opacity .4s;
+            z-index: 5;
+        }
+        .coll-panel.active::before { opacity: 1; }
+
+        .coll-shadow {
+            position: absolute; left: 0; right: 0; bottom: 0;
+            height: 160px;
+            background: linear-gradient(to top, rgba(10,10,10,.88) 0%, transparent 100%);
+            transition: opacity .5s;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .coll-label {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 28px 24px;
+            display: flex; align-items: center; gap: 14px;
+            z-index: 3; pointer-events: none;
+        }
+
+        .coll-icon {
+            width: 44px; height: 44px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%;
+            background: rgba(26,26,26,.8);
+            backdrop-filter: blur(8px);
+            border: 1.5px solid rgba(255,255,255,.2);
+            color: #fff;
+            transition: border-color .4s;
+        }
+        .coll-panel.active .coll-icon { border-color: rgba(233,30,140,.7); }
+
+        .coll-info { overflow: hidden; }
+
+        .coll-name {
+            font-family: 'Newsreader', serif; font-weight: 400;
+            font-size: 22px; color: #fff; line-height: 1.1;
+            white-space: nowrap;
+            opacity: 0; transform: translateX(20px);
+            transition: opacity .5s .15s, transform .5s .15s;
+        }
+        .coll-tag {
+            font-size: 10px; letter-spacing: .12em;
+            text-transform: uppercase; color: rgba(255,255,255,.55);
+            white-space: nowrap; margin-top: 4px;
+            opacity: 0; transform: translateX(20px);
+            transition: opacity .5s .22s, transform .5s .22s;
+        }
+        .coll-panel.active .coll-name,
+        .coll-panel.active .coll-tag {
+            opacity: 1; transform: translateX(0);
+        }
+
+        @media(max-width:768px){
+            .coll-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+            .coll-selector { flex-direction: column; height: auto; gap: 6px; }
+            .coll-panel { flex: none !important; height: 120px; transform: translateX(0) !important; opacity: 1 !important; }
+            .coll-panel.active { height: 340px; }
+            .coll-panel::before { display: none; }
+        }
+
+        /* ── FEATURES ──────────────────────── */
+        .features-section {
+            position: relative; overflow: hidden;
+            background: var(--ink); color: var(--white);
+            border-top: 1px solid rgba(255,255,255,.05);
+            border-bottom: 1px solid rgba(255,255,255,.05);
+            padding: 120px 0;
+        }
+        .features-section .display { color: var(--white); }
+        .features-section .label { color: rgba(255,255,255,.5); }
+        .feat-head { margin-bottom: 72px; }
+        .feat-title { font-size: clamp(36px, 4vw, 60px); margin-top: 0; }
+        .feat-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 24px; }
+
+        .feat-card {
+            background: #222222;
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 2px;
+            padding: 40px 36px;
+            box-shadow: 0 4px 24px rgba(0,0,0,.2);
+            transition: box-shadow .3s, transform .3s, border-color .3s;
+        }
+        .feat-card:hover {
+            box-shadow: 0 10px 36px rgba(0,0,0,.3);
+            transform: translateY(-3px);
+            border-color: rgba(255,255,255,.15);
+        }
+        .feat-num {
+            font-size: 11px; letter-spacing: .1em;
+            color: rgba(255,255,255,.4); text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+        .feat-bar { height: 2px; width: 36px; margin-bottom: 24px; border-radius: 0; }
+        .feat-name {
+            font-family: 'Newsreader', serif; font-weight: 400;
+            font-size: 22px; color: var(--white);
+            line-height: 1.25; margin-bottom: 14px;
+        }
+        .feat-body { font-size: 15px; line-height: 1.75; color: rgba(255,255,255,.65); }
+
+        @media(max-width:768px){ .feat-grid { grid-template-columns: 1fr; } }
+
+        /* ── FORMATS ───────────────────────── */
+        .formats-section {
+            position: relative;
+            overflow: hidden;
+            padding: 120px 0;
+            background: #F7F2F8; /* Light Lilac */
+            border-top: 1px solid rgba(233,30,140,0.1);
+        }
+        .formats-header { text-align: center; margin-bottom: 72px; }
+        .formats-title { font-size: clamp(36px, 4vw, 60px); margin-bottom: 16px; }
+        .formats-sub { font-size: 15px; color: var(--mute); max-width: 400px; margin: 0 auto; line-height: 1.75; }
+
+        .formats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .format-card {
+            background: var(--white);
+            border: 1px solid rgba(233,30,140,0.1);
+            border-top: 3px solid transparent;
+            transition: border-top-color .25s, box-shadow .3s, transform .3s;
+            overflow: hidden;
+        }
+        .format-card:hover {
+            border-top-color: #E91E8C;
+            box-shadow: 0 6px 28px rgba(0,0,0,.07);
+            transform: translateY(-4px);
+        }
+
+        .format-preview {
+            background: #E8E6DF;
+            aspect-ratio: 4 / 3;
+            overflow: hidden;
+        }
+        .format-preview img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform .45s cubic-bezier(.4,0,.2,1);
+        }
+        .format-card:hover .format-preview img { transform: scale(1.04); }
+
+        .format-info { padding: 20px 20px 24px; }
+        .format-name {
+            font-family: 'Newsreader', serif;
+            font-weight: 400;
+            font-size: 17px;
+            color: var(--ink);
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+        .format-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-family: 'Schibsted Grotesk', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: .09em;
+            text-transform: uppercase;
+            color: var(--mute);
+            text-decoration: none;
+            transition: color .2s;
+        }
+        .format-link .ms { font-size: 14px; transition: transform .2s; }
+        .format-card:hover .format-link { color: #E91E8C; }
+        .format-card:hover .format-link .ms { transform: translateX(3px); }
+
+        @media(max-width:1200px) { .formats-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media(max-width:768px)  { .formats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+        @media(max-width:480px)  { .formats-grid { grid-template-columns: 1fr; } }
+
+        /* ── CUSTOM CTA ────────────────────── */
+        .cta-section { position: relative; overflow: hidden; padding: 120px 0; background: var(--ink); color: var(--white); }
+        .cta-section .display { color: var(--white); }
+        .cta-section .label { color: rgba(255,255,255,.5); }
+        .cta-section .b { mix-blend-mode: screen; opacity: 0.3 !important; }
+        .cta-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; }
+
+        .cta-img-wrap { position: relative; }
+        .cta-img-wrap img {
+            display: block; width: 100%; height: 560px;
+            object-fit: cover; border-radius: 2px;
+        }
+        .cta-img-bar { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--grad-full); }
+
+        .cta-title { font-size: clamp(36px, 4vw, 60px); margin-bottom: 20px; }
+        .cta-body { font-size: 17px; line-height: 1.75; color: rgba(255,255,255,.75); margin-bottom: 32px; max-width: 440px; }
+        .cta-list { list-style: none; margin-bottom: 36px; display: flex; flex-direction: column; gap: 14px; }
+        .cta-list li {
+            display: flex; align-items: center; gap: 14px;
+            font-size: 15px; color: rgba(255,255,255,.85);
+        }
+        .check { width: 6px; height: 6px; border-radius: 50%; background: var(--magenta); flex-shrink: 0; }
+
+        @media(max-width:1024px){ .cta-inner { grid-template-columns: 1fr; gap: 60px; } }
+        @media(max-width:768px){ .cta-img-wrap img { height: 340px; } }
+
+        /* ── NEWSLETTER ────────────────────── */
+        .nl-section {
+            position: relative; overflow: hidden;
+            background: var(--paper);
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            padding: 120px 0;
+        }
+        .nl-inner { max-width: 680px; margin: 0 auto; text-align: center; }
+        .nl-title { font-size: clamp(48px, 6vw, 96px); margin-bottom: 20px; }
+        .nl-body { font-size: 17px; line-height: 1.75; color: var(--ink-soft); margin-bottom: 40px; }
+        .nl-form { display: flex; gap: 12px; }
+        .nl-input {
+            flex: 1; padding: 14px 20px;
+            border: 1.5px solid var(--line); border-radius: 3px;
+            font-family: 'Schibsted Grotesk', sans-serif; font-size: 15px;
+            color: var(--ink); background: var(--white); outline: none;
+            transition: border-color .2s;
+        }
+        .nl-input:focus { border-color: var(--magenta); }
+        .nl-input::placeholder { color: var(--mute); }
+        @media(max-width:640px){ .nl-form { flex-direction: column; } }
+
+        /* ── TESTIMONIALS ─────────────────── */
+        .test-section {
+            position: relative; overflow: hidden;
+            padding: 120px 0 100px;
+            background: var(--white);
+            border-top: 1px solid var(--line);
+        }
+        .test-header { text-align: center; margin-bottom: 80px; }
+        .test-title { font-size: clamp(36px, 4vw, 60px); }
+
+        .test-stage {
+            position: relative;
+            height: 420px;
+            width: 100%;
+        }
+
+        .test-card {
+            position: absolute;
+            left: 50%; top: 50%;
+            width: 300px; height: 300px;
+            padding: 28px;
+            cursor: pointer;
+            border: 2px solid var(--line);
+            background: var(--white);
+            clip-path: polygon(44px 0%, calc(100% - 44px) 0%, 100% 44px, 100% 100%, 0 100%, 0 0);
+            transition: transform .55s cubic-bezier(.4,0,.2,1), box-shadow .4s, background .3s, border-color .3s, opacity .3s;
+            box-shadow: 0 2px 16px rgba(0,0,0,.06);
+        }
+        .test-card.tc-active {
+            background: var(--ink);
+            border-color: #E91E8C;
+            box-shadow: 0 8px 0 4px rgba(233,30,140,.18);
+            z-index: 10 !important;
+        }
+        .test-card::after {
+            content: '';
+            position: absolute;
+            right: -2px; top: 44px;
+            width: 71px; height: 2px;
+            background: var(--line);
+            transform-origin: top right;
+            transform: rotate(45deg);
+        }
+        .test-card.tc-active::after { background: rgba(233,30,140,.35); }
+
+        .test-avatar {
+            width: 44px; height: 52px;
+            object-fit: cover; object-position: top;
+            display: block;
+            margin-bottom: 14px;
+            box-shadow: 3px 3px 0 var(--paper);
+        }
+        .test-card.tc-active .test-avatar { box-shadow: 3px 3px 0 rgba(255,255,255,.1); }
+
+        .test-quote {
+            font-family: 'Newsreader', serif;
+            font-size: 15px; font-weight: 400; font-style: italic;
+            color: var(--ink); line-height: 1.55;
+        }
+        .test-card.tc-active .test-quote { color: rgba(255,255,255,.92); }
+
+        .test-by {
+            position: absolute;
+            bottom: 24px; left: 28px; right: 28px;
+            font-size: 10px; letter-spacing: .1em;
+            text-transform: uppercase; color: var(--mute);
+        }
+        .test-card.tc-active .test-by { color: rgba(233,30,140,.55); }
+
+        .test-stars {
+            font-size: 11px; color: var(--amber);
+            margin-bottom: 10px; letter-spacing: 2px;
+        }
+
+        .test-nav {
+            display: flex; justify-content: center;
+            gap: 8px; margin-top: 48px;
+        }
+        .test-btn {
+            width: 52px; height: 52px;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--white); border: 2px solid var(--line);
+            cursor: pointer; color: var(--ink);
+            transition: background .2s, color .2s, border-color .2s;
+        }
+        .test-btn:hover { background: #E91E8C; color: #fff; border-color: #E91E8C; }
+
+        /* ── FAQ ───────────────────────────── */
+        .faq-section { padding: 120px 0; background: #F7F2F8; border-top: 1px solid rgba(233,30,140,0.1); }
+        .faq-inner { display: grid; grid-template-columns: 1fr 2fr; gap: 100px; align-items: start; }
+        .faq-title { font-size: clamp(36px, 4vw, 56px); margin-bottom: 16px; }
+        .faq-sub { font-size: 15px; line-height: 1.75; color: var(--mute); }
+        .faq-list { border-top: 1px solid rgba(233,30,140,0.15); }
+        .faq-item { border-bottom: 1px solid rgba(233,30,140,0.15); }
+        .faq-item summary {
+            list-style: none; cursor: pointer;
+            padding: 22px 0;
+            display: flex; align-items: center; justify-content: space-between;
+            font-size: 16px; font-weight: 500; color: var(--ink); outline: none;
+        }
+        .faq-item summary::-webkit-details-marker { display: none; }
+        .faq-plus {
+            font-size: 20px; color: var(--mute);
+            transition: transform .3s, color .3s; flex-shrink: 0; margin-left: 20px;
+        }
+        .faq-item[open] .faq-plus { transform: rotate(45deg); color: var(--magenta); }
+        .faq-answer { font-size: 15px; line-height: 1.75; color: var(--mute); padding-bottom: 22px; max-width: 560px; }
+
+        @media(max-width:1024px){
+            .faq-inner { grid-template-columns: 1fr; gap: 48px; }
+        }
+
+        /* ── FOOTER ────────────────────────── */
+        .site-footer { background: var(--ink); padding: 80px 0 40px; }
+        .footer-inner { max-width: 1280px; margin: 0 auto; padding: 0 48px; }
+        .footer-grad { height: 2px; background: var(--grad-full); margin-bottom: 72px; }
+        .footer-grid {
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px;
+            margin-bottom: 72px;
+        }
+        .footer-brand-name {
+            font-family: 'Newsreader', serif; font-weight: 300;
+            font-size: 20px; color: #fff; letter-spacing: .02em;
+            display: block; margin-bottom: 14px;
+        }
+        .footer-tagline { font-size: 14px; line-height: 1.7; color: rgba(255,255,255,.38); max-width: 240px; }
+        .footer-col-title {
+            font-size: 10px; letter-spacing: .12em;
+            text-transform: uppercase; color: rgba(255,255,255,.28);
+            display: block; margin-bottom: 24px;
+        }
+        .footer-links { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+        .footer-links a {
+            font-size: 14px; color: rgba(255,255,255,.55);
+            text-decoration: none; transition: color .2s;
+        }
+        .footer-links a:hover { color: #fff; }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,.08); padding-top: 32px;
+            display: flex; justify-content: space-between; align-items: center; gap: 16px;
+        }
+        .footer-copy {
+            font-size: 11px; letter-spacing: .06em; color: rgba(255,255,255,.25);
+        }
+        @media(max-width:1024px){ .footer-grid { grid-template-columns: 1fr 1fr; } }
+        @media(max-width:768px){
+            .footer-inner { padding: 0 24px; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+        }
+
+        /* ── REVEAL ────────────────────────── */
+        .rv { opacity: 0; transform: translateY(36px); }
+    </style>
+</head>
+<body>
+
+<!-- ═══════════════════════ HEADER ═══════════════════════ -->
+<header class="site-header">
+    <div class="header-inner">
+        <a href="#" class="logo-wrap" style="position:relative;width:128px;height:100%;display:flex;align-items:center;flex-shrink:0;">
+            <img src="../logo1.png"
+                 alt="Slike na Platnu Logo"
+                 style="position:absolute;top:0px;left:-6px;width:105px;height:auto;object-fit:contain;transform:rotate(12deg) translateY(8px);z-index:60;transition:transform .5s ease;"
+                 onmouseover="this.style.transform='rotate(0deg) translateY(2px) scale(1.05)'"
+                 onmouseout="this.style.transform='rotate(12deg) translateY(8px)'"/>
+        </a>
+
+        <nav class="site-nav">
+            <a href="../nasi-radovi/">Naši radovi</a>
+            <a href="../vrste-slika/" class="active">Vrste slika</a>
+            <a href="../nacin-izrade/">Kako to radimo</a>
+            <a href="../#">Uramljivanje</a>
+            <a href="../kontakt/">Kontakt</a>
+        </nav>
+
+        <div class="header-icons">
+            <a href="#" class="btn-grad header-cta-btn" style="padding:11px 24px;font-size:13px;letter-spacing:.05em;">
+                <span class="ms" style="font-size:18px">photo_camera</span>
+                Kreiraj sliku
+            </a>
+            <button class="icon-btn menu-btn" id="menuBtn" aria-label="Otvori meni">
+                <span class="ms" id="menuIcon">menu</span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<!-- ── Mobile Menu ── -->
+<div class="mobile-menu" id="mobileMenu">
+    <a href="../nasi-radovi/" class="mobile-nav-link">Naši radovi</a>
+    <a href="../vrste-slika/" class="mobile-nav-link active">Vrste slika</a>
+    <a href="../nacin-izrade/" class="mobile-nav-link">Kako to radimo</a>
+    <a href="../#" class="mobile-nav-link">Uramljivanje</a>
+    <a href="../kontakt/" class="mobile-nav-link">Kontakt</a>
+    <div class="mobile-menu-cta">
+        <a href="#" class="btn-grad" style="width:100%;justify-content:center;">
+            <span class="ms" style="font-size:18px">photo_camera</span>
+            Kreiraj sliku
+        </a>
+    </div>
+</div>
+
+<!-- ═══════════════════════ HERO ════════════════════════ -->
+<section class="hero-section" style="padding: 160px 0 100px; text-align: center; background: #F7F2F8;">
+    <div class="blobs" aria-hidden="true">
+        <div class="b" style="top:10%;left:10%;width:130px;height:110px;background:#E91E8C;opacity:.15;filter:blur(10px);"></div>
+        <div class="b" style="top:40%;right:15%;width:120px;height:100px;background:#1565C0;opacity:.15;filter:blur(9px);"></div>
+    </div>
+    <div class="container" style="max-width: 800px; position: relative; z-index: 1;">
+        <span class="label">Kolekcija Formata</span>
+        <h1 class="display hero-title" style="font-size: clamp(48px, 5vw, 72px); margin-bottom: 24px;">Umjetnost u<br><em class="text-grad">više dimenzija.</em></h1>
+        <p class="hero-body" style="font-size: 18px; line-height: 1.8; color: var(--mute);">
+            Budite kreativni i iznenadite sebe besprijekorno ručno izrađenim višedijelnim slikama na platnu. Podijelite vašu fotografiju kroz nekoliko panela i osigurajte dramatičan, nezaboravan doživljaj u vašem domu ili kancelariji.
+        </p>
+    </div>
+</section>
+
+<div class="grad-bar"></div>
+
+<!-- ═══════════════════════ FORMATS INFO ════════════════ -->
+<section class="formats-info-section" style="padding: 120px 0; background: var(--white); color: var(--ink);">
+    <div class="container">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px;">
+            
+            <!-- Diptih -->
+            <div class="rv" style="padding: 48px; background: var(--paper); border: 1px solid var(--line); border-top: 3px solid #1565C0; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+                <h3 class="display" style="font-size: 32px; margin-bottom: 16px;">Diptih <span style="font-family: 'Schibsted Grotesk', sans-serif; font-size: 14px; color: var(--mute); font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-left: 10px; vertical-align: middle;">(2 dijela)</span></h3>
+                <p style="font-size: 16px; line-height: 1.75; color: var(--ink-soft);">
+                    Dva tijela sa jednom dušom. Dvodijelne slike su savršen primjer suptilne kreativnosti. Podijelite jednu kompoziciju na dva platna ili iskoristite dvije različite, a tematski povezane slike postavljene vertikalno ili horizontalno.
+                </p>
+            </div>
+
+            <!-- Triptih -->
+            <div class="rv" style="padding: 48px; background: var(--paper); border: 1px solid var(--line); border-top: 3px solid #E91E8C; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+                <h3 class="display" style="font-size: 32px; margin-bottom: 16px;">Triptih <span style="font-family: 'Schibsted Grotesk', sans-serif; font-size: 14px; color: var(--mute); font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-left: 10px; vertical-align: middle;">(3 dijela)</span></h3>
+                <p style="font-size: 16px; line-height: 1.75; color: var(--ink-soft);">
+                    Korak dalje u dizajniranju prostora. Triptih je idealan za prikazivanje širokih pejzaža ili kreiranje iluzije dubine. Posmatrajte ga kao jedinstven način da ispričate vizuelnu priču koja ima svoj početak, sredinu i kraj.
+                </p>
+            </div>
+
+            <!-- Kvadriptih -->
+            <div class="rv" style="padding: 48px; background: var(--paper); border: 1px solid var(--line); border-top: 3px solid #FF8F00; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+                <h3 class="display" style="font-size: 32px; margin-bottom: 16px;">Kvadriptih <span style="font-family: 'Schibsted Grotesk', sans-serif; font-size: 14px; color: var(--mute); font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-left: 10px; vertical-align: middle;">(4 dijela)</span></h3>
+                <p style="font-size: 16px; line-height: 1.75; color: var(--ink-soft);">
+                    Razdvojite jedan otisak na četiri panela – bilo u horizontalnom, vertikalnom, dijagonalnom ili kvadratnom rasporedu. Ovaj format pruža ogroman prostor za personalizaciju, a često ga koriste fotografi za kreiranje kućnih galerija.
+                </p>
+            </div>
+
+            <!-- Multipanel -->
+            <div class="rv" style="padding: 48px; background: var(--paper); border: 1px solid var(--line); border-top: 3px solid #7B1FA2; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+                <h3 class="display" style="font-size: 32px; margin-bottom: 16px;">Multipanel <span style="font-family: 'Schibsted Grotesk', sans-serif; font-size: 14px; color: var(--mute); font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-left: 10px; vertical-align: middle;">(5+ dijelova)</span></h3>
+                <p style="font-size: 16px; line-height: 1.75; color: var(--ink-soft);">
+                    Za velike zidove i monumentalne dimenzije, slika se može podijeliti na 5, 6 ili čak 7 dijelova. Način postavljanja i veličinu pojedinačnih segmenata prilagođavamo vašem prostoru. Kontaktirajte nas za idealno rješenje po vašoj mjeri.
+                </p>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 80px;" class="rv">
+            <a href="../" class="btn-grad" style="padding: 16px 48px; font-size: 16px;">
+                <span class="ms">photo_camera</span>
+                Naručite višedijelnu sliku
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════ NEWSLETTER ══════════════════ -->
+<section class="nl-section" style="background: #F7F2F8; border-top: 1px solid rgba(233,30,140,0.1);">
+    <div class="container">
+        <div class="nl-inner rv">
+            <span class="label">Newsletter</span>
+            <h2 class="display nl-title">Ostanimo u<br><em class="text-grad">kontaktu.</em></h2>
+            <p class="nl-body">
+                Prijavite se i ostvarite <strong style="color:var(--magenta)">10% popusta</strong> na prvu narudžbinu.<br>Budite u toku sa novim formatima i ponudama.
+            </p>
+            <form class="nl-form" onsubmit="return false">
+                <input type="email" class="nl-input" placeholder="vas@email.com" required/>
+                <button type="submit" class="btn-grad">Prijavi se</button>
+            </form>
+        </div>
+    </div>
+</section>
+<!-- ═══════════════════════ FOOTER ══════════════════════ -->
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-grad"></div>
+        <div class="footer-grid">
+            <div>
+                <img src="../logo1.png"
+                     alt="Slike na Platnu Logo"
+                     style="width:100px;height:auto;display:block;margin-bottom:18px;filter:brightness(0) invert(1);"/>
+                <p class="footer-tagline">Pretvaramo vaše zidove u kurirane galerije pomoću premium štampe na platnu.</p>
+            </div>
+            <div>
+                <span class="footer-col-title">Prodavnica</span>
+                <ul class="footer-links">
+                    <li><a href="#">Najprodavanije</a></li>
+                    <li><a href="#">Po Mjeri</a></li>
+                    <li><a href="#">Poklon Kartice</a></li>
+                    <li><a href="#">Sve Kolekcije</a></li>
+                </ul>
+            </div>
+            <div>
+                <span class="footer-col-title">Podrška</span>
+                <ul class="footer-links">
+                    <li><a href="#">Dostava</a></li>
+                    <li><a href="#">Povrat Robe</a></li>
+                    <li><a href="../#">Kontakt</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            <div>
+                <span class="footer-col-title">Pravno</span>
+                <ul class="footer-links">
+                    <li><a href="#">Uslovi Korišćenja</a></li>
+                    <li><a href="#">Politika Privatnosti</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span class="footer-copy">© 2026 Slike na Platnu · Sva prava zadržana.</span>
+            <span class="footer-copy">Premium Canvas Prints · Handcrafted</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.fromTo('#hc', { x: -50, opacity: 0 }, { x: 0, opacity: 1, duration: 1.1, ease: 'power3.out', delay: .1 });
+    gsap.fromTo('#hv', { x: 50, opacity: 0 }, { x: 0, opacity: 1, duration: 1.1, ease: 'power3.out', delay: .3 });
+
+    document.querySelectorAll('.rv').forEach(el => {
+        gsap.fromTo(el,
+            { y: 40, opacity: 0 },
+            { y: 0, opacity: 1, duration: .9, ease: 'power3.out',
+              scrollTrigger: { trigger: el, start: 'top 88%', once: true } }
+        );
+    });
+
+    // ── Paint Splatters ──
+    (function(){
+        const NS = 'http://www.w3.org/2000/svg';
+
+        // 3 different splatter body paths
+        const PATHS = [
+            'M50,46 C48,36 41,28 37,34 C33,40 38,47 43,45 C37,52 29,55 33,63 C37,70 47,65 49,57 C50,65 58,74 64,68 C70,62 64,53 58,52 C66,50 73,42 68,35 C63,28 51,36 50,46Z',
+            'M52,44 C49,33 42,25 38,32 C34,38 40,46 45,44 C39,51 30,54 34,62 C38,70 49,64 51,55 C52,63 61,72 67,66 C73,60 67,51 60,51 C69,48 76,39 71,32 C66,25 54,35 52,44Z',
+            'M48,50 C44,38 36,30 33,38 C30,46 37,53 43,50 C36,57 27,61 32,70 C37,78 48,72 50,62 C52,72 62,80 68,73 C74,66 67,57 60,56 C70,53 77,44 71,37 C65,30 52,40 48,50Z'
+        ];
+
+        // Satellite dot patterns around each path
+        const DOT_SETS = [
+            [[18,26,2.8],[78,22,2],[14,52,3.5],[82,58,1.8],[40,14,1.8],[68,16,2.5],[10,38,2],[88,40,1.6],[28,78,2.5],[72,80,1.8],[8,65,1.5],[90,28,1.5],[52,86,2]],
+            [[20,30,2.5],[76,26,2.2],[12,55,3],[84,62,1.8],[38,16,2],[72,18,2.8],[8,42,2.2],[90,44,1.5],[25,80,2.2],[74,78,2],[6,68,1.4],[88,32,1.6],[55,88,1.8]],
+            [[15,28,3],[80,24,2],[10,58,3.5],[85,60,1.8],[42,12,2],[65,14,2.5],[7,44,2],[92,42,1.5],[22,82,2.5],[76,82,1.8],[5,70,1.5],[92,30,1.5],[58,90,2]]
+        ];
+
+        // Elongated streak shapes
+        function addStreaks(svg, dotSet) {
+            // a couple thin diagonal streaks
+            [
+                {x1:55,y1:15,x2:45,y2:5,w:2},
+                {x1:20,y1:70,x2:10,y2:80,w:1.5},
+                {x1:78,y1:35,x2:88,y2:25,w:1.5}
+            ].forEach(({x1,y1,x2,y2,w}) => {
+                const line = document.createElementNS(NS,'line');
+                line.setAttribute('x1',x1); line.setAttribute('y1',y1);
+                line.setAttribute('x2',x2); line.setAttribute('y2',y2);
+                line.setAttribute('stroke','currentColor');
+                line.setAttribute('stroke-width',w);
+                line.setAttribute('stroke-linecap','round');
+                svg.appendChild(line);
+            });
+        }
+
+        function makeSplat(color, sizePx, opacity, pathIdx) {
+            const svg = document.createElementNS(NS,'svg');
+            svg.setAttribute('viewBox','0 0 100 100');
+            svg.setAttribute('xmlns', NS);
+            svg.style.cssText = `display:block;width:${sizePx}px;height:${sizePx}px;color:${color};fill:currentColor;stroke:none;mix-blend-mode:multiply;pointer-events:none;overflow:visible;opacity:${opacity};`;
+
+            const p = document.createElementNS(NS,'path');
+            p.setAttribute('d', PATHS[pathIdx % 3]);
+            svg.appendChild(p);
+
+            DOT_SETS[pathIdx % 3].forEach(([cx,cy,r]) => {
+                const c = document.createElementNS(NS,'circle');
+                c.setAttribute('cx',cx); c.setAttribute('cy',cy); c.setAttribute('r',r);
+                svg.appendChild(c);
+            });
+
+            addStreaks(svg);
+            return svg;
+        }
+
+        function place(container, color, sizePx, opacity, left, top, rotate, pathIdx) {
+            const wrap = document.createElement('div');
+            wrap.style.cssText = `position:absolute;left:${left};top:${top};transform:rotate(${rotate}deg);pointer-events:none;`;
+            wrap.appendChild(makeSplat(color, sizePx, opacity, pathIdx));
+            container.appendChild(wrap);
+        }
+
+        // Clear existing blob children, inject SVG splatters
+        document.querySelectorAll('.blobs').forEach(b => b.innerHTML = '');
+
+        // Brand color filters (sepia base + hue-rotate to target brand color)
+        const CLR = {
+            magenta: 'sepia(1) saturate(8) hue-rotate(280deg)',
+            crimson: 'sepia(1) saturate(7) hue-rotate(318deg)',
+            amber:   'sepia(1) saturate(6) hue-rotate(348deg)',
+            violet:  'sepia(1) saturate(8) hue-rotate(228deg)',
+            cobalt:  'sepia(1) saturate(7) hue-rotate(168deg)',
+            teal:    'sepia(1) saturate(7) hue-rotate(133deg)',
+        };
+
+        function placeImg(container, sizePx, opacity, left, top, rotate, clr) {
+            const img = document.createElement('img');
+            img.src = 'piant.png';
+            img.style.cssText = `position:absolute;left:${left};top:${top};width:${sizePx}px;height:auto;transform:rotate(${rotate}deg);mix-blend-mode:screen;opacity:${opacity};pointer-events:none;filter:${CLR[clr] || ''};`;
+            container.appendChild(img);
+        }
+
+        // hero — bez paint.png
+
+        const stats = document.querySelector('.stats-section .blobs');
+        if(stats){
+            // lijevo — vertikalno centriran
+            placeImg(stats, 200, 0.55, '-55px',                    'calc(50% - 100px)',  20);
+            // desno — malo gore
+            placeImg(stats, 180, 0.52, 'calc(100% - 150px)',       'calc(50% - 120px)', -25);
+            // centar — malo niže
+            placeImg(stats, 160, 0.48, 'calc(50% - 80px)',         'calc(50% - 60px)',   40);
+        }
+
+        const feat = document.querySelector('.features-section .blobs');
+        if(feat){
+            // gore desno
+            placeImg(feat, 280, 0.55, 'calc(100% - 230px)', '5%',                  -15);
+            // lijevo centar (vertikalno sredina)
+            placeImg(feat, 260, 0.52, '-65px',               'calc(50% - 130px)',   18);
+            // dolje centar (ne u uglu)
+            placeImg(feat, 240, 0.48, 'calc(40% - 120px)',   'calc(100% - 210px)', -35);
+        }
+
+        const cta = document.querySelector('.cta-section .blobs');
+        if(cta){
+            // gore lijevo
+            placeImg(cta, 270, 0.55, '-60px',                '5%',                   10);
+            // desno centar
+            placeImg(cta, 250, 0.52, 'calc(100% - 210px)',   'calc(50% - 125px)',   -20);
+            // dolje centar-desno
+            placeImg(cta, 220, 0.48, 'calc(55% - 110px)',    'calc(100% - 190px)',   30);
+        }
+
+        const nl = document.querySelector('.nl-section .blobs');
+        if(nl){
+            // lijevo centar
+            placeImg(nl, 300, 0.58, '-75px',                 'calc(50% - 150px)',    8);
+            // gore desno
+            placeImg(nl, 260, 0.54, 'calc(100% - 215px)',    '8%',                 -18);
+            // dolje centar
+            placeImg(nl, 230, 0.50, 'calc(50% - 115px)',     'calc(100% - 200px)',  25);
+        }
+
+        const test = document.querySelector('.test-section .blobs');
+        if(test){
+            // gore desno
+            placeImg(test, 280, 0.55, 'calc(100% - 230px)', '5%',                  15);
+            // lijevo centar
+            placeImg(test, 250, 0.52, '-55px',               'calc(50% - 125px)',  -10);
+            // dolje centar-lijevo
+            placeImg(test, 220, 0.48, 'calc(35% - 110px)',   'calc(100% - 195px)', -28);
+        }
+
+        const formats = document.querySelector('.formats-section .blobs');
+        if(formats){
+            // lijevo gore
+            placeImg(formats, 300, 0.50, '-70px',                'calc(30% - 150px)',   12, 'violet');
+            // desno centar
+            placeImg(formats, 270, 0.46, 'calc(100% - 230px)',   'calc(50% - 135px)',  -22, 'cobalt');
+            // dolje lijevo-centar
+            placeImg(formats, 240, 0.44, 'calc(40% - 120px)',    'calc(100% - 210px)',  35, 'amber');
+        }
+    })();
+
+    // ── Stagger Testimonials ──
+    const TESTIMONIALS = [
+        { quote: "Slika je stigla savršeno zapakovana i izgleda fantastično na zidu. Kvalitet platna je daleko iznad očekivanja.", by: "Marija K. · Sarajevo", img: "https://i.pravatar.cc/150?img=47", stars: 5 },
+        { quote: "Naručila sam svoju omiljenu fotografiju s putovanja i rezultat je spektakularan. Svi gosti pitaju odakle slika.", by: "Ana J. · Zagreb", img: "https://i.pravatar.cc/150?img=44", stars: 5 },
+        { quote: "Brza dostava, savršeno pakovanje i kvalitet koji opravdava svaki dinar. Preporučujem svima.", by: "Stefan M. · Beograd", img: "https://i.pravatar.cc/150?img=12", stars: 5 },
+        { quote: "Poklonila sam mami sliku za rođendan — suze sreće. Ovo je poklon koji ostaje zauvijek.", by: "Jovana R. · Sarajevo", img: "https://i.pravatar.cc/150?img=48", stars: 5 },
+        { quote: "Boje su živopisne i vjerne originalu. Na zidu izgleda kao iz profesionalne galerije.", by: "Nikola P. · Novi Sad", img: "https://i.pravatar.cc/150?img=15", stars: 5 },
+        { quote: "Drugi put naručujem i uvijek isti vrhunski nivo. Ekipa odlično reaguje na svaki upit.", by: "Milan D. · Podgorica", img: "https://i.pravatar.cc/150?img=67", stars: 5 },
+        { quote: "Cijeli proces je bio jednostavan i brz. Platno je stiglo za 3 dana i odmah otišlo na zid.", by: "Tijana V. · Mostar", img: "https://i.pravatar.cc/150?img=49", stars: 5 },
+        { quote: "Uokvirili smo svadbenu fotografiju — bolje od svakog studija. Hvala puno na brzini i kvalitetu!", by: "Dragan S. · Beograd", img: "https://i.pravatar.cc/150?img=33", stars: 5 },
+    ];
+
+    const CARD_SIZE = 300;
+    let tList = TESTIMONIALS.map((t,i) => ({ ...t, uid: i }));
+
+    function renderTestimonials() {
+        const stage = document.getElementById('testStage');
+        stage.innerHTML = '';
+        const len = tList.length;
+        const half = Math.floor(len / 2);
+
+        tList.forEach((t, index) => {
+            const pos = index - half;
+            const isCenter = pos === 0;
+            const absPos = Math.abs(pos);
+            const maxVisible = 3;
+
+            const card = document.createElement('div');
+            card.className = 'test-card' + (isCenter ? ' tc-active' : '');
+
+            const tx = (CARD_SIZE / 1.5) * pos;
+            const ty = isCenter ? -65 : (pos % 2 ? 15 : -15);
+            const rot = isCenter ? 0 : (pos % 2 ? 2.5 : -2.5);
+            const opacity = absPos > maxVisible ? 0 : Math.max(0, 1 - absPos * 0.18);
+            const z = isCenter ? 10 : Math.max(1, 6 - absPos);
+
+            card.style.cssText = `
+                transform: translate(-50%, -50%) translateX(${tx}px) translateY(${ty}px) rotate(${rot}deg);
+                z-index: ${z};
+                opacity: ${opacity};
+                pointer-events: ${absPos > maxVisible ? 'none' : 'auto'};
+            `;
+
+            const stars = '★'.repeat(t.stars);
+            card.innerHTML = `
+                <div class="test-stars">${stars}</div>
+                <img class="test-avatar" src="${t.img}" alt="${t.by}" />
+                <p class="test-quote">"${t.quote}"</p>
+                <div class="test-by">${t.by}</div>
+            `;
+
+            if (!isCenter) {
+                card.addEventListener('click', () => moveTest(pos));
+            }
+
+            stage.appendChild(card);
+        });
+    }
+
+    function moveTest(steps) {
+        const s = steps > 0 ? steps : steps;
+        if (s > 0) {
+            for (let i = 0; i < s; i++) {
+                const item = tList.shift();
+                tList.push({ ...item, uid: Math.random() });
+            }
+        } else {
+            for (let i = 0; i > s; i--) {
+                const item = tList.pop();
+                tList.unshift({ ...item, uid: Math.random() });
+            }
+        }
+        renderTestimonials();
+    }
+
+    document.getElementById('testPrev').addEventListener('click', () => moveTest(-1));
+    document.getElementById('testNext').addEventListener('click', () => moveTest(1));
+    renderTestimonials();
+
+    // ── Interactive Collection Selector ──
+    const panels = document.querySelectorAll('.coll-panel');
+
+    // Staggered slide-in on scroll
+    ScrollTrigger.create({
+        trigger: '#collSelector',
+        start: 'top 80%',
+        once: true,
+        onEnter: () => {
+            panels.forEach((panel, i) => {
+                setTimeout(() => {
+                    panel.style.transition = 'opacity .55s ease, transform .55s ease, flex .75s cubic-bezier(.4,0,.2,1), box-shadow .4s';
+                    panel.style.opacity = '1';
+                    panel.style.transform = 'translateX(0)';
+                }, 120 * i);
+            });
+        }
+    });
+
+    panels.forEach(panel => {
+        panel.addEventListener('click', () => {
+            panels.forEach(p => p.classList.remove('active'));
+            panel.classList.add('active');
+        });
+    });
+
+    // ── Hero Video Scroll Scrub + Pin ──
+    (function() {
+        const video = document.getElementById('heroVideo');
+        if (!video) return;
+
+        video.pause();
+        video.currentTime = 0;
+
+        function initPin() {
+            if (!video.duration) return;
+            // 300px of scroll per second of video — feel free to tune
+            const scrollDist = Math.ceil(video.duration * 300);
+
+            ScrollTrigger.create({
+                trigger: '.hero-section',
+                start: 'top top',
+                end: '+=' + scrollDist,
+                pin: true,
+                scrub: 0.6,
+                onUpdate(self) {
+                    video.currentTime = self.progress * video.duration;
+                }
+            });
+        }
+
+        if (video.readyState >= 1) {
+            initPin();
+        } else {
+            video.addEventListener('loadedmetadata', initPin, { once: true });
+        }
+    })();
+
+    // ── Mobile Menu Toggle ──
+    (function() {
+        const btn  = document.getElementById('menuBtn');
+        const menu = document.getElementById('mobileMenu');
+        const icon = document.getElementById('menuIcon');
+        if (!btn || !menu) return;
+
+        btn.addEventListener('click', () => {
+            const open = menu.classList.toggle('open');
+            icon.textContent = open ? 'close' : 'menu';
+            document.body.style.overflow = open ? 'hidden' : '';
+        });
+
+        // Zatvori pri klikanju na link unutar menija
+        menu.querySelectorAll('a').forEach(a => {
+            a.addEventListener('click', () => {
+                menu.classList.remove('open');
+                icon.textContent = 'menu';
+                document.body.style.overflow = '';
+            });
+        });
+    })();
+</script>
+</body>
+</html>
