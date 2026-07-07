@@ -68,11 +68,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (file) {
                 window._selectedDesignUrl = null;
                 try {
-                    cartBtn.innerHTML = '<span class="ms">cloud_upload</span> Učitavam sliku...';
-                    const resized = await resizeImageFile(file, 1600, 0.85);
+                    cartBtn.innerHTML = '<span class="ms">cloud_upload</span> Učitavam sliku (čekajte)...';
+                    const resized = await resizeImageFile(file, 1200, 0.82);
                     imageUrl = await uploadToImgBB(resized);
+                    cartBtn.innerHTML = '<span class="ms">check_circle</span> Slika uploadovana!';
                 } catch (err) {
                     console.error('ImgBB upload nije uspio:', err);
+                    cartBtn.innerHTML = '<span class="ms">warning</span> Upload nije uspio — nastavljam bez slike';
+                    await new Promise(r => setTimeout(r, 2000));
                 }
             } else if (window._selectedDesignUrl) {
                 imageUrl = window._selectedDesignUrl;
