@@ -2,6 +2,14 @@
  * Cart & Checkout Logic for Slike na Platnu
  */
 
+// Track which existing design the user last clicked in any design gallery
+document.addEventListener('click', function(e) {
+    const item = e.target.closest('.design-item');
+    if (!item) return;
+    const img = item.querySelector('img');
+    if (img && img.src) window._selectedDesignUrl = img.src;
+}, true);
+
 document.addEventListener('DOMContentLoaded', () => {
     const cartBtn = document.getElementById('addToCartBtn');
 
@@ -48,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let imageDataUrl = null;
             const file = imageInput && imageInput.files && imageInput.files[0];
             if (file) {
+                window._selectedDesignUrl = null; // own photo overrides any gallery pick
                 try {
                     imageDataUrl = await resizeImageFile(file, 2000, 0.85);
                 } catch (err) {
@@ -62,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 price: priceDisp ? priceDisp.textContent.trim() : '0 KM',
                 gap: gapRange ? gapRange.value + 'px' : 'N/A',
                 image: imageDataUrl,
+                designUrl: !imageDataUrl ? (window._selectedDesignUrl || null) : null,
                 timestamp: new Date().getTime()
             };
 
