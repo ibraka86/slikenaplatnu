@@ -2,6 +2,8 @@
  * Cart & Checkout Logic for Slike na Platnu
  */
 
+const IMGBB_KEY = '3abbf92c92294d5f03664694f3db344f';
+
 // Track which existing design the user last clicked in any design gallery
 document.addEventListener('click', function(e) {
     const item = e.target.closest('.design-item');
@@ -13,7 +15,6 @@ document.addEventListener('click', function(e) {
 document.addEventListener('DOMContentLoaded', () => {
     const cartBtn = document.getElementById('addToCartBtn');
 
-    // Downscale the uploaded photo so it fits LocalStorage's quota while staying print-usable
     function resizeImageFile(file, maxDim, quality) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -38,9 +39,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    async function uploadToImgBB(base64DataUrl) {
+        const base64 = base64DataUrl.split(',')[1];
+        const body = new FormData();
+        body.append('image', base64);
+        const res = await fetch('https://api.imgbb.com/1/upload?key=' + IMGBB_KEY, { method: 'POST', body });
+        const json = await res.json();
+        if (!json.success) throw new Error(json.error?.message || 'ImgBB error');
+        return json.data.url;
+    }
+
     if (cartBtn) {
         cartBtn.addEventListener('click', async () => {
-            // 1. Collect Data
             const productName = document.querySelector('h1.display').textContent.trim();
             const sizeSelect  = document.getElementById('sizeSelect');
             const depthSelect = document.getElementById('depthSelect');
@@ -48,20 +58,24 @@ document.addEventListener('DOMContentLoaded', () => {
             const gapRange    = document.getElementById('gapRange');
             const imageInput  = document.getElementById('imageUpload');
 
-            cartBtn.innerHTML = '<span class="ms">sync</span> Pripremam sliku...';
+            cartBtn.innerHTML = '<span class="ms">sync</span> Pripremam...';
             cartBtn.style.opacity = '0.7';
             cartBtn.disabled = true;
 
-            // 2. Capture the originally uploaded photo (full-res, not the on-screen preview canvas)
-            let imageDataUrl = null;
+            let imageUrl = null;
+
             const file = imageInput && imageInput.files && imageInput.files[0];
             if (file) {
-                window._selectedDesignUrl = null; // own photo overrides any gallery pick
+                window._selectedDesignUrl = null;
                 try {
-                    imageDataUrl = await resizeImageFile(file, 2000, 0.85);
+                    cartBtn.innerHTML = '<span class="ms">cloud_upload</span> Učitavam sliku...';
+                    const resized = await resizeImageFile(file, 1600, 0.85);
+                    imageUrl = await uploadToImgBB(resized);
                 } catch (err) {
-                    console.error('Obrada slike nije uspjela:', err);
+                    console.error('ImgBB upload nije uspio:', err);
                 }
+            } else if (window._selectedDesignUrl) {
+                imageUrl = window._selectedDesignUrl;
             }
 
             const order = {
@@ -70,22 +84,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 depth: depthSelect ? depthSelect.options[depthSelect.selectedIndex].text : 'Standard',
                 price: priceDisp ? priceDisp.textContent.trim() : '0 KM',
                 gap: gapRange ? gapRange.value + 'px' : 'N/A',
-                image: imageDataUrl,
-                designUrl: !imageDataUrl ? (window._selectedDesignUrl || null) : null,
+                imageUrl: imageUrl,
                 timestamp: new Date().getTime()
             };
 
-            // 3. Save to LocalStorage (drop the image rather than block checkout if quota is exceeded)
-            try {
-                localStorage.setItem('canvas_order', JSON.stringify(order));
-            } catch (err) {
-                console.error('LocalStorage puna, nastavljam bez slike:', err);
-                delete order.image;
-                localStorage.setItem('canvas_order', JSON.stringify(order));
-            }
+            localStorage.setItem('canvas_order', JSON.stringify(order));
 
-            // 4. Redirect to Checkout
-            // Assuming we are in /kreiraj-sliku/subfolder/index.html
             cartBtn.innerHTML = '<span class="ms">sync</span> Preusmjeravanje...';
             setTimeout(() => {
                 window.location.href = '../../narudzba/';

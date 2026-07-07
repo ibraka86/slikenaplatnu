@@ -244,39 +244,24 @@
             <div class="item-row"><span class="item-label">Dimenzija:</span> <span class="item-value">${orderData.size}</span></div>
             <div class="item-row"><span class="item-label">Okvir:</span> <span class="item-value">${orderData.depth}</span></div>
             <div class="item-row"><span class="item-label">Razmak:</span> <span class="item-value">${orderData.gap}</span></div>
-            ${orderData.image
-                ? `<div class="item-row"><span class="item-label">Slika:</span> <span class="item-value">Vlastita fotografija ✓</span></div>
-                   <div style="margin-top:14px;"><img src="${orderData.image}" alt="Vaša slika" style="width:100%;border-radius:6px;display:block;border:1px solid var(--line);"></div>`
-                : orderData.designUrl
-                    ? `<div class="item-row"><span class="item-label">Dizajn:</span> <span class="item-value">Odabrani dizajn ✓</span></div>
-                       <div style="margin-top:14px;"><img src="${orderData.designUrl}" alt="Odabrani dizajn" style="width:100%;border-radius:6px;display:block;border:1px solid var(--line);"></div>`
-                    : `<div class="item-row" style="color:#C62828;">Bez slike</div>`}
+            ${orderData.imageUrl
+                ? `<div class="item-row"><span class="item-label">Slika:</span> <span class="item-value"><a href="${orderData.imageUrl}" target="_blank" style="color:var(--magenta);text-decoration:none;">Pogledaj ↗</a></span></div>
+                   <div style="margin-top:14px;"><img src="${orderData.imageUrl}" alt="Slika narudžbe" style="width:100%;border-radius:6px;display:block;border:1px solid var(--line);"></div>`
+                : `<div class="item-row" style="color:#C62828;">Bez slike</div>`}
         `;
         const basePrice = parseInt(orderData.price) || 0;
         const totalPrice = basePrice + 11;
         finalPrice.textContent = totalPrice + ' KM';
 
         // Prepare hidden fields for Web3Forms
-        const imageNote = orderData.designUrl
-            ? `, Odabrani dizajn: ${orderData.designUrl}`
-            : orderData.image
-                ? `, Slika: vlastita fotografija (priložena kao attachment)`
-                : `, Slika: nije dodata`;
+        const imageNote = orderData.imageUrl
+            ? `, Slika: ${orderData.imageUrl}`
+            : `, Slika: nije dodata`;
         hiddenOrderDetails.value = `Proizvod: ${orderData.product}, Dimenzija: ${orderData.size}, Okvir: ${orderData.depth}, Razmak: ${orderData.gap}, Dostava: 11 KM${imageNote}`;
         hiddenTotalPrice.value = totalPrice + ' KM (cijena ' + orderData.price + ' + dostava 11 KM)';
     } else {
         itemsContainer.innerHTML = '<p style="color:red">Vaša korpa je prazna. Molimo odaberite proizvod.</p>';
         document.getElementById('submitBtn').disabled = true;
-    }
-
-    // Convert a base64 data URL into a Blob so it can be attached as a real file
-    function dataURLtoBlob(dataurl) {
-        const [header, base64] = dataurl.split(',');
-        const mime = (header.match(/:(.*?);/) || [, 'image/jpeg'])[1];
-        const bin = atob(base64);
-        const u8 = new Uint8Array(bin.length);
-        for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
-        return new Blob([u8], { type: mime });
     }
 
     // Handle Form Submit
@@ -289,9 +274,6 @@
         submitBtn.innerHTML = '<span class="ms">sync</span> Obrađujem...';
 
         const formData = new FormData(form);
-        if (orderData.image) {
-            formData.append('attachment', dataURLtoBlob(orderData.image), 'narudzba-slika.jpg');
-        }
 
         fetch('https://api.web3forms.com/submit', {
             method: 'POST',
