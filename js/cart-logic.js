@@ -4,12 +4,19 @@
 
 const IMGBB_KEY = '3abbf92c92294d5f03664694f3db344f';
 
+// Capture the File object before product page clears the input (e.target.value = '')
+document.addEventListener('change', function(e) {
+    if (e.target.id !== 'imageUpload') return;
+    const file = e.target.files[0];
+    if (file) { window._pendingUploadFile = file; window._selectedDesignUrl = null; }
+}, true);
+
 // Track which existing design the user last clicked in any design gallery
 document.addEventListener('click', function(e) {
     const item = e.target.closest('.design-item');
     if (!item) return;
     const img = item.querySelector('img');
-    if (img && img.src) window._selectedDesignUrl = img.src;
+    if (img && img.src) { window._selectedDesignUrl = img.src; window._pendingUploadFile = null; }
 }, true);
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -64,9 +71,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             let imageUrl = null;
 
-            const file = imageInput && imageInput.files && imageInput.files[0];
+            const file = window._pendingUploadFile || (imageInput && imageInput.files && imageInput.files[0]);
             if (file) {
-                window._selectedDesignUrl = null;
                 try {
                     cartBtn.innerHTML = '<span class="ms">cloud_upload</span> Učitavam sliku (čekajte)...';
                     const resized = await resizeImageFile(file, 1200, 0.82);
