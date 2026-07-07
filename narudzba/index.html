@@ -244,9 +244,9 @@
             <div class="item-row"><span class="item-label">Dimenzija:</span> <span class="item-value">${orderData.size}</span></div>
             <div class="item-row"><span class="item-label">Okvir:</span> <span class="item-value">${orderData.depth}</span></div>
             <div class="item-row"><span class="item-label">Razmak:</span> <span class="item-value">${orderData.gap}</span></div>
-            ${orderData.imageUrl
-                ? `<div class="item-row"><span class="item-label">Slika:</span> <span class="item-value"><a href="${orderData.imageUrl}" target="_blank" style="color:var(--magenta);text-decoration:none;">Pogledaj ↗</a></span></div>
-                   <div style="margin-top:14px;"><img src="${orderData.imageUrl}" alt="Slika narudžbe" style="width:100%;border-radius:6px;display:block;border:1px solid var(--line);"></div>`
+            ${(orderData.imageUrl || orderData.designUrl || orderData.image)
+                ? `<div class="item-row"><span class="item-label">Slika:</span> <span class="item-value">${(orderData.imageUrl || orderData.designUrl) ? '<a href="' + (orderData.imageUrl || orderData.designUrl) + '" target="_blank" style="color:var(--magenta);text-decoration:none;">Pogledaj ↗</a>' : 'Učitana ✓'}</span></div>
+                   <div style="margin-top:14px;"><img src="${orderData.imageUrl || orderData.designUrl || orderData.image}" alt="Slika narudžbe" style="width:100%;border-radius:6px;display:block;border:1px solid var(--line);"></div>`
                 : `<div class="item-row" style="color:#C62828;">Bez slike</div>`}
         `;
         const basePrice = parseInt(orderData.price) || 0;
@@ -254,9 +254,11 @@
         finalPrice.textContent = totalPrice + ' KM';
 
         // Prepare hidden fields for Web3Forms
-        const imageNote = orderData.imageUrl
-            ? `, Slika: ${orderData.imageUrl}`
-            : `, Slika: nije dodata`;
+        const imageNote = (orderData.imageUrl || orderData.designUrl)
+            ? `, Slika: ${orderData.imageUrl || orderData.designUrl}`
+            : orderData.image
+                ? `, Slika: vlastita fotografija (priložena)`
+                : `, Slika: nije dodata`;
         hiddenOrderDetails.value = `Proizvod: ${orderData.product}, Dimenzija: ${orderData.size}, Okvir: ${orderData.depth}, Razmak: ${orderData.gap}, Dostava: 11 KM${imageNote}`;
         hiddenTotalPrice.value = totalPrice + ' KM (cijena ' + orderData.price + ' + dostava 11 KM)';
     } else {
