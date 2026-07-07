@@ -230,25 +230,25 @@
                 <div class="options-group">
                     <label class="options-group-title">Dimenzija (cm)</label>
                     <select class="select-box" id="sizeSelect">
-                        <option value="30x30" data-price="25">30x30 cm</option>
-                        <option value="40x40" data-price="35" selected>40x40 cm</option>
-                        <option value="50x50" data-price="50">50x50 cm</option>
-                        <option value="60x60" data-price="70">60x60 cm</option>
-                        <option value="80x80" data-price="110">80x80 cm</option>
+                        <option value="30x30" data-price="85">30x30 cm</option>
+                        <option value="40x40" data-price="95" selected>40x40 cm</option>
+                        <option value="50x50" data-price="105">50x50 cm</option>
+                        <option value="60x60" data-price="120">60x60 cm</option>
+                        <option value="80x80" data-price="150">80x80 cm</option>
                     </select>
                 </div>
                 <div class="options-group">
                     <label class="options-group-title">Debljina okvira</label>
                     <select class="select-box" id="depthSelect">
                         <option value="standard" data-price-modifier="0" selected>Standardni (2 cm)</option>
-                        <option value="gallery" data-price-modifier="15">Galerijski (4 cm)</option>
+                        <option value="gallery" data-price-modifier="20">Galerijski (4 cm)</option>
                     </select>
                 </div>
                 <div class="price-wrap">
                     <span class="price-label">Ukupna cijena</span>
-                    <span class="price-amount" id="priceDisplay">35 KM</span>
+                    <span class="price-amount" id="priceDisplay">95 KM</span>
                 </div>
-                <button class="btn-grad" style="width: 100%; margin-top: 30px; padding: 18px;">Dodaj u korpu</button>
+                <button class="btn-grad" id="addToCartBtn" style="width: 100%; margin-top: 30px; padding: 18px;">Dodaj u korpu</button>
             </div>
         </div>
     </div>
@@ -350,5 +350,6 @@
         document.head.appendChild(script);
     }
 </script>
+<script src="../../js/cart-logic.js"></script>
 </body>
 </html>

@@ -230,25 +230,25 @@
                 <div class="options-group">
                     <label class="options-group-title">Dimenzija (cm)</label>
                     <select class="select-box" id="sizeSelect">
-                        <option value="30x40" data-price="30">30x40 cm</option>
-                        <option value="40x60" data-price="45" selected>40x60 cm</option>
-                        <option value="50x70" data-price="65">50x70 cm</option>
-                        <option value="60x80" data-price="85">60x80 cm</option>
-                        <option value="70x100" data-price="110">70x100 cm</option>
+                        <option value="30x40" data-price="90">30x40 cm</option>
+                        <option value="40x60" data-price="105" selected>40x60 cm</option>
+                        <option value="50x70" data-price="115">50x70 cm</option>
+                        <option value="60x80" data-price="130">60x80 cm</option>
+                        <option value="70x100" data-price="160">70x100 cm</option>
                     </select>
                 </div>
                 <div class="options-group">
                     <label class="options-group-title">Debljina okvira</label>
                     <select class="select-box" id="depthSelect">
                         <option value="standard" data-price-modifier="0" selected>Standardni (2 cm)</option>
-                        <option value="gallery" data-price-modifier="15">Galerijski (4 cm)</option>
+                        <option value="gallery" data-price-modifier="20">Galerijski (4 cm)</option>
                     </select>
                 </div>
                 <div class="price-wrap">
                     <span class="price-label">Ukupna cijena</span>
-                    <span class="price-amount" id="priceDisplay">45 KM</span>
+                    <span class="price-amount" id="priceDisplay">105 KM</span>
                 </div>
-                <button class="btn-grad" style="width: 100%; margin-top: 30px; padding: 18px;">Dodaj u korpu</button>
+                <button class="btn-grad" id="addToCartBtn" style="width: 100%; margin-top: 30px; padding: 18px;">Dodaj u korpu</button>
             </div>
         </div>
     </div>
@@ -350,5 +350,6 @@
         document.head.appendChild(script);
     }
 </script>
+<script src="../../js/cart-logic.js"></script>
 </body>
 </html>

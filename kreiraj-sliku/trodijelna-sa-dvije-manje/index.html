@@ -141,17 +141,17 @@
                 <div class="options-group">
                     <label style="font-weight:600; font-size:12px; text-transform:uppercase; margin-bottom:8px; display:block;">Ukupna Dimenzija</label>
                     <select class="select-box" id="sizeSelect">
-                        <option value="60x40" data-price="70">60x40 cm (Set)</option>
-                        <option value="90x60" data-price="100" selected>90x60 cm (Set)</option>
-                        <option value="120x80" data-price="140">120x80 cm (Set)</option>
-                        <option value="150x100" data-price="180">150x100 cm (Set)</option>
+                        <option value="60x40" data-price="105">60x40 cm (Set)</option>
+                        <option value="90x60" data-price="140" selected>90x60 cm (Set)</option>
+                        <option value="120x80" data-price="190">120x80 cm (Set)</option>
+                        <option value="150x100" data-price="250">150x100 cm (Set)</option>
                     </select>
                 </div>
                 <div class="price-wrap">
                     <span>Ukupna cijena</span>
-                    <span class="price-amount" id="priceDisplay">100 KM</span>
+                    <span class="price-amount" id="priceDisplay">140 KM</span>
                 </div>
-                <button class="btn-grad" style="width:100%; margin-top:30px;">Dodaj u korpu</button>
+                <button class="btn-grad" id="addToCartBtn" style="width:100%; margin-top:30px;">Dodaj u korpu</button>
             </div>
         </div>
     </div>
@@ -262,5 +262,6 @@
     window.onload = () => { syncSizes(); };
     window.onresize = syncSizes;
 </script>
+<script src="../../js/cart-logic.js"></script>
 </body>
 </html>

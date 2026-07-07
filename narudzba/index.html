@@ -133,7 +133,7 @@
                 
                 <form id="orderForm" action="https://api.web3forms.com/submit" method="POST">
                     <!-- Replace with your Access Key -->
-                    <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
+                    <input type="hidden" name="access_key" value="f54289be-6926-484a-92d3-a1fadd04c694">
                     <input type="hidden" name="subject" value="Nova narudžba - Slike na Platnu">
                     <input type="hidden" name="from_name" value="Web Prodavnica">
                     
@@ -207,7 +207,7 @@
                 </div>
 
                 <div style="margin-top:20px; font-size:12px; color:var(--mute); text-align:center;">
-                    Dostava: <span style="color:var(--ink); font-weight:600;">BESPLATNA</span>
+                    Dostava: <span style="color:var(--ink); font-weight:600;">11 KM</span>
                 </div>
             </div>
 
@@ -239,41 +239,56 @@
     if (orderData.product) {
         itemsContainer.innerHTML = `
             <div class="item-row"><span class="item-label">Proizvod:</span> <span class="item-value">${orderData.product}</span></div>
-            <div class="item-row"><span class="item-label">Dimenzija:</span> <span class="item-value">${orderData.size} cm</span></div>
+            <div class="item-row"><span class="item-label">Dimenzija:</span> <span class="item-value">${orderData.size}</span></div>
             <div class="item-row"><span class="item-label">Okvir:</span> <span class="item-value">${orderData.depth}</span></div>
             <div class="item-row"><span class="item-label">Razmak:</span> <span class="item-value">${orderData.gap}</span></div>
-            ${orderData.image ? `<div class="item-row"><span class="item-label">Slika:</span> <span class="item-value">Učitana (Custom)</span></div>` : ''}
+            ${orderData.image
+                ? `<div class="item-row"><span class="item-label">Slika:</span> <span class="item-value">Učitana ✓</span></div>
+                   <div style="margin-top:14px;"><img src="${orderData.image}" alt="Vaša slika" style="width:100%;border-radius:6px;display:block;border:1px solid var(--line);"></div>`
+                : `<div class="item-row" style="color:#C62828;">Bez uploadovane slike</div>`}
         `;
-        finalPrice.textContent = orderData.price;
-        
+        const basePrice = parseInt(orderData.price) || 0;
+        const totalPrice = basePrice + 11;
+        finalPrice.textContent = totalPrice + ' KM';
+
         // Prepare hidden fields for Web3Forms
-        hiddenOrderDetails.value = `Proizvod: ${orderData.product}, Dimenzija: ${orderData.size}, Okvir: ${orderData.depth}, Razmak: ${orderData.gap}`;
-        hiddenTotalPrice.value = orderData.price;
+        hiddenOrderDetails.value = `Proizvod: ${orderData.product}, Dimenzija: ${orderData.size}, Okvir: ${orderData.depth}, Razmak: ${orderData.gap}, Dostava: 11 KM`;
+        hiddenTotalPrice.value = totalPrice + ' KM (cijena ' + orderData.price + ' + dostava 11 KM)';
     } else {
         itemsContainer.innerHTML = '<p style="color:red">Vaša korpa je prazna. Molimo odaberite proizvod.</p>';
         document.getElementById('submitBtn').disabled = true;
+    }
+
+    // Convert a base64 data URL into a Blob so it can be attached as a real file
+    function dataURLtoBlob(dataurl) {
+        const [header, base64] = dataurl.split(',');
+        const mime = (header.match(/:(.*?);/) || [, 'image/jpeg'])[1];
+        const bin = atob(base64);
+        const u8 = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+        return new Blob([u8], { type: mime });
     }
 
     // Handle Form Submit
     const form = document.getElementById('orderForm');
     form.addEventListener('submit', function(e) {
         e.preventDefault();
-        
+
         const submitBtn = document.getElementById('submitBtn');
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<span class="ms">sync</span> Obrađujem...';
 
         const formData = new FormData(form);
-        const object = Object.fromEntries(formData);
-        const json = JSON.stringify(object);
+        if (orderData.image) {
+            formData.append('attachment', dataURLtoBlob(orderData.image), 'narudzba-slika.jpg');
+        }
 
         fetch('https://api.web3forms.com/submit', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: json
+            body: formData
         })
         .then(async (response) => {
             let res = await response.json();

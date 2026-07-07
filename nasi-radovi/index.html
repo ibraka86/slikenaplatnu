@@ -842,123 +842,212 @@
 
 <div class="grad-bar"></div>
 
-<!-- ═══════════════════════ GALLERY CAROUSEL ════════════════ -->
-<section class="gallery-section" style="padding: 80px 0 120px; background: var(--white); overflow: hidden; position: relative;">
-    
+<!-- ═══════════════════════ GALERIJA RADOVA ════════════════ -->
+<section class="gal-section">
     <style>
-        .marquee-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-            transform: rotate(-3deg) scale(1.05);
-            transform-origin: center center;
-            width: 110vw;
-            margin-left: -5vw;
-        }
-        
-        .marquee {
-            display: flex;
-            gap: 24px;
-            width: max-content;
-            animation: scroll 40s linear infinite;
-        }
+        .gal-section { padding: 80px 0 120px; background: var(--white); }
+        .gal-head { text-align: center; max-width: 640px; margin: 0 auto 48px; }
+        .gal-count { font-size: 15px; color: var(--mute); margin-top: 8px; }
 
-        .marquee.reverse {
-            animation: scroll-reverse 45s linear infinite;
+        .gal-tabs {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            gap: 10px; margin-bottom: 48px;
         }
-        
-        .marquee:hover, .marquee.reverse:hover {
-            animation-play-state: paused;
+        .gal-tab {
+            padding: 10px 22px; border: 1.5px solid var(--line); border-radius: 30px;
+            background: var(--white); color: var(--ink-soft);
+            font-family: 'Schibsted Grotesk', sans-serif; font-size: 13px; font-weight: 600;
+            letter-spacing: .03em; cursor: pointer; transition: all .25s;
         }
+        .gal-tab:hover { border-color: var(--magenta); color: var(--magenta); }
+        .gal-tab.active { background: var(--ink); border-color: var(--ink); color: #fff; }
 
-        .marquee img {
-            height: 300px;
-            width: auto;
-            border-radius: 12px;
-            object-fit: cover;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-            filter: grayscale(20%);
-            cursor: pointer;
+        .gal-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 18px;
         }
+        .gal-item {
+            position: relative; aspect-ratio: 4/3; overflow: hidden; border-radius: 6px;
+            cursor: pointer; background: var(--paper);
+        }
+        .gal-item img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+            transition: transform .5s cubic-bezier(.4,0,.2,1);
+        }
+        .gal-item:hover img { transform: scale(1.08); }
+        .gal-badge {
+            position: absolute; left: 0; right: 0; bottom: 0;
+            padding: 24px 14px 12px;
+            background: linear-gradient(to top, rgba(10,10,10,.78) 0%, transparent 100%);
+            color: #fff; font-size: 12px; letter-spacing: .04em; text-transform: uppercase;
+            opacity: 0; transition: opacity .3s; pointer-events: none;
+        }
+        .gal-item:hover .gal-badge { opacity: 1; }
 
-        .marquee img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
-            filter: grayscale(0%);
-            z-index: 2;
-            position: relative;
-        }
+        .gal-empty { text-align: center; color: var(--mute); padding: 60px 0; grid-column: 1/-1; }
 
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+        /* Lightbox */
+        .lightbox {
+            display: none; position: fixed; inset: 0; z-index: 1000;
+            background: rgba(10,10,10,.94);
+            align-items: center; justify-content: center;
         }
-
-        @keyframes scroll-reverse {
-            0% { transform: translateX(-50%); }
-            100% { transform: translateX(0); }
+        .lightbox.open { display: flex; }
+        .lightbox-content { position: relative; max-width: 92vw; max-height: 88vh; }
+        .lightbox-content img {
+            max-width: 92vw; max-height: 88vh; object-fit: contain; display: block;
+            border-radius: 4px; box-shadow: 0 20px 60px rgba(0,0,0,.5);
         }
-        
-        .fade-overlay {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 15vw;
-            z-index: 2;
-            pointer-events: none;
+        .lightbox-cap {
+            text-align: center; color: rgba(255,255,255,.7); font-size: 13px;
+            margin-top: 14px; letter-spacing: .03em;
         }
-        .fade-left {
-            left: 0;
-            background: linear-gradient(to right, #ffffff 0%, transparent 100%);
+        .lightbox-close, .lightbox-prev, .lightbox-next {
+            position: fixed; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18);
+            color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: background .2s;
         }
-        .fade-right {
-            right: 0;
-            background: linear-gradient(to left, #ffffff 0%, transparent 100%);
+        .lightbox-close:hover, .lightbox-prev:hover, .lightbox-next:hover { background: rgba(255,255,255,.2); }
+        .lightbox-close { top: 24px; right: 24px; width: 48px; height: 48px; border-radius: 50%; }
+        .lightbox-prev, .lightbox-next {
+            top: 50%; transform: translateY(-50%); width: 56px; height: 56px; border-radius: 50%;
+        }
+        .lightbox-prev { left: 24px; }
+        .lightbox-next { right: 24px; }
+        @media(max-width:768px){
+            .lightbox-prev, .lightbox-next { width: 44px; height: 44px; }
+            .lightbox-prev { left: 8px; } .lightbox-next { right: 8px; }
+            .lightbox-close { top: 12px; right: 12px; width: 40px; height: 40px; }
         }
     </style>
 
-    <div class="fade-overlay fade-left"></div>
-    <div class="fade-overlay fade-right"></div>
-
-    <div class="marquee-wrapper">
-        <!-- Prvi red -->
-        <div class="marquee">
-            <img src="../panorama2-300x229.png" alt="Rad 1">
-            <img src="../pejzaz-proizvod-300x229.png" alt="Rad 2">
-            <img src="../PORTRET-300x229.jpg" alt="Rad 3">
-            <img src="../KVADRATNA-300x229.jpg" alt="Rad 4">
-            <img src="../PETODELNA-1-300x229.png" alt="Rad 5">
-            <img src="../TRODELNA-300x229.png" alt="Rad 6">
-            
-            <!-- Duplikat za infinite loop -->
-            <img src="../panorama2-300x229.png" alt="Rad 1">
-            <img src="../pejzaz-proizvod-300x229.png" alt="Rad 2">
-            <img src="../PORTRET-300x229.jpg" alt="Rad 3">
-            <img src="../KVADRATNA-300x229.jpg" alt="Rad 4">
-            <img src="../PETODELNA-1-300x229.png" alt="Rad 5">
-            <img src="../TRODELNA-300x229.png" alt="Rad 6">
+    <div class="container">
+        <div class="gal-head rv">
+            <span class="label">Galerija Radova</span>
+            <h2 class="display" style="font-size: clamp(32px, 4vw, 52px);">Pogledajte šta smo <em class="text-grad">izradili.</em></h2>
+            <p class="gal-count" id="galCount"></p>
         </div>
 
-        <!-- Drugi red (obrnuti smjer) -->
-        <div class="marquee reverse">
-            <img src="../TRODELNA-DVE-MANJE-300x229.png" alt="Rad 7">
-            <img src="../CETVORODELNA-KVADRATNA-300x229.png" alt="Rad 8">
-            <img src="../CETVORODELNA-RAVNOMERNA-300x229.png" alt="Rad 9">
-            <img src="../CETVORODELNA-SA-DVE-MANJE-300x229.png" alt="Rad 10">
-            <img src="../romboidi-300x225.png" alt="Rad 11">
-            <img src="../panorama2-300x229.png" alt="Rad 12">
-            
-            <!-- Duplikat za infinite loop -->
-            <img src="../TRODELNA-DVE-MANJE-300x229.png" alt="Rad 7">
-            <img src="../CETVORODELNA-KVADRATNA-300x229.png" alt="Rad 8">
-            <img src="../CETVORODELNA-RAVNOMERNA-300x229.png" alt="Rad 9">
-            <img src="../CETVORODELNA-SA-DVE-MANJE-300x229.png" alt="Rad 10">
-            <img src="../romboidi-300x225.png" alt="Rad 11">
-            <img src="../panorama2-300x229.png" alt="Rad 12">
-        </div>
+        <div class="gal-tabs rv" id="galTabs"></div>
+        <div class="gal-grid" id="galGrid"></div>
     </div>
 </section>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lbClose"><span class="ms">close</span></button>
+    <button class="lightbox-prev" id="lbPrev"><span class="ms">chevron_left</span></button>
+    <button class="lightbox-next" id="lbNext"><span class="ms">chevron_right</span></button>
+    <div class="lightbox-content">
+        <img id="lbImg" src="" alt="">
+        <div class="lightbox-cap" id="lbCap"></div>
+    </div>
+</div>
+
+<script>
+    const GALERIJA = [
+      { slug: 'pejzazi', label: 'Pejzaži', count: 31 },
+      { slug: 'portreti', label: 'Portreti', count: 6 },
+      { slug: 'zivotinje', label: 'Životinje', count: 10 },
+      { slug: 'cvijece', label: 'Cvijeće', count: 7 },
+      { slug: 'arhitektura', label: 'Arhitektura', count: 8 },
+      { slug: 'bosanski-cilim', label: 'Bosanski Ćilim', count: 12 },
+      { slug: 'apstrakcija', label: 'Apstrakcija i Mramor', count: 28 },
+    ];
+
+    const ALL_IMAGES = [];
+    GALERIJA.forEach(cat => {
+        for (let i = 1; i <= cat.count; i++) {
+            const num = String(i).padStart(2, '0');
+            ALL_IMAGES.push({
+                slug: cat.slug,
+                label: cat.label,
+                thumb: `galerija/${cat.slug}/thumb/${num}.jpg`,
+                full: `galerija/${cat.slug}/full/${num}.jpg`,
+            });
+        }
+    });
+
+    document.getElementById('galCount').textContent = `${ALL_IMAGES.length} izrađenih radova u ${GALERIJA.length} kategorija`;
+
+    let activeFilter = 'sve';
+    let filteredImages = ALL_IMAGES;
+
+    function renderTabs() {
+        const tabs = document.getElementById('galTabs');
+        const all = [{ slug: 'sve', label: 'Sve' }, ...GALERIJA];
+        tabs.innerHTML = all.map(t =>
+            `<button class="gal-tab${t.slug === activeFilter ? ' active' : ''}" data-slug="${t.slug}">${t.label}</button>`
+        ).join('');
+        tabs.querySelectorAll('.gal-tab').forEach(btn => {
+            btn.addEventListener('click', () => {
+                activeFilter = btn.dataset.slug;
+                renderTabs();
+                renderGrid();
+            });
+        });
+    }
+
+    function renderGrid() {
+        filteredImages = activeFilter === 'sve' ? ALL_IMAGES : ALL_IMAGES.filter(im => im.slug === activeFilter);
+        const grid = document.getElementById('galGrid');
+        if (!filteredImages.length) {
+            grid.innerHTML = '<p class="gal-empty">Nema slika u ovoj kategoriji.</p>';
+            return;
+        }
+        grid.innerHTML = filteredImages.map((im, i) =>
+            `<div class="gal-item" data-idx="${i}">
+                <img src="${im.thumb}" alt="${im.label}" loading="lazy">
+                <div class="gal-badge">${im.label}</div>
+            </div>`
+        ).join('');
+        grid.querySelectorAll('.gal-item').forEach(el => {
+            el.addEventListener('click', () => openLightbox(parseInt(el.dataset.idx)));
+        });
+    }
+
+    // ── Lightbox ──
+    let lbIndex = 0;
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lbImg');
+    const lbCap = document.getElementById('lbCap');
+
+    function openLightbox(idx) {
+        lbIndex = idx;
+        showLbImage();
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    function showLbImage() {
+        const im = filteredImages[lbIndex];
+        lbImg.src = im.full;
+        lbImg.alt = im.label;
+        lbCap.textContent = `${im.label} — ${lbIndex + 1} / ${filteredImages.length}`;
+    }
+    function lbStep(dir) {
+        lbIndex = (lbIndex + dir + filteredImages.length) % filteredImages.length;
+        showLbImage();
+    }
+
+    document.getElementById('lbClose').addEventListener('click', closeLightbox);
+    document.getElementById('lbPrev').addEventListener('click', () => lbStep(-1));
+    document.getElementById('lbNext').addEventListener('click', () => lbStep(1));
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', e => {
+        if (!lightbox.classList.contains('open')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') lbStep(-1);
+        if (e.key === 'ArrowRight') lbStep(1);
+    });
+
+    renderTabs();
+    renderGrid();
+</script>
+
 <!-- ═══════════════════════ FOOTER ══════════════════════ -->
 <footer class="site-footer">
     <div class="footer-inner">

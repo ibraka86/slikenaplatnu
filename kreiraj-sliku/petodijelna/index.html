@@ -498,10 +498,10 @@
                 <div class="options-group">
                     <label class="options-group-title">Ukupna dimenzija (cm)</label>
                     <select class="select-box" id="sizeSelect">
-                        <option value="100x50" data-price="120">100x50 cm (stepenasta)</option>
-                        <option value="125x70" data-price="165" selected>125x70 cm (stepenasta)</option>
-                        <option value="150x80" data-price="210">150x80 cm (stepenasta)</option>
-                        <option value="200x100" data-price="290">200x100 cm (stepenasta)</option>
+                        <option value="100x50" data-price="135">100x50 cm (stepenasta)</option>
+                        <option value="125x70" data-price="180" selected>125x70 cm (stepenasta)</option>
+                        <option value="150x80" data-price="215">150x80 cm (stepenasta)</option>
+                        <option value="200x100" data-price="310">200x100 cm (stepenasta)</option>
                     </select>
                 </div>
 
@@ -509,7 +509,7 @@
                     <label class="options-group-title">Debljina okvira (cm)</label>
                     <select class="select-box" id="depthSelect">
                         <option value="standard" data-price-modifier="0" selected>Standardni (2 cm)</option>
-                        <option value="gallery" data-price-modifier="25">Galerijski (4 cm) - Premium</option>
+                        <option value="gallery" data-price-modifier="30">Galerijski (4 cm) - Premium</option>
                     </select>
                 </div>
                 
@@ -523,10 +523,10 @@
 
                 <div class="price-wrap">
                     <span class="price-label">Ukupna cijena</span>
-                    <span class="price-amount" id="priceDisplay">165 KM</span>
+                    <span class="price-amount" id="priceDisplay">180 KM</span>
                 </div>
 
-                <button class="btn-grad" style="width: 100%; margin-top: 30px; padding: 18px; font-size: 16px;">
+                <button class="btn-grad" id="addToCartBtn" style="width: 100%; margin-top: 30px; padding: 18px; font-size: 16px;">
                     <span class="ms">shopping_cart</span>
                     Dodaj u korpu
                 </button>
@@ -743,5 +743,6 @@
         document.head.appendChild(script);
     }
 </script>
+<script src="../../js/cart-logic.js"></script>
 </body>
 </html>
