@@ -290,6 +290,7 @@
             position: relative; overflow: hidden;
             background: var(--white);
             min-height: 100vh;
+            min-height: 100dvh; /* adresna traka na mobitelu mijenja 100vh */
             display: flex; align-items: stretch;
         }
 
@@ -1032,7 +1033,8 @@
 
         <div class="hero-visual" id="hv">
             <div class="hero-video-wrap">
-                <video id="heroVideo" muted playsinline preload="auto">
+                <video id="heroVideo" muted playsinline webkit-playsinline preload="metadata"
+                       disablepictureinpicture disableremoteplayback>
                     <source src="video.mp4" type="video/mp4"/>
                 </video>
                 <div class="hero-frame-bar"></div>
@@ -1870,28 +1872,77 @@
         video.pause();
         video.currentTime = 0;
 
-        function initPin() {
-            if (!video.duration) return;
-            // 300px of scroll per second of video — feel free to tune
-            const scrollDist = Math.ceil(video.duration * 300);
+        // Scrub traži cijeli fajl u bufferu; na mobitelu video se samo pusti
+        // jednom pa nema razloga rano povlačiti 1.3 MB preko mobilnih podataka.
+        if (matchMedia('(min-width: 1025px)').matches) {
+            video.preload = 'auto';
+            video.load();
+        }
 
-            ScrollTrigger.create({
-                trigger: '.hero-section',
-                start: 'top top',
-                end: '+=' + scrollDist,
-                pin: true,
-                scrub: 0.6,
-                onUpdate(self) {
-                    video.currentTime = self.progress * video.duration;
+        // iOS ne dekodira frejmove dok se video bar jednom ne pusti korisničkom
+        // gestom — bez ovoga scrubbing na iPhoneu stoji na prvom frejmu.
+        let unlocked = false;
+        function unlock() {
+            if (unlocked) return;
+            unlocked = true;
+            const p = video.play();
+            if (p && p.then) p.then(() => video.pause()).catch(() => {});
+            else video.pause();
+        }
+        ['touchstart', 'pointerdown'].forEach(ev =>
+            document.addEventListener(ev, unlock, { once: true, passive: true })
+        );
+
+        function init() {
+            if (!video.duration) return;
+
+            ScrollTrigger.matchMedia({
+                // Desktop / tablet u landscapeu — hero stane u ekran, pin ima smisla
+                '(min-width: 1025px)': function() {
+                    // 300px of scroll per second of video — feel free to tune
+                    const scrollDist = Math.ceil(video.duration * 300);
+
+                    ScrollTrigger.create({
+                        trigger: '.hero-section',
+                        start: 'top top',
+                        end: '+=' + scrollDist,
+                        pin: true,
+                        scrub: 0.6,
+                        onUpdate(self) {
+                            video.currentTime = self.progress * video.duration;
+                        }
+                    });
+                },
+
+                // Mobitel — hero je viši od ekrana pa bi pin sakrio baš video.
+                // Umjesto toga pustimo animaciju kad video uđe u vidno polje.
+                '(max-width: 1024px)': function() {
+                    ScrollTrigger.create({
+                        trigger: '.hero-video-wrap',
+                        start: 'top 85%',
+                        once: true,
+                        onEnter: () => {
+                            const p = video.play();
+                            if (p && p.catch) p.catch(() => {});
+                        }
+                    });
                 }
             });
         }
 
         if (video.readyState >= 1) {
-            initPin();
+            init();
         } else {
-            video.addEventListener('loadedmetadata', initPin, { once: true });
+            video.addEventListener('loadedmetadata', init, { once: true });
         }
+
+        // Adresna traka na mobitelu mijenja visinu viewporta usred skrola —
+        // bez refresha pin ostaje na starim mjerama i layout poskoči.
+        let rt;
+        addEventListener('resize', () => {
+            clearTimeout(rt);
+            rt = setTimeout(() => ScrollTrigger.refresh(), 200);
+        });
     })();
 
     // ── Mobile Menu Toggle ──
