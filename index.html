@@ -103,13 +103,19 @@
         }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; }
+
+        /* NAPOMENA: ne vraćati `html { scroll-behavior: smooth }`.
+           Browser tada sam animira scroll poziciju, a ScrollTrigger je čita
+           svaki frame da bi računao progress — scrub hero videa zbog toga
+           zapinje ili stoji. Svi anchori na stranici su ionako prazni (#). */
 
         body {
             font-family: 'Schibsted Grotesk', sans-serif;
             background: var(--white);
             color: var(--ink);
+            /* `clip` ne pravi scroll kontejner kao `hidden` — pin ostaje ispravan */
             overflow-x: hidden;
+            overflow-x: clip;
             -webkit-font-smoothing: antialiased;
         }
 
@@ -1893,41 +1899,55 @@
             document.addEventListener(ev, unlock, { once: true, passive: true })
         );
 
+        // Desktop / tablet u landscapeu — hero stane u ekran, pin ima smisla
+        function desktopScrub() {
+            // 300px of scroll per second of video — feel free to tune
+            const scrollDist = Math.ceil(video.duration * 300);
+
+            ScrollTrigger.create({
+                trigger: '.hero-section',
+                start: 'top top',
+                end: '+=' + scrollDist,
+                pin: true,
+                scrub: 0.6,
+                onUpdate(self) {
+                    video.currentTime = self.progress * video.duration;
+                }
+            });
+        }
+
+        // Mobitel — hero je viši od ekrana pa bi pin sakrio baš video.
+        // Umjesto toga pustimo animaciju kad video uđe u vidno polje.
+        function mobilePlay() {
+            ScrollTrigger.create({
+                trigger: '.hero-video-wrap',
+                start: 'top 85%',
+                once: true,
+                onEnter: () => {
+                    const p = video.play();
+                    if (p && p.catch) p.catch(() => {});
+                }
+            });
+        }
+
         function init() {
             if (!video.duration) return;
 
-            ScrollTrigger.matchMedia({
-                // Desktop / tablet u landscapeu — hero stane u ekran, pin ima smisla
-                '(min-width: 1025px)': function() {
-                    // 300px of scroll per second of video — feel free to tune
-                    const scrollDist = Math.ceil(video.duration * 300);
-
-                    ScrollTrigger.create({
-                        trigger: '.hero-section',
-                        start: 'top top',
-                        end: '+=' + scrollDist,
-                        pin: true,
-                        scrub: 0.6,
-                        onUpdate(self) {
-                            video.currentTime = self.progress * video.duration;
-                        }
-                    });
-                },
-
-                // Mobitel — hero je viši od ekrana pa bi pin sakrio baš video.
-                // Umjesto toga pustimo animaciju kad video uđe u vidno polje.
-                '(max-width: 1024px)': function() {
-                    ScrollTrigger.create({
-                        trigger: '.hero-video-wrap',
-                        start: 'top 85%',
-                        once: true,
-                        onEnter: () => {
-                            const p = video.play();
-                            if (p && p.catch) p.catch(() => {});
-                        }
-                    });
-                }
-            });
+            // gsap.matchMedia() je aktuelni API; ScrollTrigger.matchMedia() je
+            // deprecated od 3.11. Ako nijedan ne postoji, radije napravi trigger
+            // direktno nego da cijeli efekat tiho otpadne.
+            if (gsap.matchMedia) {
+                const mm = gsap.matchMedia();
+                mm.add('(min-width: 1025px)', desktopScrub);
+                mm.add('(max-width: 1024px)', mobilePlay);
+            } else if (ScrollTrigger.matchMedia) {
+                ScrollTrigger.matchMedia({
+                    '(min-width: 1025px)': desktopScrub,
+                    '(max-width: 1024px)': mobilePlay
+                });
+            } else {
+                (matchMedia('(min-width: 1025px)').matches ? desktopScrub : mobilePlay)();
+            }
         }
 
         if (video.readyState >= 1) {
