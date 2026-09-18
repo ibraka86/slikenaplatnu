@@ -1,375 +1,379 @@
-# Topical map — slikenaplatnu.ba
+# Finalna SEO strategija — slikenaplatnu.ba
 
-Izvor podataka: `Keyword_Stats_2026-09-18` (Google Keyword Planner, 135 kw) +
-`keyword-report_2` (Semrush, 1.000 kw). Spojeno u 1.078 jedinstvenih upita.
+Zamjenjuje raniju verziju ovog dokumenta. Ranija je građena samo na Semrush i
+Keyword Planner podacima; Search Console je u međuvremenu pokazao da je jedna
+njena ključna pretpostavka bila pogrešna.
 
----
+**Izvori:** Google Search Console (179 upita, 253 klika, 2.393 pojavljivanja) ·
+Semrush (1.000 kw) · Google Keyword Planner (135 kw) · on-page audit od 18 stranica.
 
-## 0. Nalaz koji morate riješiti prije svega ostalog
-
-Keyword export je **srpsko tržište, ne bosansko**. Nije blizu:
-
-| mjera | ekavica / RS | ijekavica / BiH |
-|---|---|---|
-| jezična varijanta | **1.600/mj** | 30/mj |
-| geo modifikatori | **860/mj** (Beograd, Novi Sad, Subotica, Kragujevac, „011", „bg") | **0/mj** (Sarajevo, Banja Luka, Mostar, Tuzla) |
-
-Uz to, `slikenaplatnu rs` ima **260/mj** — ljudi traže .rs konkurenta imenom. Vaš
-brend (`slikenaplatnu`) ima 20/mj.
-
-Sajt je `.ba`, Sarajevo, pisan ijekavicom. Dakle jedno od dvoje:
-
-- **Export je povučen sa srpskim (ili region-wide) targetingom.** Tada vam ovi
-  brojevi ne govore ništa o bosanskoj potražnji — samo o strukturi teme. BiH
-  potražnja postoji, ali nije u ovim podacima. Povucite novi export sa geo = BiH
-  prije nego što budžetirate sadržaj po ovim volumenima.
-- **Ili stvarno ciljate srpsko tržište.** Tada je ovo drugi projekat: ekavica,
-  cijene u RSD, dostava u Srbiju, i borba sa `slikenaplatnu.rs` na njihovom terenu.
-
-**Mapa ispod je građena za BiH kao primarno tržište** — jer to je ono što domen,
-lokacija i jezik sajta već govore. Semantička struktura silosa je jezično
-neutralna i vrijedi za oba tržišta; kolone „ključne riječi" nose brojeve iz
-exporta kao *indikator relativne težine teme*, ne kao predviđanje vašeg prometa.
-
-Gdje je ekavska varijanta bitno drukčija riječ (`cena`/`cijena`,
-`delovi`/`dijelovi`, `umetnički`/`umjetnički`), navedena je u zagradi — to su
-kandidati za zasebne stranice **samo ako** odlučite ciljati i RS.
-
-### Kako čitati brojeve
-
-Google i Semrush se ne slažu (`slike na platnu`: 6.600 vs 3.600). Uzeta je viša
-vrijednost. Oba su procjene sa širokim intervalom. Koristite ih za **rangiranje
-tema međusobno**, ne kao prognozu posjeta. KD podaci postoje samo za 6 upita u
-Semrush exportu — ostalo je prazno, pa težina nije procjenjivana.
+Kad se izvori ne slažu, **Search Console pobjeđuje.** To su vaši stvarni
+posjetioci, ne procjena alata za drugo tržište.
 
 ---
 
-## 1. Šta sajt trenutno ima
+## 1. Šta je Search Console promijenio
+
+### Ispravka: tržište jeste bosansko, i to lokalno
+
+Ranija analiza je na osnovu Semrush/KP podataka zaključila da je niša srpska
+(ekavica 1.600/mj vs ijekavica 30/mj, RS gradovi 860/mj vs BiH 0/mj) i
+preporučila da se odluči između BiH i RS.
+
+**Search Console pokazuje da je to bila greška u podacima, ne u tržištu.** Vaši
+stvarni upiti:
+
+| sloj | upita | klikova | pojavljivanja |
+|---|---|---|---|
+| Sarajevo | 20 | 33 | **421** |
+| BiH / „ba" / Bosna | 9 | 32 | **242** |
+| ostali gradovi | 1 | 0 | 1 |
+
+**663 od 2.393 pojavljivanja (28%) nose geo modifikator.** Nijedan srpski grad.
+Onaj export je bio povučen sa pogrešnim geo targetingom — BiH potražnja postoji
+i vi je već hvatate. Preporuka „odlučite BiH ili RS" se povlači: **sve je BiH,
+i lokalni sloj je jači nego što sam procijenio.**
+
+### Ispravka: ljudi kucaju „print", ne „štampa"
+
+| oblik | upita | klikova | pojavljivanja |
+|---|---|---|---|
+| **print / printanje / tisak** | 22 | **33** | **190** |
+| štampa / štampanje | 16 | 9 | 63 |
+
+Tri prema jedan, i po klikovima i po pojavljivanjima. Isto i sa `cijena` (2
+upita) naspram `cena` (3 upita, **0 klikova**), i sa `personalizirane` umjesto
+`personalizovane`.
+
+Vaš naslov početne trenutno glasi:
+
+> Slike na Platnu – Canvas Print & **Štampa** na Platnu | Sarajevo
+
+a meta description „premium **štampa** na canvas platnu… **personalizovane**
+canvas slike". To je srpski registar na bosanskom sajtu. Nije katastrofa — ali
+gubi poklapanje sa onim što ljudi stvarno kucaju.
+
+**Ne brisati „štampa" potpuno** (63 pojavljivanja je i dalje nešto), nego
+zamijeniti primat: `print` i `printanje` u naslove i H1, `štampa` kao sinonim u
+tijelu teksta.
+
+---
+
+## 2. Gdje se gubi promet — dijagnoza
+
+| pozicija | upita | klikova | pojavljivanja | CTR |
+|---|---|---|---|---|
+| 1–3 | 46 | 78 | 288 | **27,1%** |
+| **4–10** | **92** | **104** | **1.612** | **6,5%** |
+| 11–20 | 10 | 8 | 80 | 10,0% |
+| 21+ | 18 | 1 | 61 | 1,6% |
+
+**Dvije trećine svih pojavljivanja sjedi na poziciji 4–10.** Tamo je CTR 6,5%;
+na poziciji 1–3 je 27,1%. Prostor za rast nije u novim ključnim riječima nego u
+pomjeranju postojećih sa dna prve stranice na vrh.
+
+Da svih 1.612 pojavljivanja iz grupe 4–10 pređe u grupu 1–3 pri istom CTR-u, to
+je oko **437 klikova mjesečno umjesto 104**. To je realan gornji plafon, ne
+obećanje — ali pokazuje gdje je poluga.
+
+### Pet najvećih pojedinačnih rupa
+
+| upit | poj. | poz. | klik | dijagnoza |
+|---|---|---|---|---|
+| `izrada slika sarajevo` | **218** | 9,9 | **1** | nema stranicu za „izrada + Sarajevo" |
+| `canvas slike` | **176** | 8,8 | 10 | nema stranicu za sam termin „canvas slike" |
+| `slika na platnu` (jednina) | 139 | 7,4 | 11 | pokriveno samo množinom |
+| `izradjivanje slika sarajevo` | 44 | 9,7 | 1 | isto što i prvi red |
+| `slike ba` | 39 | 5,9 | **0** | pozicija 6, nula klikova — naslov ne odgovara upitu |
+
+`izrada slika sarajevo` sam je **9% svih pojavljivanja sajta** i donosi jedan
+klik. To je najskuplja pojedinačna rupa koju imate.
+
+---
+
+## 3. Struktura koju treba napraviti
+
+Trenutno: 18 stranica, sve proizvodne ili transakcijske, **nula informativnih**.
 
 ```
-/                             pillar — „slike na platnu"
-/kreiraj-sliku/               hub formata (10 proizvodnih stranica)
-/nacin-izrade/                proces
-/vrste-slika/                 formati i stilovi
-/nasi-radovi/                 galerija (7 kategorija)
-/kontakt/  /narudzba/         transakcijske
-```
-
-Galerija već ima: `apstrakcija`, `arhitektura`, `bosanski-cilim`, `cvijece`,
-`pejzazi`, `portreti`, `zivotinje`.
-
-**Najveći strukturni problem: nula informativnog sadržaja.** Svih 18 stranica su
-proizvodne ili transakcijske. Nema nijednog članka koji odgovara na pitanje. To
-je razlog zašto nemate topical authority i zašto vas AI pretrage nemaju šta
-citirati — LLM ne citira product page, citira objašnjenje.
-
----
-
-## 2. Arhitektura: 8 silosa
-
-Pravilo kroz cijelu mapu: **hub je komercijalna stranica, supporting članci su
-informativni i svi linkaju nagore u svoj hub.** Članci iz različitih silosa se
-međusobno linkaju samo kad je veza stvarna (ne „related posts" nasumično).
-
-```
-                        / (pillar)
-   ┌──────┬──────┬──────┼──────┬──────┬──────┬──────┐
-  S1     S2     S3     S4     S5     S6     S7     S8
-formati canvas motivi prostor person. cijena umjetn. njega
+/                                 pillar
+├── /kreiraj-sliku/               hub formata (10 proizvoda)  ✓ postoji
+├── /canvas-slike/                NOVO — hub termina
+├── /izrada-slika-sarajevo/       NOVO — lokalni hub          ← prioritet 1
+├── /slike-za-zid/                NOVO — hub dekora
+├── /galerija/                    PROŠIRITI iz /nasi-radovi/
+├── /cijene/                      NOVO
+├── /blog/                        NOVO — supporting članci
+├── /nacin-izrade/                ✓ postoji
+├── /vrste-slika/                 ✓ postoji
+└── /kontakt/  /narudzba/         ✓ postoje
 ```
 
 ---
 
-### SILO 1 — Formati i broj dijelova
-**Hub:** `/kreiraj-sliku/` (postoji)
-**Težina teme:** ~380/mj + dio head terma
+### SILO 1 — Lokalni (Sarajevo / BiH) ← **najveći prioritet**
 
-Money stranice — sve postoje, treba im samo tekst ispod konfiguratora:
+**Hub:** `/izrada-slika-sarajevo/` *(nova)*
+**Stvarni podaci:** 663 pojavljivanja, 65 klikova, CTR 9,8%
 
-| URL | primarni upit |
-|---|---|
-| `/kreiraj-sliku/trodijelna/` | trodijelne slike za zid (70) · triptih slike za zid (40) |
-| `/kreiraj-sliku/petodijelna/` | petodijelne slike (10) |
-| `/kreiraj-sliku/jednodijelna-pravougaona/` | jednodjelne slike na platnu (40) |
-| `/kreiraj-sliku/panorama/` | panorama slike na platnu |
-| `/kreiraj-sliku/kvadrat/` | kvadratne slike na platnu |
-| `/kreiraj-sliku/portret/` | portret na platnu |
-| ostale 4 | varijante višedijelnih |
-
-Supporting članci (novi):
-
-1. **Koji format slike odgovara kojem zidu** — tabela širina zida → preporučeni format
-2. **Triptih vs jednodijelna: kada koji** — `slike na platnu iz delova` (40)
-3. **Višedijelne slike na platnu — vodič kroz sve rasporede** — `višedelne slike na platnu` (20)
-4. **Kako izmjeriti zid prije naručivanja** — praktično, visoka citabilnost
-5. **Standardne dimenzije canvas slika i kada tražiti custom**
-6. **Slike na blind ramu — šta je to i zašto je bitno** — `slike na blind ramu` (10)
-
----
-
-### SILO 2 — Canvas / štampa na platnu (tehnologija)
-**Hub:** `/nacin-izrade/` (postoji)
-**Težina teme:** ~3.050/mj (canvas termini) + 1.740/mj (štampa/proces) — **najjači silo poslije head terma**
-
-Ovdje je najveći propušteni volumen. Sedam upita po ~320–390/mj su varijante
-iste stvari: `canvas slike na platnu`, `slike na canvas platnu`, `slika na
-kanvas platnu`, `slike na platnu canvas`, `fotografije na canvas platnu`. Google
-ih tretira kao isti intent — **ne pravite 5 stranica**, napravite jednu jaku i
-pokrijte varijante u H2/H3 i tijelu teksta.
-
-Money stranica: `/canvas-slike-na-platnu/` (nova, ili proširite `/vrste-slika/`)
-
-Supporting članci:
-
-1. **Canvas ili kanvas — koja je razlika i kako se piše** — hvata sve varijante odjednom
-2. **Kako nastaje slika na platnu, korak po korak** — proširite `/nacin-izrade/`
-3. **Šta je 380 g/m² platno i zašto je gramaža bitna**
-4. **Latex vs eco-solvent vs UV štampa na platnu** — `stampanje slika na platnu` (110)
-5. **Koliko traje canvas slika i šta je UV zaštita**
-6. **Izrada slika na platnu — šta tražiti od štamparije** — `izrada slika na platnu` (390)
-7. **Uradi sam slike na platnu: zašto obično ne vrijedi** — `uradi sam slike na platnu` (110), `kako napraviti sliku na platnu` (30)
-8. **Rezolucija fotografije za štampu — koliko MP treba za koju veličinu**
-
-Članak 8 je vaš najvjerovatniji „AI citation magnet": konkretna tabela
-(dimenzija → minimalni pikseli) koju LLM može direktno navesti.
-
----
-
-### SILO 3 — Motivi i stilovi
-**Hub:** `/nasi-radovi/` → preimenovati u galeriju sa vlastitim kategorijskim stranicama
-**Težina teme:** ~870/mj
-
-Svaka postojeća kategorija galerije dobija **indeksabilnu stranicu sa tekstom**,
-ne samo lightbox grid:
-
-| URL | primarni upit |
-|---|---|
-| `/galerija/apstraktne-slike/` | apstraktne slike na platnu (110) + apstraktne slike za zid (110) |
-| `/galerija/pejzazi/` | slike na platnu priroda (50) · slike za zid priroda (40) |
-| `/galerija/more/` | slike na platnu more (40) · slike mora na platnu (30) |
-| `/galerija/arhitektura/` | slike gradova na platnu (20) |
-| `/galerija/cvijece/` | |
-| `/galerija/zivotinje/` | slike životinja za zid (10) |
-| `/galerija/portreti/` | |
-| `/galerija/bosanski-cilim/` | **nema volumena u exportu — ali je vaš diferencijator** |
-
-Nove kategorije koje podaci traže, a nemate ih:
-
-- `/galerija/3d-slike/` — **`3d slike na platnu` (140)**, najveći motiv-upit u setu
-- `/galerija/islamska-kaligrafija/` — **`islamske slike za zid` (40)**, relevantno za BiH, niska konkurencija
-- `/galerija/crno-bijele/` — `crno bele slike na platnu` (20)
-- `/galerija/pop-art/` — `pop art slike na platnu` (20)
-
-Supporting članci:
-
-1. **Kako odabrati motiv koji se slaže sa bojom zida**
-2. **Apstraktne slike: kako ih čitati i gdje ih staviti**
-3. **Bosanski ćilim kao zidna dekoracija — porijeklo motiva** ← *ovo je vaš entitet, niko drugi ga nema*
-4. **Islamska kaligrafija u domu: motivi i njihovo značenje**
-5. **3D slike na platnu — kako se postiže efekt dubine**
-
----
-
-### SILO 4 — Prostorije i dekor
-**Hub:** `/slike-za-zid/` (nova)
-**Težina teme:** ~860/mj
-
-`jeftine slike za zid` ima **480/mj uz Low konkurenciju (indeks 26)** — to je
-najpristupačniji veliki upit u cijelom setu. Zaslužuje vlastitu stranicu, ali
-pazite: ako je rješavate stranicom „najjeftinije", takmičite se cijenom. Bolje
-je „pristupačne slike za zid — šta utiče na cijenu", pa ih vodite ka vrijednosti.
+Ovo je jedini silo gdje imate dokazanu potražnju, dokazan CTR (32% na
+`slike na platnu sarajevo`, pozicija 1,3) i **nijednu stranicu koja ga cilja
+imenom**.
 
 Money stranice:
-- `/slike-za-zid/` — `slike na platnu za zid` (170, **YoY +700%**) · `slike za zid na platnu` (50)
-- `/slike-za-zid/pristupacne/` — `jeftine slike za zid` (480) · `jeftine slike na platnu` (50)
 
-Supporting članci, po prostoriji (svaki linka u hub):
+| URL | primarni upiti | stanje |
+|---|---|---|
+| `/izrada-slika-sarajevo/` | izrada slika sarajevo (218) · izradjivanje slika sarajevo (44) · izrada fotografija sarajevo · printanje sarajevo · print shop sarajevo | **ne postoji** |
+| `/slike-na-platnu-bih/` ili sekcija na početnoj | slike na platnu bih (186, poz 3,7) · slike ba (39, poz 5,9, **0 klikova**) · slike za zid bih | **ne postoji** |
 
-1. **Slike za dnevnu sobu — veličina, visina, raspored** — (20)
-2. **Slike za spavaću sobu — motivi koji smiruju**
-3. **Slike za dječiju sobu** — (20)
-4. **Slike za kuhinju i blagovaonicu**
-5. **Slike za kancelariju i poslovni prostor**
-6. **Slike za hodnik i stubište**
-7. **Galerijski zid: kako složiti više slika** — veže se na SILO 1
-8. **Moderne zidne slike — šta danas znači „moderno"** — `moderne slike na platnu` (140), `moderne zidne slike` (30)
+Supporting članci u blogu:
 
----
+1. **Gdje naručiti sliku na platnu u Sarajevu** — cilja `gdje ih kupiti u sarajevu`, `ko to radi u sarajevu`, `u sarajevu gdje ima`
+2. **Dostava slika na platnu po BiH — gradovi, rokovi, cijena** — Sarajevo, Mostar, Tuzla, Banja Luka, Zenica, Bugojno
+3. **Printanje slika na platnu u Sarajevu — koliko traje i šta treba donijeti**
 
-### SILO 5 — Personalizacija (vlastita fotografija)
-**Hub:** `/kreiraj-sliku/portret/` ili nova `/slike-po-zelji/`
-**Težina teme:** ~690/mj
-
-`slike na platnu po zelji` + `slika na platnu po zelji` = **640/mj kombinovano,
-Low konkurencija, YoY +179%**. Ovo je rastući upit i direktno opisuje ono što
-vaš konfigurator već radi. Trenutno nema stranicu koja ga cilja imenom.
-
-Money stranica: `/slike-po-zelji/` — mora imati tačno tu frazu u H1.
-
-Supporting članci:
-
-1. **Kako pripremiti fotografiju za štampu na platnu** — rezolucija, format, boje
-2. **Foto na platnu: koje slike dobro izgledaju, a koje ne**
-3. **Portret na platnu iz mobilne fotografije — da li je moguće**
-4. **Slika na platnu kao poklon: ideje po prilici** — svadba, godišnjica, rođenje
-5. **Autorska prava: čije fotografije smijete štampati** ← rijedak, citabilan, gradi povjerenje
+Obavezno uz ovo: `LocalBusiness` schema sa punom adresom i `geo` koordinatama
+na `/kontakt/`, i **Google Business Profile sa istim brojem telefona** (vidi
+audit, nalaz K1 — sad je ispravljen na sajtu, provjerite da se slaže i tamo).
 
 ---
 
-### SILO 6 — Cijena, naručivanje, dostava
-**Hub:** `/cijene/` (nova)
-**Težina teme:** ~1.050/mj
+### SILO 2 — Canvas / print (tehnologija i termin)
 
-Cjenovni upiti su jaki i u rastu: `slika na platnu cena` (210, YoY +175%),
-`slike na platnu cena` (70), `stampa na platnu cena` (50), `fotografija na
-platnu cena` (50).
+**Hub:** `/canvas-slike/` *(nova)*
+**Stvarni podaci:** canvas/kanvas 360 pojavljivanja · print/printanje 190 · izrada 361
 
-**Napravite stvarnu stranicu sa cijenama.** Ne „kontaktirajte nas za ponudu".
-Transparentna tabela dimenzija i cijena je jedina stvar koju AI pretrage mogu
-citirati kad neko pita „koliko košta slika na platnu u BiH" — a trenutno na to
-pitanje niko ne odgovara sa .ba domena.
+Sedam upita po 320–390/mj u Semrushu su varijante iste stvari
+(`canvas slike na platnu`, `slike na canvas platnu`, `slika na kanvas platnu`,
+`fotografije na canvas platnu`). GSC potvrđuje da su i stvarno isti intent.
+**Jedna jaka stranica, varijante u H2 i tijelu — ne pet stranica.**
 
-Supporting članci:
+| URL | primarni upiti |
+|---|---|
+| `/canvas-slike/` | canvas slike (176, poz 8,8) · canvas slike za zid (38) · kanvas slike (12) · slike na canvas platnu (33) · canvas platno slike |
+| `/nacin-izrade/` *(proširiti)* | izrada slika na platnu (47) · printanje slika na platnu · print na platnu (46, poz 1,8) · izrada fotografija na platnu (16) |
 
-1. **Koliko košta slika na platnu — sve što utiče na cijenu**
-2. **Zašto se cijene canvas slika toliko razlikuju**
-3. **Dostava i rokovi** — imate 5–7 dana i 11 KM, to je konkretan podatak
-4. **Načini plaćanja i pouzeće**
-5. **Reklamacije i garancija**
+Blog članci:
 
-Zadnja tri su „trust" stranice — slabe za promet, jake za konverziju i za E-E-A-T.
+1. **Canvas, kanvas ili platno — šta je zapravo razlika** ← hvata sve varijante odjednom
+2. **Print ili štampa na platnu: zašto oba znače isto** ← hvata oba registra namjerno
+3. **Kako nastaje slika na platnu, korak po korak**
+4. **Koja rezolucija fotografije treba za koju veličinu** — tabela dimenzija → minimalni pikseli
+5. **Šta znači 380 g/m² i zašto je gramaža bitna**
+6. **Koliko traje canvas slika i šta radi UV zaštita**
+7. **Uradi sam slike na platnu — zašto obično ne vrijedi**
 
----
-
-### SILO 7 — Umjetnost, ulja i reprodukcije ⚠️
-**Hub:** `/reprodukcije/` (nova)
-**Težina teme:** ~2.990/mj — **ali oprez, ovo je zamka**
-
-Ovo je drugi najveći klaster u podacima: `ulje na platnu slike` (260),
-`najlepse slike ulje na platnu` (210), `slike ulje na platnu` (210),
-`umetničke slike ulje na platnu` (170), `jeftine slike ulje na platnu` (140),
-`kupujem prodajem slike ulje na platnu` (140), `prodaja slika ulje na platnu` (140).
-
-**Ti ljudi ne traže canvas print.** Traže ručno slikana ulja — original ili
-polovno sa oglasnika. Ako ih dovedete na proizvodnu stranicu za štampu,
-odbijaju se, a Google to vidi kao loš signal.
-
-Iskoristivo je samo ako uđete pošteno, kroz ono što stvarno možete isporučiti:
-
-- `/reprodukcije/` — **reprodukcije poznatih uljanih slika na canvas platnu**.
-  Ovo je stvaran proizvod (`reprodukcija slika na platnu`, 90/mj) i stvaran
-  odgovor za dio te publike.
-- Supporting: **Ulje na platnu vs canvas reprodukcija — razlike, cijena, trajnost**.
-  Ovo hvata informativni dio upita i pošteno preusmjerava.
-- Supporting: **Kako prepoznati original od reprodukcije**
-- Supporting: **Ručno slikane slike na platnu — šta se danas nudi na tržištu** (`ručno slikane slike na platnu`, 90)
-
-Ne pravite stranice tipa „prodaja ulja na platnu" ako to ne prodajete. To je
-najbrži način da izgubite povjerenje i kod korisnika i kod modela.
+Članak 4 je najvjerovatniji kandidat da ga AI pretrage citiraju: konkretna,
+provjerljiva tabela koju model može direktno navesti.
 
 ---
 
-### SILO 8 — Montaža, uramljivanje i njega
-**Hub:** `/vodic/` (nova)
-**Težina teme:** ~110/mj — mali volumen, **velika vrijednost za AI citiranje**
+### SILO 3 — Formati i dijelovi
 
-Ovo su „kako" pitanja. Volumen je nizak, ali su to tačno one stranice koje
-LLM-ovi vade kao izvor, i one koje drže korisnika poslije kupovine.
+**Hub:** `/kreiraj-sliku/` ✓ postoji
 
-1. **Kako okačiti sliku na platnu bez bušenja zida**
-2. **Na kojoj visini se kači slika** — konkretno: centar na 145–150 cm
-3. **Uramljivanje slika na platnu — treba li uopšte ram** — (70)
-4. **Kako očistiti i održavati canvas sliku**
-5. **Kako spakovati i transportovati sliku na platnu**
-6. **Šta raditi ako se platno olabavi**
+Deset proizvodnih stranica postoji, ali su **praktično prazne** (56–183 riječi,
+vidi audit V1) i svaka ima **samo jedan ulazni link** (audit V4).
 
----
+Prije novog sadržaja popraviti postojeće:
+- tekst ispod konfiguratora na svih 10 (za koji zid, dimenzije, kako se kači, cijena, 2–3 pitanja)
+- blok „srodni formati" sa 3–4 linka na sestrinske stranice
+- `Product` + `Offer` schema sa `priceCurrency: BAM`
+- **vratiti Petodijelnu u navigaciju** — trenutno je siroče (audit V3)
 
-## 3. Sloj za AI pretrage (AEO / GEO)
+Nove stranice koje GSC traži:
 
-Klasični SEO vas rangira. Ovo vas čini **citiranim**. Različite stvari.
+| URL | upit |
+|---|---|
+| `/kreiraj-sliku/velike-slike/` | **velike slike na platnu** (31 poj, poz 8,8) · velika slika na platnu · slike velikih formata |
+| `/kreiraj-sliku/male-slike/` | male slike na platnu |
 
-**Formatiranje za izvlačenje:**
-- Svaki članak počinje sa 2–3 rečenice direktnog odgovora, prije uvoda. Model
-  vadi taj pasus.
-- Konkretni brojevi umjesto pridjeva: „380 g/m²", „5–7 dana", „11 KM", „145 cm",
-  „300 dpi za 60×40 cm". Modeli citiraju provjerljive vrijednosti, ne „vrhunski kvalitet".
-- Tabele za sve što ima dimenziju/cijenu/mjeru.
-- Jedno pitanje = jedan H2, formulisan kako ga ljudi postavljaju.
-
-**Schema.org** — trenutno nemate nijednu:
-- `Product` + `Offer` na svim `/kreiraj-sliku/` stranicama (sa `priceCurrency: BAM`)
-- `FAQPage` na svakom supporting članku
-- `HowTo` na SILO 8 člancima
-- `LocalBusiness` na `/kontakt/` — adresa u Sarajevu, radno vrijeme
-- `BreadcrumbList` svuda
-- `Organization` + `sameAs` na početnoj
-
-**Entiteti** — dajte modelima nešto da vežu za vas: Sarajevo, Bosna i
-Hercegovina, canvas print, 380 g/m², bosanski ćilim. Zadnje je najvrednije —
-`bosanski ćilim na platnu` nema volumen u exportu, ali nema ni konkurenciju, a
-vezuje vaš brend za kulturni entitet koji niko drugi ne pokriva.
-
-**Brend:** `slikenaplatnu rs` ima 260/mj, vaš brend 20/mj. Dio tog prometa je
-zabunom vaš. Ne ciljajte tuđi brend stranicom — gradite svoj kroz konzistentno
-imenovanje i prisustvo van sajta.
+Blog:
+1. **Koji format odgovara kojem zidu** — tabela širina zida → format
+2. **Kako izmjeriti zid prije naručivanja**
+3. **Triptih ili jedna velika slika**
+4. **Šta je blind ram i zašto je bitan**
 
 ---
 
-## 4. Pravila internog linkanja
+### SILO 4 — Slike za zid / dekor
 
-1. Svaki supporting članak linka **nagore u svoj hub** — u prvih 200 riječi, opisnim anchorom.
-2. Hub linka **naniže na sve svoje** članke.
-3. Članci unutar silosa se linkaju međusobno slobodno.
-4. **Između silosa samo kad je veza stvarna** — „kako izmjeriti zid" (S1) ←→ „slike za dnevnu sobu" (S4) da; nasumično ne.
-5. Svaki informativni članak ima **jedan** CTA ka money stranici svog silosa.
-6. Nikad dva linka sa istim anchorom ka različitim stranicama.
+**Hub:** `/slike-za-zid/` *(nova)*
+**Podaci:** slike na platnu za zid (17 poj, poz 5,9, **0 klikova**) · canvas slike za zid (38) · zidne slike na platnu (9) · slike za zid sarajevo (11) · zidne slike za dnevni boravak bih (10, poz 38,8) · platno za zid (5) · print slike za zid (7)
+
+Blog, po prostoriji:
+1. **Slike za dnevni boravak** ← `zidne slike za dnevni boravak bih`, `slike na platnu za dnevni boravak`
+2. **Slike za spavaću sobu**
+3. **Slike za dječiju sobu**
+4. **Slike za kancelariju i poslovni prostor**
+5. **Na kojoj visini se kači slika** — konkretno: centar na 145–150 cm
+6. **Kako okačiti sliku bez bušenja zida**
+7. **Galerijski zid: kako složiti više slika**
+
+---
+
+### SILO 5 — Galerija i motivi
+
+**Hub:** `/galerija/` — proširiti iz postojećeg `/nasi-radovi/`
+
+204 fotografije su trenutno **nevidljive za Google** — ubacuje ih JavaScript, u
+HTML-u postoji 5 `<img>` tagova (audit V2). To je najveća neiskorištena imovina
+na sajtu.
+
+Svaka kategorija dobija indeksabilnu stranicu sa pravim `<img>` u HTML-u,
+opisnim nazivima fajlova i `alt` po motivu:
+
+| URL | stanje |
+|---|---|
+| `/galerija/apstrakcija/` | ✓ ima slike |
+| `/galerija/pejzazi/` | ✓ |
+| `/galerija/arhitektura/` | ✓ |
+| `/galerija/cvijece/` | ✓ |
+| `/galerija/zivotinje/` | ✓ |
+| `/galerija/portreti/` | ✓ |
+| `/galerija/bosanski-cilim/` | ✓ ← **vaš diferencijator, niko drugi ga nema** |
+| `/galerija/more/` | dodati |
+| `/galerija/3d-slike/` | dodati — `3d slike na platnu` (140/mj u KP) |
+| `/galerija/islamska-kaligrafija/` | dodati — `islamske slike za zid`, `svete slike na platnu` |
+| `/galerija/crno-bijele/` | dodati |
+
+Plus **image sitemap** — 204 fotografije zaslužuju vlastiti sitemap.
+
+---
+
+### SILO 6 — Personalizacija
+
+**Hub:** `/slike-po-zelji/` *(nova)*
+**Podaci:** slika na platnu po zelji (15 poj, CTR **40%**, poz 2,7) · slike na platnu po zelji (18) · personalizirane slike na platnu (4) · moja slika na platnu (4) · slike po narudžbi · slike po narudzbini · fotografija na platnu (35, poz 12,2) · fotografije na platnu (40, poz 8,0) · foto na platnu
+
+CTR od 40% na `slika na platnu po zelji` pokazuje da intent savršeno odgovara
+onome što nudite — a stranica sa tom frazom u H1 ne postoji.
+
+Pazite na pravopis: GSC pokazuje **`personalizirane`**, ne `personalizovane`
+kako trenutno piše u meta descriptionu.
+
+Blog:
+1. **Kako pripremiti fotografiju za print na platnu**
+2. **Portret na platnu iz mobilne fotografije — da li je moguće**
+3. **Koje fotografije dobro izgledaju na platnu, a koje ne**
+4. **Slika na platnu kao poklon — ideje po prilici**
+5. **Čije fotografije smijete printati** — autorska prava, gradi povjerenje
+
+---
+
+### SILO 7 — Cijene i kupovina
+
+**Hub:** `/cijene/` *(nova)*
+**Podaci:** slike na platnu cijena (3) · cjena po kvadratu (poz 1!) · kolika je cijena (poz 1) · jeftine slike na platnu · akcija slike na platnu (6) · slike na platnu prodaja (10) · canvas slike prodaja
+
+Volumen je mali, ali `cjena po kvadratu` i `kolika je cijena` su već na
+**poziciji 1** — Google vas već smatra odgovorom, a vi nemate stranicu sa
+cijenama.
+
+**Napravite stvarnu tabelu cijena.** Ne „kontaktirajte za ponudu". To je jedina
+stvar koju AI pretrage mogu citirati na pitanje „koliko košta slika na platnu u
+Sarajevu", a trenutno na to niko sa `.ba` domena ne odgovara.
+
+Plus trust stranice: dostava i rokovi (imate 5–7 dana, 11 KM), plaćanje i
+pouzeće, reklamacije.
+
+---
+
+### SILO 8 — Blog (struktura)
+
+```
+/blog/
+├── /blog/vodici/        kako-članci (montaža, priprema, mjerenje)
+├── /blog/saznaj/        objašnjenja (canvas vs platno, gramaža, UV)
+├── /blog/inspiracija/   po prostoriji i motivu
+└── /blog/lokalno/       Sarajevo i BiH
+```
+
+Ne pravite kategoriju „Novosti" — nema SEO vrijednost i puni se teško.
+
+**Pravila:**
+- Svaki članak linka nagore u svoj silo hub, u prvih 200 riječi, opisnim anchorom
+- Jedan CTA ka money stranici tog silosa
+- Članci unutar silosa se linkaju slobodno; između silosa samo kad je veza stvarna
+- Nikad dva linka sa istim anchorom ka različitim stranicama
+
+---
+
+## 4. Sloj za AI pretrage
+
+Klasični SEO vas rangira, ovo vas čini **citiranim**. Različite stvari.
+
+- **Direktan odgovor u prve 2–3 rečenice** svakog članka, prije uvoda
+- **Konkretni brojevi umjesto pridjeva:** „380 g/m²", „5–7 dana", „11 KM",
+  „145 cm", „300 dpi za 60×40 cm". Modeli citiraju provjerljive vrijednosti,
+  ne „vrhunski kvalitet"
+- **Tabele** za sve što ima dimenziju, cijenu ili mjeru
+- **Jedno pitanje = jedan H2**, formulisan kako ga ljudi postavljaju
+
+**Schema koja nedostaje** (trenutno je ima samo početna):
+`Product`+`Offer` na 10 format-stranica · `BreadcrumbList` svuda ·
+`LocalBusiness` na `/kontakt/` · `FAQPage` na svakom blog članku ·
+`HowTo` na `/nacin-izrade/` i vodičima · `ImageObject` na galeriji
+
+**Entiteti** koje vrijedi graditi: Sarajevo, Bosna i Hercegovina, canvas print,
+380 g/m², **bosanski ćilim**. Zadnji nema mjerljiv volumen, ali nema ni
+konkurenciju, a vezuje vas za kulturni entitet koji niko drugi ne pokriva.
 
 ---
 
 ## 5. Redoslijed
 
-**Faza 1 — popraviti temelje (prije ijednog članka)**
-- Odlučiti BiH vs RS. Bez toga sve ostalo je nagađanje.
-- `/cijene/` sa stvarnom tabelom
-- `/slike-po-zelji/` — 640/mj već čeka
-- Schema na postojećih 18 stranica
-- Tekst ispod konfiguratora na 10 format-stranica (trenutno su gotovo prazne za Google)
+**Faza 1 — popravke postojećeg, prije ijednog novog članka**
 
-**Faza 2 — hubovi**
-- `/canvas-slike-na-platnu/`, `/slike-za-zid/`, `/galerija/*` kategorijske, `/vodic/`
+1. `/izrada-slika-sarajevo/` ← **218 pojavljivanja čeka**
+2. `/canvas-slike/` ← 176 pojavljivanja čeka
+3. `/slike-po-zelji/` ← CTR 40%, samo nema stranicu
+4. `/cijene/` sa stvarnom tabelom
+5. Prepisati naslov i description početne: `print`/`printanje` u primat, `izrada` uvesti, `personalizirane` umjesto `personalizovane`
+6. Tekst na 10 format-stranica + `Product` schema + „srodni formati" blok
+7. Vratiti Petodijelnu u navigaciju
+8. `og-image.jpg` (ne postoji — svaki share je prazan okvir)
 
-**Faza 3 — supporting sadržaj**
-- SILO 2 i SILO 4 prvi (najveći volumen, najniža konkurencija)
-- Zatim SILO 8 (mali volumen, najbolja citabilnost)
-- SILO 7 zadnji i pažljivo
+**Faza 2 — hubovi i galerija**
 
-**Faza 4**
-- `/reprodukcije/`, nove galerijske kategorije (3D, kaligrafija), poklon sadržaj
+9. `/slike-za-zid/`
+10. `/galerija/` kategorijske stranice sa pravim `<img>` + image sitemap
+11. `/kreiraj-sliku/velike-slike/`
+12. `BreadcrumbList` i `LocalBusiness` schema
 
-Ukupno ≈ 55 novih stranica. Pri jednom kvalitetnom članku sedmično to je oko
-godinu dana — što je realan horizont za topical authority, ne tri mjeseca.
+**Faza 3 — blog**
+
+13. SILO 1 (lokalno) i SILO 2 (canvas/print) prvi
+14. Zatim SILO 4 (prostorije) i vodiči
+15. Ostalo
+
+≈ 12 novih stranica i ≈ 30 članaka. Pri jednom članku sedmično to je oko
+devet mjeseci — realan horizont, ne tri mjeseca.
 
 ---
 
 ## 6. Šta ne raditi
 
-- **Ne praviti zasebne stranice za `canvas`/`kanvas`/`canvas platno` varijante.** Isti intent, kanibalizacija.
-- **Ne praviti stranice za ekavske varijante na .ba domenu.** `cena` i `cijena` na istom sajtu = zbunjen signal. Ako ciljate RS, to je zaseban subdomen ili zaseban sajt.
-- **Ne ciljati `ulje na platnu` proizvodnim stranicama.** Pogrešan intent, šteti signalu.
-- **Ne praviti stranice za brendove konkurencije** (`slikomanija`, `emmezeta`, `nina`).
-- **Ne generisati 55 članaka odjednom.** Tanak masovni sadržaj je aktivan rizik otkako Google gleda helpful content — a AI pretrage ionako citiraju samo ono što ima konkretan podatak.
+- **Ne praviti zasebne stranice za `canvas` / `kanvas` / `canvas platno`.** Isti intent, kanibalizacija.
+- **Ne ciljati `ulje na platnu`** (2.990/mj u Semrushu). Ti ljudi traže ručno slikana ulja sa oglasnika, ne print. GSC to potvrđuje: `umetnicke slike na platnu` 4 pojavljivanja, **0 klikova**; `ručno slikane slike na platnu` 1 pojavljivanje, 0 klikova. Iskoristivo je samo kroz `/reprodukcije/` i pošten članak „ulje na platnu vs canvas reprodukcija".
+- **Ne praviti ekavske stranice.** GSC je jasan: `cena` → 0 klikova.
+- **Ne praviti stranice za brendove konkurencije** (`slikomanija`, `nina`, `emmezeta`).
+- **Ne generisati 30 članaka odjednom.**
 
 ---
 
-## 7. Kako mjeriti
+## 7. Mjerenje
 
-Search Console, po silosu, ne po ključnoj riječi:
-- broj URL-ova u silosu koji dobijaju ≥1 klik mjesečno
-- prosječna pozicija hub stranice
-- klikovi na upite koje niste eksplicitno ciljali ← *ovo je stvarni pokazatelj topical authority*
+Baseline je postavljen ovim exportom: **253 klika, 2.393 pojavljivanja,
+CTR 10,57%, 179 upita.**
 
-Za AI pretrage nema Search Console. Jedini način je ručno: pitajte ChatGPT,
-Gemini i Perplexity „koliko košta slika na platnu u Sarajevu", „gdje naručiti
-canvas sliku u BiH" jednom mjesečno i bilježite da li ste spomenuti. Postavite
-to kao baseline **prije** nego počnete, inače nećete znati je li se išta promijenilo.
+Pratiti mjesečno, po silosu:
+- koliko upita je prešlo iz grupe 4–10 u grupu 1–3 ← **glavna metrika**
+- broj upita sa ≥1 klikom (sad 62 od 179)
+- klikovi na upite koje niste eksplicitno ciljali ← pokazatelj topical authority
+
+Za AI pretrage nema Search Console. Jedini način je ručno: jednom mjesečno
+pitajte ChatGPT, Gemini i Perplexity „koliko košta slika na platnu u Sarajevu",
+„gdje naručiti canvas sliku u BiH", „ko radi print na platnu u Sarajevu" i
+bilježite da li ste spomenuti. **Postavite baseline prije nego počnete.**
