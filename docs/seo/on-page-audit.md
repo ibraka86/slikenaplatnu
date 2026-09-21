@@ -37,7 +37,7 @@ i **oslanja se na tuđe servere za vlastite slike**.
 | gdje | broj |
 |---|---|
 | početna + JSON-LD schema (`Organization`, `LocalBusiness`) | `+38165 235 84 32` |
-| `/kontakt/` | `+387 62 514 296` |
+| `/kontakt/` | `+387 603 558 633` |
 
 `+381` je **Srbija**. Sajt je `.ba`, schema kaže `addressCountry: BA`,
 `addressLocality: Sarajevo`.
@@ -49,7 +49,7 @@ sajta sa onim u Google Business Profile i drugim direktorijima, a ovdje se ne
 slaže ni sam sa sobom. Format `+38165 235 84 32` je uz to neispravan (nedostaje
 razmak/grupisanje poslije pozivnog).
 
-**Popravka:** jedan broj, svuda isti, u E.164 formatu (`+38762514296` u
+**Popravka:** jedan broj, svuda isti, u E.164 formatu (`+387603558633` u
 `schema` i `href="tel:"`, čitljivo formatiran u tekstu).
 
 ### K2. `lang="sr"` na 16 od 18 stranica
