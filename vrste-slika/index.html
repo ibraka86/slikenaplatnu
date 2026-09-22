@@ -30,6 +30,31 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script>
+        /* GSAP je na CDN-u; ako ne ucita, .rv sadrzaj bi ostao na opacity:0 i
+           ostatak inline skripte (meni, forma, popup) nikad ne bi izvrsio.
+           Zato ga tu zamjenjujemo stubom koji nista ne radi. */
+        if (!window.gsap) {
+            document.documentElement.classList.add('no-gsap');
+            var mmNoop = function () { return mmTl; };
+            var mmTl = {};
+            ['to','from','fromTo','set','add','call','play','pause','reverse','kill',
+             'progress','timeScale','eventCallback','addLabel'].forEach(function (k) { mmTl[k] = mmNoop; });
+            window.gsap = {
+                registerPlugin: mmNoop, to: mmNoop, from: mmNoop, fromTo: mmNoop, set: mmNoop,
+                timeline: mmNoop, delayedCall: mmNoop, killTweensOf: mmNoop, matchMedia: mmNoop,
+                utils: { toArray: function (t) {
+                    return typeof t === 'string' ? Array.prototype.slice.call(document.querySelectorAll(t))
+                                                 : (t && t.length !== undefined ? Array.prototype.slice.call(t) : [t]);
+                } },
+                ticker: { add: mmNoop, remove: mmNoop }
+            };
+            window.ScrollTrigger = {
+                create: mmNoop, refresh: mmNoop, update: mmNoop, batch: mmNoop,
+                matchMedia: mmNoop, getAll: function () { return []; }
+            };
+        }
+    </script>
 
     <style>
         :root {
@@ -222,6 +247,18 @@
             display: block;
         }
         .mobile-nav-link.active { color: var(--magenta); }
+        .mobile-menu-contact {
+            margin-top: 28px; padding-top: 24px;
+            border-top: 1px solid var(--line);
+            display: flex; flex-direction: column; gap: 14px;
+        }
+        .mobile-contact-link {
+            display: flex; align-items: center; gap: 10px;
+            font-family: 'Schibsted Grotesk', sans-serif;
+            font-size: 16px; font-weight: 500;
+            color: var(--ink); text-decoration: none;
+        }
+        .mobile-contact-link .ms { font-size: 20px; color: #E91E8C; }
         .mobile-menu-cta {
             margin-top: 32px;
         }
@@ -756,6 +793,14 @@
             display: block; margin-bottom: 14px;
         }
         .footer-tagline { font-size: 14px; line-height: 1.7; color: rgba(255,255,255,.38); max-width: 240px; }
+        .footer-contact { margin-top: 18px; display: flex; flex-direction: column; gap: 10px; }
+        .footer-contact a {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 14px; color: rgba(255,255,255,.55);
+            text-decoration: none; transition: color .2s;
+        }
+        .footer-contact a:hover { color: #fff; }
+        .footer-contact .ms { font-size: 18px; color: #FF8F00; }
         .footer-col-title {
             font-size: 10px; letter-spacing: .12em;
             text-transform: uppercase; color: rgba(255,255,255,.28);
@@ -783,9 +828,12 @@
 
         /* ── REVEAL ────────────────────────── */
         .rv { opacity: 0; transform: translateY(36px); }
+        /* GSAP nije dostupan ili je JS iskljucen -> prikazi sadrzaj bez animacije */
+        .no-gsap .rv { opacity: 1; transform: none; }
     </style>
 </head>
 <body>
+<noscript><style>.rv { opacity: 1 !important; transform: none !important; }</style></noscript>
 
 <!-- ═══════════════════════ HEADER ═══════════════════════ -->
 <header class="site-header">
@@ -831,7 +879,32 @@
             Kreiraj sliku
         </a>
     </div>
+    <div class="mobile-menu-contact">
+        <a href="tel:+387603558633" class="mobile-contact-link"><span class="ms">phone</span>+387 603 558 633</a>
+        <a href="mailto:info@slikenaplatnu.ba" class="mobile-contact-link"><span class="ms">mail</span>info@slikenaplatnu.ba</a>
+    </div>
 </div>
+<script>
+    /* Mobilni meni je namjerno zasebna skripta odmah uz markup: ne smije zavisiti
+       od GSAP-a ni od velikog bloka na dnu stranice. */
+    (function () {
+        var btn  = document.getElementById('menuBtn');
+        var menu = document.getElementById('mobileMenu');
+        var icon = document.getElementById('menuIcon');
+        if (!btn || !menu) return;
+
+        function setOpen(open) {
+            menu.classList.toggle('open', open);
+            if (icon) icon.textContent = open ? 'close' : 'menu';
+            document.body.style.overflow = open ? 'hidden' : '';
+        }
+
+        btn.addEventListener('click', function () { setOpen(!menu.classList.contains('open')); });
+        menu.querySelectorAll('a').forEach(function (a) {
+            a.addEventListener('click', function () { setOpen(false); });
+        });
+    })();
+</script>
 
 <!-- ═══════════════════════ HERO ════════════════════════ -->
 <section class="hero-section" style="padding: 160px 0 100px; text-align: center; background: #F7F2F8;">
@@ -923,6 +996,10 @@
                      alt="Slike na Platnu Logo"
                      style="width:100px;height:auto;display:block;margin-bottom:18px;filter:brightness(0) invert(1);"/>
                 <p class="footer-tagline">Pretvaramo vaše zidove u kurirane galerije pomoću premium štampe na platnu.</p>
+                <div class="footer-contact">
+                    <a href="tel:+387603558633"><span class="ms">phone</span>+387 603 558 633</a>
+                    <a href="mailto:info@slikenaplatnu.ba"><span class="ms">mail</span>info@slikenaplatnu.ba</a>
+                </div>
             </div>
             <div>
                 <span class="footer-col-title">Prodavnica</span>
@@ -1134,6 +1211,7 @@
 
     function renderTestimonials() {
         const stage = document.getElementById('testStage');
+        if (!stage) return;
         stage.innerHTML = '';
         const len = tList.length;
         const half = Math.floor(len / 2);
@@ -1192,8 +1270,10 @@
         renderTestimonials();
     }
 
-    document.getElementById('testPrev').addEventListener('click', () => moveTest(-1));
-    document.getElementById('testNext').addEventListener('click', () => moveTest(1));
+    const testPrev = document.getElementById('testPrev');
+    const testNext = document.getElementById('testNext');
+    if (testPrev) testPrev.addEventListener('click', () => moveTest(-1));
+    if (testNext) testNext.addEventListener('click', () => moveTest(1));
     renderTestimonials();
 
     // ── Interactive Collection Selector ──
@@ -1254,28 +1334,6 @@
         }
     })();
 
-    // ── Mobile Menu Toggle ──
-    (function() {
-        const btn  = document.getElementById('menuBtn');
-        const menu = document.getElementById('mobileMenu');
-        const icon = document.getElementById('menuIcon');
-        if (!btn || !menu) return;
-
-        btn.addEventListener('click', () => {
-            const open = menu.classList.toggle('open');
-            icon.textContent = open ? 'close' : 'menu';
-            document.body.style.overflow = open ? 'hidden' : '';
-        });
-
-        // Zatvori pri klikanju na link unutar menija
-        menu.querySelectorAll('a').forEach(a => {
-            a.addEventListener('click', () => {
-                menu.classList.remove('open');
-                icon.textContent = 'menu';
-                document.body.style.overflow = '';
-            });
-        });
-    })();
 </script>
 </body>
 </html>
