@@ -22,28 +22,86 @@ document.addEventListener('click', function(e) {
 document.addEventListener('DOMContentLoaded', () => {
     const cartBtn = document.getElementById('addToCartBtn');
 
-    function resizeImageFile(file, maxDim, quality) {
+    // ImgBB prima do 32 MB, ali base64 naraste ~33%. Iznad ovoga radije
+    // re-enkodiramo nego da probamo proslijediti original.
+    const PASSTHROUGH_MAX_BYTES = 12 * 1024 * 1024;
+
+    function readAsDataURL(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
-            reader.onload = e => {
-                const img = new Image();
-                img.onload = () => {
-                    let { width, height } = img;
-                    if (width > maxDim || height > maxDim) {
-                        if (width > height) { height = Math.round(height * maxDim / width); width = maxDim; }
-                        else { width = Math.round(width * maxDim / height); height = maxDim; }
-                    }
-                    const c = document.createElement('canvas');
-                    c.width = width; c.height = height;
-                    c.getContext('2d').drawImage(img, 0, 0, width, height);
-                    resolve(c.toDataURL('image/jpeg', quality));
-                };
-                img.onerror = reject;
-                img.src = e.target.result;
-            };
+            reader.onload = e => resolve(e.target.result);
             reader.onerror = reject;
             reader.readAsDataURL(file);
         });
+    }
+
+    function loadImage(dataUrl) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => resolve(img);
+            img.onerror = reject;
+            img.src = dataUrl;
+        });
+    }
+
+    // Ima li slika stvarno prozirnih piksela. Uzorkuje se na smanjenoj kopiji —
+    // dovoljno da se prozirnost primijeti, a ne košta kao čitanje pune slike.
+    function hasAlpha(img) {
+        const S = 160;
+        const w = Math.max(1, Math.min(S, img.naturalWidth));
+        const h = Math.max(1, Math.min(S, img.naturalHeight));
+        const c = document.createElement('canvas');
+        c.width = w; c.height = h;
+        const ctx = c.getContext('2d');
+        ctx.drawImage(img, 0, 0, w, h);
+        try {
+            const d = ctx.getImageData(0, 0, w, h).data;
+            for (let i = 3; i < d.length; i += 4) if (d[i] < 250) return true;
+        } catch (e) {
+            return false; // tainted canvas — pretpostavi da nema alfe
+        }
+        return false;
+    }
+
+    /**
+     * Priprema sliku za upload uz što manji gubitak.
+     * Original se re-enkodira SAMO ako je prevelik — ranije je svaka slika
+     * išla kroz canvas na 1200 px i JPEG 0.82, što je i male slike kvarilo.
+     */
+    async function prepareImageFile(file, maxDim, quality) {
+        const dataUrl = await readAsDataURL(file);
+        const img = await loadImage(dataUrl);
+        const { naturalWidth: w0, naturalHeight: h0 } = img;
+
+        // Stane u limite i nije ogroman — šalji original netaknut.
+        if (w0 <= maxDim && h0 <= maxDim && file.size <= PASSTHROUGH_MAX_BYTES) {
+            return { dataUrl, width: w0, height: h0, resized: false };
+        }
+
+        let width = w0, height = h0;
+        if (width > maxDim || height > maxDim) {
+            if (width > height) { height = Math.round(height * maxDim / width); width = maxDim; }
+            else { width = Math.round(width * maxDim / height); height = maxDim; }
+        }
+
+        const c = document.createElement('canvas');
+        c.width = width; c.height = height;
+        const ctx = c.getContext('2d');
+        ctx.imageSmoothingQuality = 'high';
+
+        // JPEG nema alfa kanal — prozirno bi ispalo crno. Zato PNG kad treba.
+        const keepAlpha = /png|webp|gif/i.test(file.type) && hasAlpha(img);
+        if (!keepAlpha) {
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, width, height);
+        }
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const out = keepAlpha
+            ? c.toDataURL('image/png')
+            : c.toDataURL('image/jpeg', quality);
+
+        return { dataUrl: out, width, height, resized: true };
     }
 
     async function uploadToImgBB(base64DataUrl) {
@@ -70,13 +128,17 @@ document.addEventListener('DOMContentLoaded', () => {
             cartBtn.disabled = true;
 
             let imageUrl = null;
+            let uploadedDims = null;
 
             const file = window._pendingUploadFile || (imageInput && imageInput.files && imageInput.files[0]);
             if (file) {
                 try {
                     cartBtn.innerHTML = '<span class="ms">cloud_upload</span> Učitavam sliku (čekajte)...';
-                    const resized = await resizeImageFile(file, 1200, 0.82);
-                    imageUrl = await uploadToImgBB(resized);
+                    // 4000 px: ispod Safarijevog limita za canvas (~16,7 mil. px),
+                    // a dovoljno za 100 cm platna na ~100 DPI.
+                    const prepared = await prepareImageFile(file, 4000, 0.92);
+                    imageUrl = await uploadToImgBB(prepared.dataUrl);
+                    uploadedDims = prepared.width + '×' + prepared.height + ' px';
                     cartBtn.innerHTML = '<span class="ms">check_circle</span> Slika uploadovana!';
                 } catch (err) {
                     console.error('ImgBB upload nije uspio:', err);
@@ -94,6 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 price: priceDisp ? priceDisp.textContent.trim() : '0 KM',
                 gap: gapRange ? gapRange.value + 'px' : 'N/A',
                 imageUrl: imageUrl,
+                imageDims: uploadedDims,
                 timestamp: new Date().getTime()
             };
 
