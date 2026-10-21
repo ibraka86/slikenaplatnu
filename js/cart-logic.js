@@ -46,14 +46,44 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    async function uploadToImgBB(base64DataUrl) {
-        const base64 = base64DataUrl.split(',')[1];
+    // Prima originalni File (ide nepromijenjen) ili base64 data URL (smanjena verzija).
+    async function uploadToImgBB(image, timeoutMs) {
         const body = new FormData();
-        body.append('image', base64);
-        const res = await fetch('https://api.imgbb.com/1/upload?key=' + IMGBB_KEY, { method: 'POST', body });
-        const json = await res.json();
-        if (!json.success) throw new Error(json.error?.message || 'ImgBB error');
-        return json.data.url;
+        body.append('image', typeof image === 'string' ? image.split(',')[1] : image);
+        const ctrl = new AbortController();
+        const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+        try {
+            const res = await fetch('https://api.imgbb.com/1/upload?key=' + IMGBB_KEY, { method: 'POST', body, signal: ctrl.signal });
+            const json = await res.json();
+            if (!json.success) throw new Error(json.error?.message || 'ImgBB error');
+            return json.data.url;
+        } finally {
+            clearTimeout(timer);
+        }
+    }
+
+    // Štampa traži što veću rezoluciju, pa prvo ide original bez ikakvog
+    // smanjivanja. Smanjene verzije su samo rezerva za sporu vezu ili grešku —
+    // posljednji pokušaj je isti kao ranije (1200 px), pa nikad nije gore od toga.
+    const ImgBB_MAX = 32 * 1024 * 1024;
+    async function uploadBestQuality(file, onAttempt) {
+        const attempts = [];
+        if (file.size <= ImgBB_MAX) attempts.push({ label: 'original', make: async () => file, timeout: 90000 });
+        attempts.push({ label: 'smanjena na 2400 px', make: () => resizeImageFile(file, 2400, 0.9), timeout: 45000 });
+        attempts.push({ label: 'smanjena na 1200 px', make: () => resizeImageFile(file, 1200, 0.82), timeout: 45000 });
+
+        let lastErr;
+        for (const a of attempts) {
+            try {
+                onAttempt(a.label);
+                const url = await uploadToImgBB(await a.make(), a.timeout);
+                return { url, quality: a.label };
+            } catch (err) {
+                console.warn('Upload (' + a.label + ') nije uspio:', err);
+                lastErr = err;
+            }
+        }
+        throw lastErr;
     }
 
     if (cartBtn) {
@@ -70,13 +100,19 @@ document.addEventListener('DOMContentLoaded', () => {
             cartBtn.disabled = true;
 
             let imageUrl = null;
+            let imageQuality = null;
 
             const file = window._pendingUploadFile || (imageInput && imageInput.files && imageInput.files[0]);
             if (file) {
                 try {
                     cartBtn.innerHTML = '<span class="ms">cloud_upload</span> Učitavam sliku (čekajte)...';
-                    const resized = await resizeImageFile(file, 1200, 0.82);
-                    imageUrl = await uploadToImgBB(resized);
+                    const up = await uploadBestQuality(file, label => {
+                        cartBtn.innerHTML = label === 'original'
+                            ? '<span class="ms">cloud_upload</span> Učitavam sliku u punoj rezoluciji...'
+                            : '<span class="ms">cloud_upload</span> Spora veza — šaljem manju verziju...';
+                    });
+                    imageUrl = up.url;
+                    imageQuality = up.quality;
                     cartBtn.innerHTML = '<span class="ms">check_circle</span> Slika uploadovana!';
                 } catch (err) {
                     console.error('ImgBB upload nije uspio:', err);
@@ -94,6 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 price: priceDisp ? priceDisp.textContent.trim() : '0 KM',
                 gap: gapRange ? gapRange.value + 'px' : 'N/A',
                 imageUrl: imageUrl,
+                imageQuality: imageQuality,
                 timestamp: new Date().getTime()
             };
 
