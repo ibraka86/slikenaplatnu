@@ -454,7 +454,115 @@
         @media(max-width:768px){ .footer-inner { padding: 0 24px; } .footer-grid { grid-template-columns: 1fr; } .footer-bottom { flex-direction: column; text-align: center; } }
         
         /* .rv initial state handled by GSAP */
+
+        /* ── Tekst ispod konfiguratora ───────────────── */
+        .pinfo { border-top:1px solid var(--line); margin-top:72px; padding-top:56px; }
+        .pinfo-grid { display:grid; grid-template-columns:1fr 1fr; gap:48px; }
+        .pinfo h2 { font-family:'Newsreader',serif; font-weight:300; font-size:clamp(28px,3.2vw,40px); letter-spacing:-.02em; margin-bottom:20px; }
+        .pinfo h3 { font-family:'Schibsted Grotesk',sans-serif; font-size:15px; font-weight:600; margin:28px 0 10px; color:var(--ink); }
+        .pinfo p { color:var(--ink-soft); margin-bottom:14px; line-height:1.7; }
+        .pinfo table { width:100%; border-collapse:collapse; margin:4px 0 16px; font-size:15px; }
+        .pinfo th, .pinfo td { text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); color:var(--ink-soft); }
+        .pinfo th { font-family:'Schibsted Grotesk',sans-serif; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.07em; color:var(--mute); }
+        .pinfo td strong { color:var(--ink); font-weight:500; }
+        .pfaq { margin-top:14px; }
+        .pfaq details { border-bottom:1px solid var(--line); padding:16px 0; }
+        .pfaq summary { font-family:'Schibsted Grotesk',sans-serif; font-weight:500; font-size:16px; cursor:pointer; color:var(--ink); list-style:none; display:flex; justify-content:space-between; gap:16px; }
+        .pfaq summary::-webkit-details-marker { display:none; }
+        .pfaq summary::after { content:'+'; color:var(--magenta); font-size:20px; line-height:1; }
+        .pfaq details[open] summary::after { content:'–'; }
+        .pfaq p { margin:12px 0 0; font-size:16px; }
+        .srodni { margin-top:56px; border-top:1px solid var(--line); padding-top:40px; }
+        .srodni-list { display:flex; flex-wrap:wrap; gap:12px; margin-top:18px; }
+        .srodni-list a { display:inline-flex; align-items:center; gap:8px; border:1px solid var(--line); border-radius:999px; padding:10px 18px; text-decoration:none; color:var(--ink); font-family:'Schibsted Grotesk',sans-serif; font-size:14px; transition:border-color .2s,color .2s; }
+        .srodni-list a:hover { border-color:var(--magenta); color:var(--magenta); }
+        @media(max-width:860px){ .pinfo-grid { grid-template-columns:1fr; gap:36px; } }
+
     </style>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Početna",
+          "item": "https://slikenaplatnu.ba/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Kreiraj sliku",
+          "item": "https://slikenaplatnu.ba/kreiraj-sliku/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Četverodijelna ravnomjerna slika na platnu",
+          "item": "https://slikenaplatnu.ba/kreiraj-sliku/cetverodijelna-ravnomjerna/"
+        }
+      ]
+    },
+    {
+      "@type": "Product",
+      "name": "Četverodijelna ravnomjerna slika na platnu",
+      "description": "Četiri uspravna platna jednake širine, poredana u niz. Vertikalne linije razmaka daju ritam i čine zid višim nego što jeste.",
+      "image": "https://slikenaplatnu.ba/og-image.jpg",
+      "brand": {
+        "@type": "Brand",
+        "name": "Slike na Platnu"
+      },
+      "category": "Slike na platnu",
+      "material": "Canvas platno na drvenom blind ramu",
+      "url": "https://slikenaplatnu.ba/kreiraj-sliku/cetverodijelna-ravnomjerna/",
+      "offers": {
+        "@type": "Offer",
+        "url": "https://slikenaplatnu.ba/kreiraj-sliku/cetverodijelna-ravnomjerna/",
+        "price": "160",
+        "priceCurrency": "BAM",
+        "availability": "https://schema.org/InStock",
+        "itemCondition": "https://schema.org/NewCondition",
+        "seller": {
+          "@id": "https://slikenaplatnu.ba/#organization"
+        }
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Koliko mi treba rezolucija fotografije?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Za najveću dimenziju u ovom formatu (200x100 cm) potrebna je fotografija od najmanje 7874 x 3937 piksela, što je oko 31 megapiksela. Za manje dimenzije treba srazmjerno manje — tabela iznad daje tačne brojeve. Ako je vaša fotografija manja, javit ćemo vam prije štampe i predložiti manji format."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Kolika je razlika između standardnog i galerijskog rama?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Standardni ram je dubine 2 cm i slika stoji skoro uz zid. Galerijski je 4 cm, pa platno izlazi iz zida i baca sjenu — izgleda masivnije i skuplje. Na većim dimenzijama preporučujemo galerijski jer tanak ram uz veliku površinu djeluje nesrazmjerno."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Kako se slika kači na zid?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Svaka slika stiže spremna za kačenje, sa pričvršćenim nosačem na zadnjoj strani. Preporučena visina je da centar slike bude na oko 145–150 cm od poda — to je visina očiju prosječne odrasle osobe."
+          }
+        }
+      ]
+    }
+  ]
+}
+    </script>
+
 </head>
 <body>
 
@@ -641,6 +749,48 @@
 </section>
 
 <!-- ═══════════════════════ FOOTER ══════════════════════ -->
+
+<section class="pinfo">
+    <div class="container">
+        <div class="pinfo-grid">
+            <div>
+                <h2>O ovom formatu</h2>
+                <p>Četiri uspravna platna jednake širine, poredana u niz. Vertikalne
+linije razmaka daju ritam i čine zid višim nego što jeste.</p>
+                <h3>Za koji zid</h3>
+                <p>Format za široke zidove — set od 200x100 cm traži zid od barem 260 cm.
+Zbog uspravnih dijelova dobro stoji i u prostorijama sa niskim plafonom jer
+pogled vuče nagore.</p>
+                <h3>Kada ga birati</h3>
+                <p>Odlično za široke pejzaže, gradske panorame i apstrakcije. Kao i kod
+triptiha, pazite da najvažniji detalj ne padne tačno na liniju razmaka.</p>
+            </div>
+            <div>
+                <h2>Rezolucija fotografije</h2>
+                <p>Kvalitet otiska zavisi od veličine fotografije koju pošaljete. Ovo su najmanje
+                   preporučene vrijednosti za platno koje se gleda sa metar i po ili više:</p>
+                <table>
+<tr><th>Dimenzija platna</th><th>Najmanja fotografija</th><th>Otprilike</th></tr>
+<tr><td><strong>80x40 cm</strong></td><td>3150 x 1575 px</td><td>5 MP</td></tr>
+<tr><td><strong>120x60 cm</strong></td><td>4724 x 2362 px</td><td>11 MP</td></tr>
+<tr><td><strong>160x80 cm</strong></td><td>6299 x 3150 px</td><td>20 MP</td></tr>
+<tr><td><strong>200x100 cm</strong></td><td>7874 x 3937 px</td><td>31 MP</td></tr>
+</table>
+                <p>Fotografija sa novijeg telefona (12 MP) pokriva formate do otprilike 100 cm.
+                   Za veće treba fotoaparat ili originalna datoteka bez kompresije — slika skinuta
+                   sa Instagrama ili poslana preko Vibera u pravilu nije dovoljna.</p>
+                <h3>Česta pitanja</h3>
+                <div class="pfaq">
+<details><summary>Koliko mi treba rezolucija fotografije?</summary><p>Za najveću dimenziju u ovom formatu (200x100 cm) potrebna je fotografija od najmanje 7874 x 3937 piksela, što je oko 31 megapiksela. Za manje dimenzije treba srazmjerno manje — tabela iznad daje tačne brojeve. Ako je vaša fotografija manja, javit ćemo vam prije štampe i predložiti manji format.</p></details>
+<details><summary>Kolika je razlika između standardnog i galerijskog rama?</summary><p>Standardni ram je dubine 2 cm i slika stoji skoro uz zid. Galerijski je 4 cm, pa platno izlazi iz zida i baca sjenu — izgleda masivnije i skuplje. Na većim dimenzijama preporučujemo galerijski jer tanak ram uz veliku površinu djeluje nesrazmjerno.</p></details>
+<details><summary>Kako se slika kači na zid?</summary><p>Svaka slika stiže spremna za kačenje, sa pričvršćenim nosačem na zadnjoj strani. Preporučena visina je da centar slike bude na oko 145–150 cm od poda — to je visina očiju prosječne odrasle osobe.</p></details>
+</div>
+            </div>
+        </div>
+        <div class="srodni"><h2>Srodni formati</h2><p>Ako ovaj raspored ne odgovara vašem zidu, pogledajte:</p><div class="srodni-list"><a href="../trodijelna/"><span class="ms" style="font-size:16px">arrow_forward</span>Trodijelna slika na platnu</a><a href="../petodijelna/"><span class="ms" style="font-size:16px">arrow_forward</span>Petodijelna stepenasta slika na platnu</a><a href="../panorama/"><span class="ms" style="font-size:16px">arrow_forward</span>Panorama slike na platnu</a></div></div>
+    </div>
+</section>
+
 <footer class="site-footer">
     <div class="footer-inner">
         <div class="footer-grad"></div>
