@@ -436,7 +436,7 @@
 
         // Prepare hidden fields for Web3Forms
         const imageNote = (orderData.imageUrl || orderData.designUrl)
-            ? `, Slika: ${orderData.imageUrl || orderData.designUrl}`
+            ? `, Slika${orderData.imageQuality ? ' (' + orderData.imageQuality + ')' : ''}: ${orderData.imageUrl || orderData.designUrl}`
             : orderData.image
                 ? `, Slika: vlastita fotografija (priložena)`
                 : `, Slika: nije dodata`;
