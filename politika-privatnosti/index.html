@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Politika privatnosti | slikenaplatnu.ba</title>
+    <meta name="description" content="Kako slikenaplatnu.ba prikuplja, koristi i čuva vaše lične podatke — kontakt forma, narudžbe, učitane fotografije i analitika."/>
+    <link rel="canonical" href="https://slikenaplatnu.ba/politika-privatnosti/"/>
+    <link rel="icon" href="../favicon.png" type="image/png"/>
+
+    <meta property="og:type" content="website"/>
+    <meta property="og:site_name" content="Slike na Platnu"/>
+    <meta property="og:locale" content="bs_BA"/>
+    <meta property="og:title" content="Politika privatnosti | slikenaplatnu.ba"/>
+    <meta property="og:description" content="Kako slikenaplatnu.ba prikuplja, koristi i čuva vaše lične podatke — kontakt forma, narudžbe, učitane fotografije i analitika."/>
+    <meta property="og:url" content="https://slikenaplatnu.ba/politika-privatnosti/"/>
+    <meta property="og:image" content="https://slikenaplatnu.ba/og-image.jpg"/>
+    <meta property="og:image:width" content="1200"/>
+    <meta property="og:image:height" content="630"/>
+    <meta property="og:image:alt" content="Slike na Platnu – canvas print iz Sarajeva"/>
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:title" content="Politika privatnosti | slikenaplatnu.ba"/>
+    <meta name="twitter:description" content="Kako slikenaplatnu.ba prikuplja, koristi i čuva vaše lične podatke — kontakt forma, narudžbe, učitane fotografije i analitika."/>
+    <meta name="twitter:image" content="https://slikenaplatnu.ba/og-image.jpg"/>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4GNPR5VBZ0"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-4GNPR5VBZ0');
+    </script>
+
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400;1,6..72,500&amp;family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet"/>
+
+    <style>
+        :root {
+            --magenta:#E91E8C; --amber:#FF8F00; --cobalt:#1565C0;
+            --ink:#1A1A1A; --ink-soft:#3D3D3D; --mute:#7A7875;
+            --line:#E3E1DB; --paper:#FAF8F3; --white:#FFFFFF;
+            --grad-full: linear-gradient(135deg,#E91E8C 0%,#C62828 22%,#FF8F00 42%,#7B1FA2 62%,#1565C0 80%,#00838F 100%);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Newsreader',serif; background:var(--white); color:var(--ink); line-height:1.6; -webkit-font-smoothing:antialiased; }
+        .container { max-width:1280px; margin:0 auto; padding:0 48px; }
+        @media(max-width:768px){ .container{ padding:0 24px; } }
+        .grad-bar { height:2px; background:var(--grad-full); }
+        .ms {
+            font-family:'Material Symbols Outlined'; font-weight:normal; font-style:normal;
+            font-size:20px; line-height:1; letter-spacing:normal; text-transform:none;
+            display:inline-block; white-space:nowrap; word-wrap:normal; direction:ltr;
+            -webkit-font-feature-settings:'liga'; font-feature-settings:'liga';
+            -webkit-font-smoothing:antialiased;
+        }
+        .btn-grad {
+            display:inline-flex; align-items:center; gap:8px; background:var(--grad-full);
+            color:#fff; padding:14px 28px; border-radius:999px; text-decoration:none;
+            font-family:'Schibsted Grotesk',sans-serif; font-weight:500; font-size:14px;
+            letter-spacing:.03em; border:none; cursor:pointer;
+        }
+
+        /* HEADER */
+        .site-header { position:sticky; top:0; z-index:100; background:var(--white); border-bottom:1px solid var(--line); }
+        .header-inner { max-width:1280px; margin:0 auto; padding:0 48px; height:76px; display:flex; align-items:center; justify-content:space-between; gap:40px; }
+        .logo-wrap img { height:40px; width:auto; display:block; }
+        .site-nav { display:flex; align-items:center; gap:40px; }
+        .site-nav a { font-size:14px; font-weight:500; color:var(--ink-soft); text-decoration:none; letter-spacing:.02em; transition:color .2s; font-family:'Schibsted Grotesk',sans-serif; }
+        .site-nav a:hover { color:var(--ink); }
+        .header-icons { display:flex; align-items:center; gap:4px; }
+        .icon-btn { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:none; border:none; cursor:pointer; color:var(--ink); }
+        .menu-btn { display:none; }
+        @media(max-width:768px){
+            .site-nav { display:none; }
+            .menu-btn { display:flex; }
+            .header-inner { padding:0 24px; }
+            .header-cta-btn { display:none; }
+        }
+        .mobile-menu { display:none; position:fixed; top:76px; left:0; right:0; bottom:0; background:var(--white); z-index:99; flex-direction:column; padding:32px 24px; border-top:1px solid var(--line); overflow-y:auto; }
+        .mobile-menu.open { display:flex; }
+        .mobile-nav-link { font-size:22px; font-weight:500; font-family:'Newsreader',serif; color:var(--ink); text-decoration:none; padding:16px 0; border-bottom:1px solid var(--line); display:block; }
+        .mobile-menu-cta { margin-top:32px; }
+        .mobile-menu-contact { margin-top:28px; padding-top:24px; border-top:1px solid var(--line); display:flex; flex-direction:column; gap:14px; }
+        .mobile-contact-link { display:flex; align-items:center; gap:10px; font-family:'Schibsted Grotesk',sans-serif; font-size:16px; font-weight:500; color:var(--ink); text-decoration:none; }
+        .mobile-contact-link .ms { font-size:20px; color:#E91E8C; }
+
+        /* PROSE */
+        .page-head { background:#F7F2F8; padding:90px 0 60px; border-bottom:1px solid var(--line); }
+        .label { font-family:'Schibsted Grotesk',sans-serif; font-size:11px; font-weight:500; letter-spacing:.12em; text-transform:uppercase; color:var(--mute); display:block; margin-bottom:18px; }
+        .page-head h1 { font-size:clamp(40px,5.5vw,68px); font-weight:300; letter-spacing:-.03em; line-height:1.05; }
+        .page-head .updated { margin-top:18px; font-size:15px; color:var(--mute); }
+        .prose { max-width:760px; margin:0 auto; padding:64px 48px 96px; }
+        @media(max-width:768px){ .prose { padding:48px 24px 72px; } }
+        .prose h2 { font-size:28px; font-weight:400; margin:48px 0 16px; letter-spacing:-.01em; }
+        .prose h2:first-child { margin-top:0; }
+        .prose h3 { font-family:'Schibsted Grotesk',sans-serif; font-size:17px; font-weight:600; margin:28px 0 10px; }
+        .prose p { color:var(--ink-soft); margin-bottom:16px; font-size:18px; }
+        .prose ul { margin:0 0 18px 22px; color:var(--ink-soft); font-size:18px; }
+        .prose li { margin-bottom:9px; }
+        .prose a { color:var(--cobalt); text-decoration:underline; text-underline-offset:3px; }
+        .prose strong { color:var(--ink); font-weight:500; }
+        .prose table { width:100%; border-collapse:collapse; margin:0 0 22px; font-size:16px; }
+        .prose th, .prose td { text-align:left; padding:11px 12px; border-bottom:1px solid var(--line); color:var(--ink-soft); vertical-align:top; }
+        .prose th { font-family:'Schibsted Grotesk',sans-serif; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:.07em; color:var(--mute); }
+        .note { background:var(--paper); border:1px solid var(--line); border-left:3px solid var(--amber); border-radius:8px; padding:20px 22px; margin:0 0 26px; }
+        .note p { margin:0; font-size:16px; }
+
+        /* FOOTER */
+        .site-footer { background:var(--ink); padding:80px 0 40px; }
+        .footer-inner { max-width:1280px; margin:0 auto; padding:0 48px; }
+        .footer-grad { height:2px; background:var(--grad-full); margin-bottom:72px; }
+        .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:48px; margin-bottom:72px; }
+        .footer-tagline { font-size:14px; line-height:1.7; color:rgba(255,255,255,.38); max-width:240px; }
+        .footer-contact { margin-top:18px; display:flex; flex-direction:column; gap:10px; }
+        .footer-contact a { display:flex; align-items:center; gap:8px; font-size:14px; color:rgba(255,255,255,.55); text-decoration:none; }
+        .footer-contact a:hover { color:#fff; }
+        .footer-contact .ms { font-size:18px; color:#FF8F00; }
+        .footer-col-title { font-family:'Schibsted Grotesk',sans-serif; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.28); display:block; margin-bottom:24px; }
+        .footer-links { list-style:none; display:flex; flex-direction:column; gap:14px; }
+        .footer-links a { font-size:14px; color:rgba(255,255,255,.55); text-decoration:none; }
+        .footer-links a:hover { color:#fff; }
+        .footer-bottom { border-top:1px solid rgba(255,255,255,.08); padding-top:32px; display:flex; justify-content:space-between; align-items:center; gap:16px; }
+        .footer-copy { font-size:11px; letter-spacing:.06em; color:rgba(255,255,255,.25); }
+        @media(max-width:1024px){ .footer-grid { grid-template-columns:1fr 1fr; } }
+        @media(max-width:768px){ .footer-inner { padding:0 24px; } .footer-grid { grid-template-columns:1fr; } .footer-bottom { flex-direction:column; text-align:center; } }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="header-inner">
+        <a href="../" class="logo-wrap"><img src="../logo1.png" alt="Slike na Platnu Logo" width="105" height="40"/></a>
+        <nav class="site-nav">
+            <a href="../nasi-radovi/">Naši radovi</a>
+            <a href="../vrste-slika/">Vrste slika</a>
+            <a href="../nacin-izrade/">Kako to radimo</a>
+            <a href="../kontakt/">Kontakt</a>
+        </nav>
+        <div class="header-icons">
+            <a href="../kreiraj-sliku/" class="btn-grad header-cta-btn" style="padding:11px 24px;font-size:13px;letter-spacing:.05em;">
+                <span class="ms" style="font-size:18px">photo_camera</span>
+                Kreiraj sliku
+            </a>
+            <button class="icon-btn menu-btn" id="menuBtn" aria-label="Otvori meni">
+                <span class="ms" id="menuIcon">menu</span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<!-- ── Mobile Menu ── -->
+<div class="mobile-menu" id="mobileMenu">
+    <a href="../nasi-radovi/" class="mobile-nav-link">Naši radovi</a>
+    <a href="../vrste-slika/" class="mobile-nav-link">Vrste slika</a>
+    <a href="../nacin-izrade/" class="mobile-nav-link">Kako to radimo</a>
+    <a href="../kontakt/" class="mobile-nav-link">Kontakt</a>
+    <div class="mobile-menu-cta">
+        <a href="../kreiraj-sliku/" class="btn-grad" style="width:100%;justify-content:center;">
+            <span class="ms" style="font-size:18px">photo_camera</span>
+            Kreiraj sliku
+        </a>
+    </div>
+    <div class="mobile-menu-contact">
+        <a href="tel:+387603558633" class="mobile-contact-link"><span class="ms">phone</span>+387 603 558 633</a>
+        <a href="mailto:info@slikenaplatnu.ba" class="mobile-contact-link"><span class="ms">mail</span>info@slikenaplatnu.ba</a>
+    </div>
+</div>
+<script>
+    (function () {
+        var btn  = document.getElementById('menuBtn');
+        var menu = document.getElementById('mobileMenu');
+        var icon = document.getElementById('menuIcon');
+        if (!btn || !menu) return;
+        function setOpen(open) {
+            menu.classList.toggle('open', open);
+            if (icon) icon.textContent = open ? 'close' : 'menu';
+            document.body.style.overflow = open ? 'hidden' : '';
+        }
+        btn.addEventListener('click', function () { setOpen(!menu.classList.contains('open')); });
+        menu.querySelectorAll('a').forEach(function (a) {
+            a.addEventListener('click', function () { setOpen(false); });
+        });
+    })();
+</script>
+<div class="grad-bar"></div>
+
+<section class="page-head">
+    <div class="container">
+        <span class="label">Pravno</span>
+        <h1>Politika privatnosti</h1>
+        <p class="updated">Posljednja izmjena: 21.10.2026.</p>
+    </div>
+</section>
+
+<main class="prose">
+<div class="note"><p><strong>Nacrt.</strong> Ovaj tekst je pripremljen na osnovu onoga što sajt tehnički radi i treba ga pregledati pravnik prije nego se smatra obavezujućim. Polja označena sa <strong>[dopuniti]</strong> zna samo vlasnik.</p></div>
+<h2>1. Ko obrađuje vaše podatke</h2>
+<p>Voditelj obrade je <strong>[dopuniti: puni pravni naziv firme]</strong>, Novopazarska 65, 71000 Sarajevo, Bosna i Hercegovina, JIB/ID <strong>[dopuniti]</strong>, koji upravlja sajtom slikenaplatnu.ba.</p>
+<p>Za sva pitanja o ličnim podacima: <a href="mailto:info@slikenaplatnu.ba">info@slikenaplatnu.ba</a> ili <a href="tel:+387603558633">+387 603 558 633</a>.</p>
+
+<h2>2. Koje podatke prikupljamo i zašto</h2>
+<table>
+    <tr><th>Podatak</th><th>Kada</th><th>Zašto</th><th>Osnov</th></tr>
+    <tr><td>Ime i prezime, email, naslov i tekst poruke</td><td>Kontakt forma</td><td>Da odgovorimo na vaš upit</td><td>Vaš pristanak</td></tr>
+    <tr><td>Ime i prezime, email, telefon, adresa, grad, poštanski broj, napomena</td><td>Narudžba</td><td>Izrada i dostava naručene slike</td><td>Izvršenje ugovora</td></tr>
+    <tr><td>Detalji narudžbe i iznos</td><td>Narudžba</td><td>Obrada i evidencija narudžbe</td><td>Izvršenje ugovora</td></tr>
+    <tr><td>Fotografija koju učitate</td><td>Narudžba</td><td>Štampa na platnu</td><td>Izvršenje ugovora</td></tr>
+    <tr><td>IP adresa, tip uređaja i browsera, posjećene stranice</td><td>Svaka posjeta</td><td>Statistika posjećenosti i sigurnost</td><td>Pristanak (analitika) / legitimni interes (sigurnost)</td></tr>
+</table>
+<p>Ne tražimo i ne prikupljamo podatke o platnim karticama — plaćanje se ne obavlja preko ovog sajta.</p>
+
+<h2>3. Fotografije koje učitate</h2>
+<p>Fotografija koju učitate koristi se isključivo za izradu vaše slike. Ne objavljujemo je, ne prodajemo i ne koristimo u marketingu bez vašeg izričitog pristanka.</p>
+<div class="note"><p><strong>Važno, i rečeno otvoreno:</strong> učitana fotografija se trenutno prenosi na vanjski servis za smještaj slika (ImgBB), gdje je dostupna svakome ko zna njen link. Ako vam to ne odgovara, pošaljite fotografiju direktno na <a href="mailto:info@slikenaplatnu.ba">info@slikenaplatnu.ba</a> umjesto preko forme. <strong>[dopuniti nakon prelaska na vlastiti storage — tada ovaj odlomak treba izmijeniti]</strong></p></div>
+<p>Učitavanjem fotografije potvrđujete da imate pravo na njeno korištenje i štampanje, te da njome ne kršite ničija autorska prava niti prava na lik.</p>
+
+<h2>4. Kome prosljeđujemo podatke</h2>
+<p>Vaše podatke ne prodajemo. Dijelimo ih samo sa servisima bez kojih sajt ne radi:</p>
+<table>
+    <tr><th>Servis</th><th>Šta dobija</th><th>Svrha</th></tr>
+    <tr><td>Web3Forms</td><td>Sadržaj kontakt forme i forme narudžbe</td><td>Dostava forme na našu email adresu</td></tr>
+    <tr><td>ImgBB</td><td>Fotografiju koju ste učitali</td><td>Privremeni smještaj slike uz narudžbu</td></tr>
+    <tr><td>Google Analytics (GA4)</td><td>Anonimiziranu statistiku posjeta</td><td>Mjerenje posjećenosti</td></tr>
+    <tr><td>Cloudflare</td><td>IP adresu i tehničke podatke zahtjeva</td><td>Hosting i zaštita sajta</td></tr>
+    <tr><td>Dostavna služba <strong>[dopuniti]</strong></td><td>Ime, adresu i telefon</td><td>Isporuka paketa</td></tr>
+</table>
+<p>Neki od ovih servisa obrađuju podatke izvan Bosne i Hercegovine, uključujući zemlje Evropske unije i Sjedinjene Američke Države.</p>
+
+<h2>5. Kolačići</h2>
+<p>Sajt koristi dvije vrste kolačića i sličnih tehnologija:</p>
+<ul>
+    <li><strong>Neophodni</strong> — pamte sadržaj vaše narudžbe dok prelazite sa stranice proizvoda na stranicu narudžbe. Čuvaju se samo u vašem browseru i ne šalju se nama.</li>
+    <li><strong>Analitički</strong> — Google Analytics, za brojanje posjeta. Ovi se postavljaju samo uz vaš pristanak.</li>
+</ul>
+<p>Pristanak možete povući u svakom trenutku brisanjem kolačića u postavkama browsera.</p>
+
+<h2>6. Koliko dugo čuvamo podatke</h2>
+<ul>
+    <li><strong>Upiti sa kontakt forme</strong> — <strong>[dopuniti, npr. 12 mjeseci]</strong> od posljednje komunikacije</li>
+    <li><strong>Narudžbe i prateća dokumentacija</strong> — koliko nalažu poreski propisi, <strong>[dopuniti, uobičajeno 5–10 godina]</strong></li>
+    <li><strong>Učitane fotografije</strong> — <strong>[dopuniti, preporuka: obrisati 30 dana nakon isporuke]</strong></li>
+    <li><strong>Analitika</strong> — prema zadanim rokovima Google Analyticsa</li>
+</ul>
+
+<h2>7. Vaša prava</h2>
+<p>U skladu sa Zakonom o zaštiti ličnih podataka Bosne i Hercegovine imate pravo:</p>
+<ul>
+    <li>zatražiti uvid u podatke koje imamo o vama</li>
+    <li>tražiti ispravku netačnih podataka</li>
+    <li>tražiti brisanje podataka kada za njihovo čuvanje više nema osnova</li>
+    <li>povući pristanak koji ste dali</li>
+    <li>uložiti prigovor Agenciji za zaštitu ličnih podataka u BiH</li>
+</ul>
+<p>Zahtjev pošaljite na <a href="mailto:info@slikenaplatnu.ba">info@slikenaplatnu.ba</a>. Odgovaramo najkasnije u roku od 30 dana.</p>
+<p>Ako nam pristupate iz Evropske unije, na obradu se primjenjuje i Opšta uredba o zaštiti podataka (GDPR), uz ista prava i pravo na prenosivost podataka.</p>
+
+<h2>8. Sigurnost</h2>
+<p>Sajt se isporučuje preko šifrovane HTTPS veze. Pristup narudžbama ima samo osoblje kojem je to potrebno za izradu i isporuku.</p>
+
+<h2>9. Izmjene ove politike</h2>
+<p>Politiku možemo mijenjati. Datum posljednje izmjene stoji na vrhu stranice. Materijalne izmjene objavljujemo na ovoj stranici.</p>
+
+</main>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-grad"></div>
+        <div class="footer-grid">
+            <div>
+                <img src="../logo1.png" alt="Slike na Platnu Logo" width="100" height="96" style="width:100px;height:auto;display:block;margin-bottom:18px;filter:brightness(0) invert(1);"/>
+                <p class="footer-tagline">Pretvaramo vaše zidove u kurirane galerije pomoću premium štampe na platnu.</p>
+                <div class="footer-contact">
+                    <a href="tel:+387603558633"><span class="ms">phone</span>+387 603 558 633</a>
+                    <a href="mailto:info@slikenaplatnu.ba"><span class="ms">mail</span>info@slikenaplatnu.ba</a>
+                </div>
+            </div>
+            <div>
+                <span class="footer-col-title">Prodavnica</span>
+                <ul class="footer-links">
+                    <li><a href="../nasi-radovi/">Najprodavanije</a></li>
+                    <li><a href="../kreiraj-sliku/">Po Mjeri</a></li>
+                    <li><a href="../vrste-slika/">Sve Kolekcije</a></li>
+                </ul>
+            </div>
+            <div>
+                <span class="footer-col-title">Podrška</span>
+                <ul class="footer-links">
+                    <li><a href="../nacin-izrade/">Kako to radimo</a></li>
+                    <li><a href="../kontakt/">Kontakt</a></li>
+                </ul>
+            </div>
+            <div>
+                <span class="footer-col-title">Pravno</span>
+                <ul class="footer-links">
+                    <li><a href="../uslovi-koristenja/">Uslovi korištenja</a></li>
+                    <li><a href="../politika-privatnosti/">Politika privatnosti</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span class="footer-copy">© 2026 Slike na Platnu · Sva prava pridržana.</span>
+            <span class="footer-copy">Premium Canvas Prints · Handcrafted</span>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
