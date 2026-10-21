@@ -32,55 +32,185 @@
 </script>
 
     <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
     {
-      "@context": "https://schema.org",
-      "@graph": [
+      "@type": "Organization",
+      "@id": "https://slikenaplatnu.ba/#organization",
+      "name": "Slike na Platnu",
+      "url": "https://slikenaplatnu.ba",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://slikenaplatnu.ba/logo1.png"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Novopazarska 65",
+        "postalCode": "71000",
+        "addressLocality": "Sarajevo",
+        "addressCountry": "BA"
+      },
+      "telephone": "+387603558633",
+      "email": "info@slikenaplatnu.ba"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://slikenaplatnu.ba/#website",
+      "url": "https://slikenaplatnu.ba",
+      "name": "Slike na Platnu",
+      "inLanguage": "bs",
+      "publisher": {
+        "@id": "https://slikenaplatnu.ba/#organization"
+      }
+    },
+    {
+      "@type": [
+        "LocalBusiness",
+        "Store"
+      ],
+      "name": "Slike na Platnu",
+      "description": "Premium štampa na canvas platnu i slikarskom platnu. Slike na platnu, zidne slike i personalizovane canvas slike iz Sarajeva.",
+      "url": "https://slikenaplatnu.ba",
+      "telephone": "+387603558633",
+      "priceRange": "$$",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Novopazarska 65",
+        "postalCode": "71000",
+        "addressLocality": "Sarajevo",
+        "addressCountry": "BA"
+      },
+      "image": "https://slikenaplatnu.ba/logo1.png",
+      "openingHours": "Mo-Fr 09:00-17:00"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
         {
-          "@type": "Organization",
-          "@id": "https://slikenaplatnu.ba/#organization",
-          "name": "Slike na Platnu",
-          "url": "https://slikenaplatnu.ba",
-          "logo": { "@type": "ImageObject", "url": "https://slikenaplatnu.ba/logo1.png" },
-          "address": { "@type": "PostalAddress", "streetAddress": "Novopazarska 65", "postalCode": "71000", "addressLocality": "Sarajevo", "addressCountry": "BA" },
-          "telephone": "+387603558633",
-          "email": "info@slikenaplatnu.ba"
+          "@type": "Question",
+          "name": "Koliko košta izrada slike na platnu?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Cijena zavisi od formata i dimenzije. Početne cijene su od 95 KM (kvadratna slika) do 245 KM (romboidi), a veće dimenzije istog formata koštaju više. Tačnu cijenu za dimenziju koju izaberete vidite odmah u konfiguratoru, prije slanja narudžbe. Dostava na području BiH je 11 KM."
+          }
         },
         {
-          "@type": "WebSite",
-          "@id": "https://slikenaplatnu.ba/#website",
-          "url": "https://slikenaplatnu.ba",
-          "name": "Slike na Platnu",
-          "inLanguage": "bs",
-          "publisher": { "@id": "https://slikenaplatnu.ba/#organization" }
+          "@type": "Question",
+          "name": "Da li radite slike na platnu po želji i po mojim dimenzijama?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Da. Slike na platnu radimo po želji — sa vašom fotografijom, u formatu koji izaberete i u bilo kojim dimenzijama. Za mjere kojih nema u konfiguratoru kontaktirajte nas za tačnu ponudu."
+          }
         },
         {
-          "@type": ["LocalBusiness", "Store"],
-          "name": "Slike na Platnu",
-          "description": "Premium štampa na canvas platnu i slikarskom platnu. Slike na platnu, zidne slike i personalizovane canvas slike iz Sarajeva.",
-          "url": "https://slikenaplatnu.ba",
-          "telephone": "+387603558633",
-          "priceRange": "$$",
-          "address": { "@type": "PostalAddress", "streetAddress": "Novopazarska 65", "postalCode": "71000", "addressLocality": "Sarajevo", "addressCountry": "BA" },
-          "image": "https://slikenaplatnu.ba/logo1.png",
-          "openingHours": "Mo-Fr 09:00-17:00"
+          "@type": "Question",
+          "name": "Mogu li naručiti sliku na platnu sa svojom fotografijom?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Da. Nakon uploada, naš tim provjerava kvalitet slike i šalje vam pregled prije štampe — sve besplatno."
+          }
         },
         {
-          "@type": "FAQPage",
-          "mainEntity": [
-            { "@type": "Question", "name": "Koliko traje dostava?", "acceptedAnswer": { "@type": "Answer", "text": "Standardna isporuka traje 5–7 radnih dana. Za prilagođene narudžbine proces može trajati nešto duže, zavisno od kompleksnosti izrade." } },
-            { "@type": "Question", "name": "Koji kvalitet platna koristite?", "acceptedAnswer": { "@type": "Answer", "text": "Koristimo debelo galerijsko platno 380g/m², otporno na vlagu i UV zračenje. Garantujemo dugotrajnost i vrhunski prikaz boja." } },
-            { "@type": "Question", "name": "Da li radite slike po mojim dimenzijama?", "acceptedAnswer": { "@type": "Answer", "text": "Apsolutno — izrađujemo platno u bilo kojim dimenzijama. Kontaktirajte nas s željenim mjerama za tačnu ponudu." } },
-            { "@type": "Question", "name": "Mogu li uploadovati vlastitu fotografiju?", "acceptedAnswer": { "@type": "Answer", "text": "Da. Nakon uploada, naš tim provjerava kvalitet slike i šalje vam pregled prije štampe — sve besplatno." } },
-            { "@type": "Question", "name": "Kako je platno zapakovano za dostavu?", "acceptedAnswer": { "@type": "Answer", "text": "Svako platno je ručno zapakovano u višeslojnu kartonsku zaštitu s ugaonim ojačanjima. Stopa oštećenja u dostavi je ispod 0.1%." } },
-            { "@type": "Question", "name": "Šta su slike na platnu – canvas i po čemu se razlikuju od postera?", "acceptedAnswer": { "@type": "Answer", "text": "Slike na platnu izrađuju se štampom na slikarskom platnu koje se zatvara na drveni blind ram. Za razliku od postera, canvas slike ne zahtijevaju okvir ni staklo, otporne su na vlagu i UV zrake, i puno su trajnije." } },
-            { "@type": "Question", "name": "Da li radite slike na platnu za Sarajevo i cijelu Bosnu?", "acceptedAnswer": { "@type": "Answer", "text": "Da! Nalazimo se u Sarajevu i isporučujemo po cijeloj Bosni i Hercegovini. Lokalna narudžba može biti gotova za 24–48 sati." } },
-            { "@type": "Question", "name": "Koje zidne slike i slike za zid su najpopularnije?", "acceptedAnswer": { "@type": "Answer", "text": "Najpopularnije su apstraktne kompozicije, botanički motivi i panoramske slike gradova. Slike za zid u dnevnoj sobi najčešće se biraju u panorama ili trodelnom formatu." } },
-            { "@type": "Question", "name": "Koji art proces štampe na canvas platnu koristite?", "acceptedAnswer": { "@type": "Answer", "text": "Koristimo 380g/m² galerijsko platno, UV-stabilne pigmentne boje i ručno zatezanje na masivni blind ram. Svako platno prolazi kroz višestepenu kontrolu kvaliteta." } },
-            { "@type": "Question", "name": "Može li se naručiti reprodukcija likovnog djela?", "acceptedAnswer": { "@type": "Answer", "text": "Da, u ponudi imamo bogat izbor reprodukcija klasičnih i modernih likovnih umjetnosti, štampanih s maksimalnom vjernošću originalu u svim standardnim dimenzijama." } }
-          ]
+          "@type": "Question",
+          "name": "Koja rezolucija fotografije je potrebna za print na platnu?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Što je platno veće, fotografija mora imati više piksela. Fotografija sa novijeg telefona (12 MP) dovoljna je za print do otprilike 100 cm. Za veće formate treba fotografija sa fotoaparata ili originalna datoteka — slika preuzeta sa Instagrama ili poslana preko Vibera obično je previše kompresovana. Na stranici svakog formata nalazi se tabela sa najmanjom rezolucijom za svaku dimenziju."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Kako se plaća narudžba?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Plaćanje je pouzećem: narudžbu plaćate kuriru u gotovini kada vam paket stigne. Ništa ne plaćate unaprijed i ne treba vam kartica. Uz cijenu slike plaćate samo dostavu od 11 KM — nema skrivenih troškova."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Koliko traje dostava?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Standardna isporuka traje 5–7 radnih dana. Za prilagođene narudžbine proces može trajati nešto duže, zavisno od kompleksnosti izrade."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Gdje u Sarajevu mogu naručiti izradu slike na platnu?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nalazimo se u Sarajevu, na adresi Novopazarska 65. Sliku naručujete online: izaberete format, učitate fotografiju i pošaljete narudžbu, a mi izrađujemo platno i šaljemo ga kurirskom službom na vašu adresu u Sarajevu ili bilo gdje u BiH. Za posebne dimenzije pozovite nas na +387 603 558 633."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Da li radite slike na platnu za cijelu Bosnu i Hercegovinu?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Da! Nalazimo se u Sarajevu i isporučujemo po cijeloj Bosni. Lokalna narudžba može biti gotova za 24–48 sati. Za veće narudžbine ili posebne formate kontaktirajte nas direktno i dogovorićemo sve detalje."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Koji kvalitet platna koristite?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Koristimo debelo galerijsko platno 380g/m², otporno na vlagu i UV zračenje. Garantujemo dugotrajnost i vrhunski prikaz boja."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Kako je platno zapakovano za dostavu?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Svako platno je ručno zapakovano u višeslojnu kartonsku zaštitu s ugaonim ojačanjima. Stopa oštećenja u dostavi je ispod 0.1%."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Šta su slike na platnu – canvas i po čemu se razlikuju od postera?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Slike na platnu izrađuju se štampom na slikarskom platnu koje se ručno zatvara na drveni blind ram. Za razliku od postera koji zahtijevaju okvir i staklo, canvas slike su samostalna zidna dekoracija — otporne na vlagu, UV zrake i mehanička oštećenja. Platno daje slici dubinu i teksturu kakvu poster ne može pružiti."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Koje dimenzije su dostupne i kako odabrati pravu?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nudimo slike u dimenzijama od 20×20 cm pa do formata 200 cm i više. Za izbor prave dimenzije preporučujemo mjerenje zida i odabir platna koje zauzima 2/3 dostupnog prostora. Naš tim vam može pomoći s odabirom besplatno — samo nas kontaktirajte s fotografijom prostora i mjerama zida."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Koji art proces štampe na canvas platnu koristite?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Koristimo isključivo 380g/m² galerijsko platno. Naš art proces štampe obuhvata digitalnu korekciju slike, UV-stabilne pigmentne boje i ručno zatezanje na masivni blind ram. Svako platno prolazi kroz višestepenu kontrolu kvaliteta prije otpreme — garantujemo da ćete dobiti tačno ono što ste naručili."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Koje zidne slike i slike za zid su najpopularnije?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Najpopularnije su apstraktne kompozicije, botanički motivi i panoramske slike gradova. Slike za zid u dnevnoj sobi najčešće se biraju u panorama ili trodijelnom formatu, dok su za spavaće sobe popularne kvadratne slike na platnu manjih dimenzija. Reprodukcije klasičnih likovnih djela posebno su tražene za kancelarije i poslovne prostore."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Može li se naručiti reprodukcija likovnog djela ili klasičnog motiva?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Da, u ponudi imamo bogat izbor reprodukcija klasičnih i modernih likovnih umjetnosti. Svaka reprodukcija štampana je s maksimalnom vjernošću originalu, koristeći najsavremeniju digitalnu tehnologiju. Dostupne su u svim standardnim dimenzijama i savršen su poklon za ljubitelje umjetnosti."
+          }
         }
       ]
     }
+  ]
+}
     </script>
 
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
@@ -856,6 +986,8 @@
         }
         .faq-item[open] .faq-plus { transform: rotate(45deg); color: var(--magenta); }
         .faq-answer { font-size: 15px; line-height: 1.75; color: var(--mute); padding-bottom: 22px; max-width: 560px; }
+        .faq-answer a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--magenta); text-underline-offset: 3px; }
+        .faq-answer a:hover { color: var(--magenta); }
 
         @media(max-width:1024px){
             .faq-inner { grid-template-columns: 1fr; gap: 48px; }
@@ -1600,20 +1732,40 @@
             </div>
             <div class="faq-list rv">
                 <details class="faq-item">
+                    <summary>Koliko košta izrada slike na platnu? <span class="faq-plus">+</span></summary>
+                    <p class="faq-answer">Cijena zavisi od formata i dimenzije. Početne cijene su od 95 KM (kvadratna slika) do 245 KM (romboidi), a veće dimenzije istog formata koštaju više. Tačnu cijenu za dimenziju koju izaberete vidite odmah u <a href="kreiraj-sliku/">konfiguratoru</a>, prije slanja narudžbe. Dostava na području BiH je 11 KM.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Da li radite slike na platnu po želji i po mojim dimenzijama? <span class="faq-plus">+</span></summary>
+                    <p class="faq-answer">Da. Slike na platnu radimo po želji — sa vašom fotografijom, u formatu koji izaberete i u bilo kojim dimenzijama. Za mjere kojih nema u konfiguratoru kontaktirajte nas za tačnu ponudu.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Mogu li naručiti sliku na platnu sa svojom fotografijom? <span class="faq-plus">+</span></summary>
+                    <p class="faq-answer">Da. Nakon uploada, naš tim provjerava kvalitet slike i šalje vam pregled prije štampe — sve besplatno.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Koja rezolucija fotografije je potrebna za print na platnu? <span class="faq-plus">+</span></summary>
+                    <p class="faq-answer">Što je platno veće, fotografija mora imati više piksela. Fotografija sa novijeg telefona (12 MP) dovoljna je za print do otprilike 100 cm. Za veće formate treba fotografija sa fotoaparata ili originalna datoteka — slika preuzeta sa Instagrama ili poslana preko Vibera obično je previše kompresovana. Na stranici svakog <a href="kreiraj-sliku/">formata</a> nalazi se tabela sa najmanjom rezolucijom za svaku dimenziju.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Kako se plaća narudžba? <span class="faq-plus">+</span></summary>
+                    <p class="faq-answer">Plaćanje je pouzećem: narudžbu plaćate kuriru u gotovini kada vam paket stigne. Ništa ne plaćate unaprijed i ne treba vam kartica. Uz cijenu slike plaćate samo dostavu od 11 KM — nema skrivenih troškova.</p>
+                </details>
+                <details class="faq-item">
                     <summary>Koliko traje dostava? <span class="faq-plus">+</span></summary>
                     <p class="faq-answer">Standardna isporuka traje 5–7 radnih dana. Za prilagođene narudžbine proces može trajati nešto duže, zavisno od kompleksnosti izrade.</p>
                 </details>
                 <details class="faq-item">
+                    <summary>Gdje u Sarajevu mogu naručiti izradu slike na platnu? <span class="faq-plus">+</span></summary>
+                    <p class="faq-answer">Nalazimo se u Sarajevu, na adresi Novopazarska 65. Sliku naručujete online: izaberete <a href="kreiraj-sliku/">format</a>, učitate fotografiju i pošaljete narudžbu, a mi izrađujemo platno i šaljemo ga kurirskom službom na vašu adresu u Sarajevu ili bilo gdje u BiH. Za posebne dimenzije pozovite nas na <a href="tel:+387603558633">+387 603 558 633</a>.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Da li radite slike na platnu za cijelu Bosnu i Hercegovinu? <span class="faq-plus">+</span></summary>
+                    <p class="faq-answer">Da! Nalazimo se u Sarajevu i isporučujemo po cijeloj Bosni. Lokalna narudžba može biti gotova za 24–48 sati. Za veće narudžbine ili posebne formate kontaktirajte nas direktno i dogovorićemo sve detalje.</p>
+                </details>
+                <details class="faq-item">
                     <summary>Koji kvalitet platna koristite? <span class="faq-plus">+</span></summary>
                     <p class="faq-answer">Koristimo debelo galerijsko platno 380g/m², otporno na vlagu i UV zračenje. Garantujemo dugotrajnost i vrhunski prikaz boja.</p>
-                </details>
-                <details class="faq-item">
-                    <summary>Da li radite slike po mojim dimenzijama? <span class="faq-plus">+</span></summary>
-                    <p class="faq-answer">Apsolutno — izrađujemo platno u bilo kojim dimenzijama. Kontaktirajte nas s željenim mjerama za tačnu ponudu.</p>
-                </details>
-                <details class="faq-item">
-                    <summary>Mogu li uploadovati vlastitu fotografiju? <span class="faq-plus">+</span></summary>
-                    <p class="faq-answer">Da. Nakon uploada, naš tim provjerava kvalitet slike i šalje vam pregled prije štampe — sve besplatno.</p>
                 </details>
                 <details class="faq-item">
                     <summary>Kako je platno zapakovano za dostavu? <span class="faq-plus">+</span></summary>
@@ -1624,20 +1776,16 @@
                     <p class="faq-answer">Slike na platnu izrađuju se štampom na slikarskom platnu koje se ručno zatvara na drveni blind ram. Za razliku od postera koji zahtijevaju okvir i staklo, canvas slike su samostalna zidna dekoracija — otporne na vlagu, UV zrake i mehanička oštećenja. Platno daje slici dubinu i teksturu kakvu poster ne može pružiti.</p>
                 </details>
                 <details class="faq-item">
-                    <summary>Da li radite slike na platnu za cijelu Bosnu i Hercegovinu? <span class="faq-plus">+</span></summary>
-                    <p class="faq-answer">Da! Nalazimo se u Sarajevu i isporučujemo po cijeloj Bosni. Lokalna narudžba može biti gotova za 24–48 sati. Za veće narudžbine ili posebne formate kontaktirajte nas direktno i dogovorićemo sve detalje.</p>
-                </details>
-                <details class="faq-item">
-                    <summary>Koje zidne slike i slike za zid su najpopularnije? <span class="faq-plus">+</span></summary>
-                    <p class="faq-answer">Najpopularnije su apstraktne kompozicije, botanički motivi i panoramske slike gradova. Slike za zid u dnevnoj sobi najčešće se biraju u panorama ili trodelnom formatu, dok su za spavaće sobe popularne kvadratne slike na platnu manjih dimenzija. Reprodukcije klasičnih likovnih djela posebno su tražene za kancelarije i poslovne prostore.</p>
+                    <summary>Koje dimenzije su dostupne i kako odabrati pravu? <span class="faq-plus">+</span></summary>
+                    <p class="faq-answer">Nudimo slike u dimenzijama od 20×20 cm pa do formata 200 cm i više. Za izbor prave dimenzije preporučujemo mjerenje zida i odabir platna koje zauzima 2/3 dostupnog prostora. Naš tim vam može pomoći s odabirom besplatno — samo nas kontaktirajte s fotografijom prostora i mjerama zida.</p>
                 </details>
                 <details class="faq-item">
                     <summary>Koji art proces štampe na canvas platnu koristite? <span class="faq-plus">+</span></summary>
                     <p class="faq-answer">Koristimo isključivo 380g/m² galerijsko platno. Naš art proces štampe obuhvata digitalnu korekciju slike, UV-stabilne pigmentne boje i ručno zatezanje na masivni blind ram. Svako platno prolazi kroz višestepenu kontrolu kvaliteta prije otpreme — garantujemo da ćete dobiti tačno ono što ste naručili.</p>
                 </details>
                 <details class="faq-item">
-                    <summary>Koje dimenzije su dostupne i kako odabrati pravu? <span class="faq-plus">+</span></summary>
-                    <p class="faq-answer">Nudimo slike u dimenzijama od 20×20 cm pa do formata 200 cm i više. Za izbor prave dimenzije preporučujemo mjerenje zida i odabir platna koje zauzima 2/3 dostupnog prostora. Naš tim vam može pomoći s odabirom besplatno — samo nas kontaktirajte s fotografijom prostora i mjerama zida.</p>
+                    <summary>Koje zidne slike i slike za zid su najpopularnije? <span class="faq-plus">+</span></summary>
+                    <p class="faq-answer">Najpopularnije su apstraktne kompozicije, botanički motivi i panoramske slike gradova. Slike za zid u dnevnoj sobi najčešće se biraju u panorama ili trodijelnom formatu, dok su za spavaće sobe popularne kvadratne slike na platnu manjih dimenzija. Reprodukcije klasičnih likovnih djela posebno su tražene za kancelarije i poslovne prostore.</p>
                 </details>
                 <details class="faq-item">
                     <summary>Može li se naručiti reprodukcija likovnog djela ili klasičnog motiva? <span class="faq-plus">+</span></summary>
