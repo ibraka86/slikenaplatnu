@@ -878,6 +878,9 @@
         .nl-title { font-size: clamp(48px, 6vw, 96px); margin-bottom: 20px; }
         .nl-body { font-size: 17px; line-height: 1.75; color: var(--ink-soft); margin-bottom: 40px; }
         .nl-form { display: flex; gap: 12px; }
+        .nl-msg { margin-top: 14px; min-height: 1.5em; font-size: 15px; line-height: 1.6; }
+        .nl-msg.ok { color: #2E7D32; }
+        .nl-msg.err { color: #C62828; }
         .nl-input {
             flex: 1; padding: 14px 20px;
             border: 1.5px solid var(--line); border-radius: 3px;
@@ -1644,12 +1647,46 @@
             <span class="label">Newsletter</span>
             <h2 class="display nl-title">Pridružite se<br><em class="text-grad">galeriji.</em></h2>
             <p class="nl-body">
-                Prijavite se i ostvarite <strong style="color:var(--magenta)">10% popusta</strong> na prvu narudžbinu.<br>Ekskluzivan pristup novim kolekcijama.
+                Prijavite se i ostvarite <strong style="color:var(--magenta)">10% popusta</strong> na prvu narudžbu.<br>Ekskluzivan pristup novim kolekcijama.
             </p>
-            <form class="nl-form" onsubmit="return false">
-                <input type="email" class="nl-input" placeholder="vas@email.com" required/>
+            <form class="nl-form" action="https://api.web3forms.com/submit" method="POST">
+                <input type="hidden" name="access_key" value="f54289be-6926-484a-92d3-a1fadd04c694">
+                <input type="hidden" name="subject" value="Nova prijava na newsletter – Slike na Platnu">
+                <input type="hidden" name="from_name" value="Newsletter">
+                <input type="hidden" name="Izvor" value="Početna">
+                <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
+                <input type="email" name="email" class="nl-input" placeholder="vas@email.com" required aria-label="Email adresa"/>
                 <button type="submit" class="btn-grad">Prijavi se</button>
             </form>
+            <p class="nl-msg" role="status" aria-live="polite"></p>
+            <script>
+                /* Newsletter -> Web3Forms. Bez JS-a forma ide klasicnim POST-om na
+                   isti endpoint, pa prijava radi i tada. */
+                (function () {
+                    var form = document.querySelector('.nl-form');
+                    var msg  = document.querySelector('.nl-msg');
+                    if (!form || !msg || !window.fetch) return;
+                    form.addEventListener('submit', function (e) {
+                        e.preventDefault();
+                        var btn = form.querySelector('button');
+                        btn.disabled = true; btn.textContent = 'Šaljem...';
+                        msg.className = 'nl-msg'; msg.textContent = '';
+                        fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } })
+                            .then(function (r) { return r.json(); })
+                            .then(function (d) {
+                                if (!d.success) throw new Error(d.message || 'greska');
+                                form.reset();
+                                msg.className = 'nl-msg ok';
+                                msg.textContent = 'Hvala na prijavi! Popust od 10% odobravamo pri potvrdi vaše prve narudžbe — naručite sa istom email adresom.';
+                            })
+                            .catch(function () {
+                                msg.className = 'nl-msg err';
+                                msg.textContent = 'Prijava nije uspjela. Pokušajte ponovo ili nam pišite na info@slikenaplatnu.ba.';
+                            })
+                            .then(function () { btn.disabled = false; btn.textContent = 'Prijavi se'; });
+                    });
+                })();
+            </script>
         </div>
     </div>
 </section>
