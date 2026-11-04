@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Štampa traži što veću rezoluciju, pa prvo ide original bez ikakvog
-    // smanjivanja. Smanjene verzije su samo rezerva za sporu vezu ili grešku —
+    // smanjivanja. Smanjene verzije su samo rezerva za sporu vezu ili grešku -
     // posljednji pokušaj je isti kao ranije (1200 px), pa nikad nije gore od toga.
     const ImgBB_MAX = 32 * 1024 * 1024;
     async function uploadBestQuality(file, onAttempt) {
@@ -109,14 +109,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     const up = await uploadBestQuality(file, label => {
                         cartBtn.innerHTML = label === 'original'
                             ? '<span class="ms">cloud_upload</span> Učitavam sliku u punoj rezoluciji...'
-                            : '<span class="ms">cloud_upload</span> Spora veza — šaljem manju verziju...';
+                            : '<span class="ms">cloud_upload</span> Spora veza - šaljem manju verziju...';
                     });
                     imageUrl = up.url;
                     imageQuality = up.quality;
                     cartBtn.innerHTML = '<span class="ms">check_circle</span> Slika uploadovana!';
                 } catch (err) {
                     console.error('ImgBB upload nije uspio:', err);
-                    cartBtn.innerHTML = '<span class="ms">warning</span> Upload nije uspio — nastavljam bez slike';
+                    cartBtn.innerHTML = '<span class="ms">warning</span> Upload nije uspio - nastavljam bez slike';
                     await new Promise(r => setTimeout(r, 2000));
                 }
             } else if (window._selectedDesignUrl) {

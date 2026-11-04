@@ -234,7 +234,7 @@
         }
         .menu-btn { display: none; }
 
-        /* Mobile CTA — sakrij iz headera na mobilnom */
+        /* Mobile CTA - sakrij iz headera na mobilnom */
         @media(max-width:768px){
             .site-nav { display: none; }
             .menu-btn { display: flex; }
@@ -287,7 +287,7 @@
             display: flex; align-items: stretch;
         }
 
-        /* Diagonal bg — desna strana */
+        /* Diagonal bg - desna strana */
         .hero-section::before {
             content: '';
             position: absolute; top: 0; right: 0;
@@ -332,7 +332,7 @@
         }
         .trust-sep { width: 3px; height: 3px; border-radius: 50%; background: var(--line); flex-shrink: 0; }
 
-        /* Hero video — desna kolona, bez boxa */
+        /* Hero video - desna kolona, bez boxa */
         .hero-visual {
             position: relative;
             align-self: stretch;
@@ -1125,7 +1125,7 @@
         const im = filteredImages[lbIndex];
         lbImg.src = im.full;
         lbImg.alt = im.label;
-        lbCap.textContent = `${im.label} — ${lbIndex + 1} / ${filteredImages.length}`;
+        lbCap.textContent = `${im.label} - ${lbIndex + 1} / ${filteredImages.length}`;
     }
     function lbStep(dir) {
         lbIndex = (lbIndex + dir + filteredImages.length) % filteredImages.length;
@@ -1290,15 +1290,15 @@
             container.appendChild(img);
         }
 
-        // hero — bez paint.png
+        // hero - bez paint.png
 
         const stats = document.querySelector('.stats-section .blobs');
         if(stats){
-            // lijevo — vertikalno centriran
+            // lijevo - vertikalno centriran
             placeImg(stats, 200, 0.55, '-55px',                    'calc(50% - 100px)',  20);
-            // desno — malo gore
+            // desno - malo gore
             placeImg(stats, 180, 0.52, 'calc(100% - 150px)',       'calc(50% - 120px)', -25);
-            // centar — malo niže
+            // centar - malo niže
             placeImg(stats, 160, 0.48, 'calc(50% - 80px)',         'calc(50% - 60px)',   40);
         }
 
@@ -1358,11 +1358,11 @@
         { quote: "Slika je stigla savršeno zapakovana i izgleda fantastično na zidu. Kvalitet platna je daleko iznad očekivanja.", by: "Marija K. · Sarajevo", img: "https://i.pravatar.cc/150?img=47", stars: 5 },
         { quote: "Naručila sam svoju omiljenu fotografiju s putovanja i rezultat je spektakularan. Svi gosti pitaju odakle slika.", by: "Ana J. · Zagreb", img: "https://i.pravatar.cc/150?img=44", stars: 5 },
         { quote: "Brza dostava, savršeno pakovanje i kvalitet koji opravdava svaki dinar. Preporučujem svima.", by: "Stefan M. · Beograd", img: "https://i.pravatar.cc/150?img=12", stars: 5 },
-        { quote: "Poklonila sam mami sliku za rođendan — suze sreće. Ovo je poklon koji ostaje zauvijek.", by: "Jovana R. · Sarajevo", img: "https://i.pravatar.cc/150?img=48", stars: 5 },
+        { quote: "Poklonila sam mami sliku za rođendan - suze sreće. Ovo je poklon koji ostaje zauvijek.", by: "Jovana R. · Sarajevo", img: "https://i.pravatar.cc/150?img=48", stars: 5 },
         { quote: "Boje su živopisne i vjerne originalu. Na zidu izgleda kao iz profesionalne galerije.", by: "Nikola P. · Novi Sad", img: "https://i.pravatar.cc/150?img=15", stars: 5 },
         { quote: "Drugi put naručujem i uvijek isti vrhunski nivo. Ekipa odlično reaguje na svaki upit.", by: "Milan D. · Podgorica", img: "https://i.pravatar.cc/150?img=67", stars: 5 },
         { quote: "Cijeli proces je bio jednostavan i brz. Platno je stiglo za 3 dana i odmah otišlo na zid.", by: "Tijana V. · Mostar", img: "https://i.pravatar.cc/150?img=49", stars: 5 },
-        { quote: "Uokvirili smo svadbenu fotografiju — bolje od svakog studija. Hvala puno na brzini i kvalitetu!", by: "Dragan S. · Beograd", img: "https://i.pravatar.cc/150?img=33", stars: 5 },
+        { quote: "Uokvirili smo svadbenu fotografiju - bolje od svakog studija. Hvala puno na brzini i kvalitetu!", by: "Dragan S. · Beograd", img: "https://i.pravatar.cc/150?img=33", stars: 5 },
     ];
 
     const CARD_SIZE = 300;
@@ -1471,7 +1471,7 @@
 
         function initPin() {
             if (!video.duration) return;
-            // 300px of scroll per second of video — feel free to tune
+            // 300px of scroll per second of video - feel free to tune
             const scrollDist = Math.ceil(video.duration * 300);
 
             ScrollTrigger.create({
