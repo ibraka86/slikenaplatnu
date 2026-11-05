@@ -484,15 +484,25 @@
         .frame-note#framePrice { color: var(--ink-soft); font-weight: 500; }
     
         /* ── Vizuelni prikaz ukrasnog rama u previewu ──
-           box-shadow sa spreadom ne mijenja layout, pa canvas i dalje
-           crta u istoj povrsini kao i bez rama. */
-        .panel-canvas { transition: box-shadow .25s ease; }
+           Debljina se racuna iz sirine platna (--ram-w, postavlja JS), pa ram
+           izgleda jednako na desktopu i na mobitelu. box-shadow sa spreadom ne
+           ulazi u layout, pa canvas zadrzi svoju povrsinu crtanja. */
+        .panel-canvas { --ram-w: 9px; transition: box-shadow .25s ease; }
         body[data-ram="bijeli"] .panel-canvas {
-            box-shadow: 0 0 0 4px #FBFAF7, 0 0 0 9px #ECE8DE, 0 0 0 10px rgba(0,0,0,.16), 0 10px 26px rgba(0,0,0,.20); }
+            box-shadow: 0 0 0 calc(var(--ram-w) * .45) #FBFAF7,
+                        0 0 0 var(--ram-w) #ECE8DE,
+                        0 0 0 calc(var(--ram-w) + 1px) rgba(0,0,0,.16),
+                        0 10px 26px rgba(0,0,0,.20); }
         body[data-ram="crni"] .panel-canvas {
-            box-shadow: 0 0 0 4px #24262B, 0 0 0 9px #121317, 0 0 0 10px rgba(0,0,0,.45), 0 10px 26px rgba(0,0,0,.30); }
+            box-shadow: 0 0 0 calc(var(--ram-w) * .45) #24262B,
+                        0 0 0 var(--ram-w) #121317,
+                        0 0 0 calc(var(--ram-w) + 1px) rgba(0,0,0,.45),
+                        0 10px 26px rgba(0,0,0,.30); }
         body[data-ram="zlatni"] .panel-canvas {
-            box-shadow: 0 0 0 4px #EBD79A, 0 0 0 9px #B8902F, 0 0 0 10px rgba(0,0,0,.28), 0 10px 26px rgba(0,0,0,.25); }
+            box-shadow: 0 0 0 calc(var(--ram-w) * .45) #EBD79A,
+                        0 0 0 var(--ram-w) #B8902F,
+                        0 0 0 calc(var(--ram-w) + 1px) rgba(0,0,0,.28),
+                        0 10px 26px rgba(0,0,0,.25); }
     </style>
     <script type="application/ld+json">
 {
@@ -726,15 +736,16 @@
                     </select>
                 </div>
                 <div class="options-group">
-                    <label class="options-group-title" style="font-weight:600; font-size:12px; text-transform:uppercase; margin-bottom:8px; display:block;">Ukrasni ram</label>
+                    <label class="options-group-title" style="font-weight:600; font-size:12px; text-transform:uppercase; margin-bottom:8px; display:block;">Ukrasni drveni ram</label>
                     <select class="select-box" id="depthSelect">
                         <option value="none" data-frame-opt="0" selected>Bez ukrasnog rama</option>
-                        <option value="bijeli" data-frame-opt="1">Bijeli ukrasni ram</option>
-                        <option value="crni" data-frame-opt="1">Crni ukrasni ram</option>
-                        <option value="zlatni" data-frame-opt="1">Zlatni ukrasni ram</option>
+                        <option value="bijeli" data-frame-opt="1">Bijeli ukrasni drveni ram</option>
+                        <option value="crni" data-frame-opt="1">Crni ukrasni drveni ram</option>
+                        <option value="zlatni" data-frame-opt="1">Zlatni ukrasni drveni ram</option>
                     </select>
+                    <p class="frame-note frame-blind">Drveni blind ram je uključen u cijenu proizvoda.</p>
                     <p id="framePrice" class="frame-note" style="display:none;"></p>
-                    <p class="frame-note frame-stock" style="display:none;">Boju ukrasnog rama potvrđujemo naknadno, u zavisnosti od zaliha. Javimo vam prije izrade ako odabrana boja nije dostupna.</p>
+                    <p class="frame-note frame-stock" style="display:none;">Boju ukrasnog drvenog rama potvrđujemo naknadno, u zavisnosti od zaliha. Javimo vam prije izrade ako odabrana boja nije dostupna.</p>
                 </div>
                 
                 <div class="options-group" style="margin-top: 30px; display:none;">
@@ -1124,12 +1135,22 @@ telefon spaja više kadrova.</p>
       var ram=(hoce && !naupit)?parseInt(o.getAttribute('data-frame')||'0',10):0;
       p.textContent=(base+ram)+' KM';
       document.body.setAttribute('data-ram', hoce ? d.value : '');
+      skaliraj();
       if(hoce){ nota.textContent = naupit
-                  ? 'Ukoliko želite ukrasni ram, navedite u napomeni prilikom narudžbe - cijenu rama javljamo naknadno.'
-                  : 'Platno '+base+' KM + ukrasni ram '+ram+' KM';
+                  ? 'Ukoliko želite ukrasni drveni ram, navedite u napomeni prilikom narudžbe - cijenu rama javljamo naknadno.'
+                  : 'Platno '+base+' KM + ukrasni drveni ram '+ram+' KM';
                 nota.style.display='block'; zalihe.style.display='block'; }
       else    { nota.style.display='none'; zalihe.style.display='none'; }
     }
+    function skaliraj(){
+      // debljina rama = 2.5% sirine platna, ogranicena na 3-12 px
+      document.querySelectorAll('.panel-canvas').forEach(function(c){
+        var w=c.getBoundingClientRect().width;
+        if(!w) return;
+        c.style.setProperty('--ram-w', Math.max(3, Math.min(12, Math.round(w*0.025)))+'px');
+      });
+    }
+    addEventListener('resize', skaliraj);
     s.addEventListener('change',osvjezi); d.addEventListener('change',osvjezi);
     osvjezi();
   }
