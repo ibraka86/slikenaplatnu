@@ -731,15 +731,15 @@
                 <div class="options-group">
                     <label class="options-group-title">Ukupna dimenzija (cm)</label>
                     <select class="select-box" id="sizeSelect">
-                        <option value="100x100" data-price="195" data-frame="119">100x100 cm (Kombinovano)</option>
-                        <option value="120x120" data-price="245" selected data-frame="143">120x120 cm (Kombinovano)</option>
-                        <option value="150x150" data-price="340" data-frame="178">150x150 cm (Kombinovano)</option>
-                        <option value="180x180" data-price="460" data-frame="214">180x180 cm (Kombinovano)</option>
+                        <option value="100x100" data-price="195">100x100 cm (Kombinovano)</option>
+                        <option value="120x120" data-price="245" selected>120x120 cm (Kombinovano)</option>
+                        <option value="150x150" data-price="340">150x150 cm (Kombinovano)</option>
+                        <option value="180x180" data-price="460">180x180 cm (Kombinovano)</option>
                     </select>
                 </div>
                 <div class="options-group">
                     <label class="options-group-title" style="font-weight:600; font-size:12px; text-transform:uppercase; margin-bottom:8px; display:block;">Ukrasni ram</label>
-                    <select class="select-box" id="depthSelect">
+                    <select class="select-box" id="depthSelect" data-ram-upit="1">
                         <option value="none" data-frame-opt="0" selected>Bez ukrasnog rama</option>
                         <option value="bijeli" data-frame-opt="1">Bijeli ukrasni ram</option>
                         <option value="crni" data-frame-opt="1">Crni ukrasni ram</option>
@@ -1162,10 +1162,13 @@ glavni motiv nije blizu ivica.</p>
       var o=s.options[s.selectedIndex];
       var base=parseInt(o.getAttribute('data-price')||'0',10);
       var hoce=d.options[d.selectedIndex].getAttribute('data-frame-opt')==='1';
-      var ram=hoce?parseInt(o.getAttribute('data-frame')||'0',10):0;
+      var naupit=d.getAttribute('data-ram-upit')==='1';
+      var ram=(hoce && !naupit)?parseInt(o.getAttribute('data-frame')||'0',10):0;
       p.textContent=(base+ram)+' KM';
       document.body.setAttribute('data-ram', hoce ? d.value : '');
-      if(hoce){ nota.textContent='Platno '+base+' KM + ukrasni ram '+ram+' KM';
+      if(hoce){ nota.textContent = naupit
+                  ? 'Ukoliko želite ukrasni ram, navedite u napomeni prilikom narudžbe.'
+                  : 'Platno '+base+' KM + ukrasni ram '+ram+' KM';
                 nota.style.display='block'; zalihe.style.display='block'; }
       else    { nota.style.display='none'; zalihe.style.display='none'; }
     }

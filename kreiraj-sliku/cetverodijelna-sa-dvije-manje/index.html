@@ -1143,10 +1143,13 @@ oštrih pravih linija.</p>
       var o=s.options[s.selectedIndex];
       var base=parseInt(o.getAttribute('data-price')||'0',10);
       var hoce=d.options[d.selectedIndex].getAttribute('data-frame-opt')==='1';
-      var ram=hoce?parseInt(o.getAttribute('data-frame')||'0',10):0;
+      var naupit=d.getAttribute('data-ram-upit')==='1';
+      var ram=(hoce && !naupit)?parseInt(o.getAttribute('data-frame')||'0',10):0;
       p.textContent=(base+ram)+' KM';
       document.body.setAttribute('data-ram', hoce ? d.value : '');
-      if(hoce){ nota.textContent='Platno '+base+' KM + ukrasni ram '+ram+' KM';
+      if(hoce){ nota.textContent = naupit
+                  ? 'Ukoliko želite ukrasni ram, navedite u napomeni prilikom narudžbe.'
+                  : 'Platno '+base+' KM + ukrasni ram '+ram+' KM';
                 nota.style.display='block'; zalihe.style.display='block'; }
       else    { nota.style.display='none'; zalihe.style.display='none'; }
     }
