@@ -476,6 +476,9 @@
         .srodni-list a:hover { border-color:var(--magenta); color:var(--magenta); }
         @media(max-width:860px){ .pinfo-grid { grid-template-columns:1fr; gap:36px; } }
 
+    
+        .frame-note { font-size: 13px; line-height: 1.6; color: var(--mute); margin-top: 10px; }
+        .frame-note#framePrice { color: var(--ink-soft); font-weight: 500; }
     </style>
     <script type="application/ld+json">
 {
@@ -705,19 +708,22 @@
                 <div class="options-group">
                     <label class="options-group-title">Ukupna dimenzija (cm)</label>
                     <select class="select-box" id="sizeSelect">
-                        <option value="100x50" data-price="135">100x50 cm (stepenasta)</option>
-                        <option value="125x70" data-price="180" selected>125x70 cm (stepenasta)</option>
-                        <option value="150x80" data-price="215">150x80 cm (stepenasta)</option>
-                        <option value="200x100" data-price="310">200x100 cm (stepenasta)</option>
+                        <option value="100x50" data-price="135" data-frame="122">100x50 cm (stepenasta)</option>
+                        <option value="125x70" data-price="180" selected data-frame="164">125x70 cm (stepenasta)</option>
+                        <option value="150x80" data-price="215" data-frame="191">150x80 cm (stepenasta)</option>
+                        <option value="200x100" data-price="310" data-frame="244">200x100 cm (stepenasta)</option>
                     </select>
                 </div>
-
                 <div class="options-group">
-                    <label class="options-group-title">Debljina okvira (cm)</label>
+                    <label class="options-group-title" style="font-weight:600; font-size:12px; text-transform:uppercase; margin-bottom:8px; display:block;">Ukrasni ram</label>
                     <select class="select-box" id="depthSelect">
-                        <option value="standard" data-price-modifier="0" selected>Standardni (2 cm)</option>
-                        <option value="gallery" data-price-modifier="30">Galerijski (4 cm) - Premium</option>
+                        <option value="none" data-frame-opt="0" selected>Bez ukrasnog rama</option>
+                        <option value="bijeli" data-frame-opt="1">Bijeli ukrasni ram</option>
+                        <option value="crni" data-frame-opt="1">Crni ukrasni ram</option>
+                        <option value="zlatni" data-frame-opt="1">Zlatni ukrasni ram</option>
                     </select>
+                    <p id="framePrice" class="frame-note" style="display:none;"></p>
+                    <p class="frame-note frame-stock" style="display:none;">Boju ukrasnog rama potvrđujemo naknadno, u zavisnosti od zaliha. Javimo vam prije izrade ako odabrana boja nije dostupna.</p>
                 </div>
                 
                 <div class="options-group" style="margin-top: 30px;">
@@ -986,5 +992,30 @@ format.</p>
     }
 </script>
 <script src="../../js/cart-logic.js"></script>
+
+<script>
+/* Ukrasni ram - cijena po obimu platna, racuna se preko postojece logike */
+(function(){
+  function init(){
+    var s=document.getElementById('sizeSelect'), d=document.getElementById('depthSelect'),
+        p=document.getElementById('priceDisplay'), nota=document.getElementById('framePrice'),
+        zalihe=document.querySelector('.frame-stock');
+    if(!s||!d||!p) return;
+    function osvjezi(){
+      var o=s.options[s.selectedIndex];
+      var base=parseInt(o.getAttribute('data-price')||'0',10);
+      var hoce=d.options[d.selectedIndex].getAttribute('data-frame-opt')==='1';
+      var ram=hoce?parseInt(o.getAttribute('data-frame')||'0',10):0;
+      p.textContent=(base+ram)+' KM';
+      if(hoce){ nota.textContent='Platno '+base+' KM + ukrasni ram '+ram+' KM';
+                nota.style.display='block'; zalihe.style.display='block'; }
+      else    { nota.style.display='none'; zalihe.style.display='none'; }
+    }
+    s.addEventListener('change',osvjezi); d.addEventListener('change',osvjezi);
+    osvjezi();
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+})();
+</script>
 </body>
 </html>

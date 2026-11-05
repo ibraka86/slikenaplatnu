@@ -559,7 +559,7 @@
                     </select>
                 </div>
                 <div class="options-group">
-                    <label class="options-group-title">Ukrasni ram</label>
+                    <label class="options-group-title" style="font-weight:600; font-size:12px; text-transform:uppercase; margin-bottom:8px; display:block;">Ukrasni ram</label>
                     <select class="select-box" id="depthSelect">
                         <option value="none" data-frame-opt="0" selected>Bez ukrasnog rama</option>
                         <option value="bijeli" data-frame-opt="1">Bijeli ukrasni ram</option>
@@ -595,20 +595,9 @@
     let srcImg = null, imgScale = 1, imgAngle = 0, imgPanX = 0, imgPanY = 0, dragging = false, dragX = 0, dragY = 0;
 
     function updatePrice() {
-        const size  = sizeSelect.options[sizeSelect.selectedIndex];
-        const base  = parseInt(size.dataset.price);
-        const hocu  = depthSelect.options[depthSelect.selectedIndex].dataset.frameOpt === '1';
-        const ram   = hocu ? parseInt(size.dataset.frame || '0') : 0;
-        priceDisplay.textContent = (base + ram) + ' KM';
-
-        const nota  = document.getElementById('framePrice');
-        const zalihe= document.querySelector('.frame-stock');
-        if (hocu) {
-            nota.textContent = 'Platno ' + base + ' KM + ukrasni ram ' + ram + ' KM';
-            nota.style.display = 'block'; zalihe.style.display = 'block';
-        } else {
-            nota.style.display = 'none'; zalihe.style.display = 'none';
-        }
+        let base = parseInt(sizeSelect.options[sizeSelect.selectedIndex].dataset.price);
+        let mod = parseInt(depthSelect.options[depthSelect.selectedIndex].dataset.priceModifier);
+        priceDisplay.textContent = (base + mod) + ' KM';
     }
     sizeSelect.onchange = updatePrice; depthSelect.onchange = updatePrice;
 
@@ -776,5 +765,30 @@ upravo ono što ih čini dobrim.</p>
     </div>
 </footer>
 
+
+<script>
+/* Ukrasni ram - cijena po obimu platna, racuna se preko postojece logike */
+(function(){
+  function init(){
+    var s=document.getElementById('sizeSelect'), d=document.getElementById('depthSelect'),
+        p=document.getElementById('priceDisplay'), nota=document.getElementById('framePrice'),
+        zalihe=document.querySelector('.frame-stock');
+    if(!s||!d||!p) return;
+    function osvjezi(){
+      var o=s.options[s.selectedIndex];
+      var base=parseInt(o.getAttribute('data-price')||'0',10);
+      var hoce=d.options[d.selectedIndex].getAttribute('data-frame-opt')==='1';
+      var ram=hoce?parseInt(o.getAttribute('data-frame')||'0',10):0;
+      p.textContent=(base+ram)+' KM';
+      if(hoce){ nota.textContent='Platno '+base+' KM + ukrasni ram '+ram+' KM';
+                nota.style.display='block'; zalihe.style.display='block'; }
+      else    { nota.style.display='none'; zalihe.style.display='none'; }
+    }
+    s.addEventListener('change',osvjezi); d.addEventListener('change',osvjezi);
+    osvjezi();
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+})();
+</script>
 </body>
 </html>
