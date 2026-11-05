@@ -353,6 +353,9 @@
         .srodni-list a:hover { border-color:var(--magenta); color:var(--magenta); }
         @media(max-width:860px){ .pinfo-grid { grid-template-columns:1fr; gap:36px; } }
 
+    
+        .frame-note { font-size: 13px; line-height: 1.6; color: var(--mute); margin-top: 10px; }
+        .frame-note#framePrice { color: var(--ink-soft); font-weight: 500; }
     </style>
     <script type="application/ld+json">
 {
@@ -548,19 +551,23 @@
                 <div class="options-group">
                     <label class="options-group-title">Dimenzija (cm)</label>
                     <select class="select-box" id="sizeSelect">
-                        <option value="30x30" data-price="85">30x30 cm</option>
-                        <option value="40x40" data-price="95" selected>40x40 cm</option>
-                        <option value="50x50" data-price="105">50x50 cm</option>
-                        <option value="60x60" data-price="120">60x60 cm</option>
-                        <option value="80x80" data-price="150">80x80 cm</option>
+                        <option value="30x30" data-price="85" data-frame="25">30x30 cm</option>
+                        <option value="40x40" data-price="95" selected data-frame="34">40x40 cm</option>
+                        <option value="50x50" data-price="105" data-frame="42">50x50 cm</option>
+                        <option value="60x60" data-price="120" data-frame="50">60x60 cm</option>
+                        <option value="80x80" data-price="150" data-frame="67">80x80 cm</option>
                     </select>
                 </div>
                 <div class="options-group">
-                    <label class="options-group-title">Debljina okvira</label>
+                    <label class="options-group-title">Ukrasni ram</label>
                     <select class="select-box" id="depthSelect">
-                        <option value="standard" data-price-modifier="0" selected>Standardni (2 cm)</option>
-                        <option value="gallery" data-price-modifier="20">Galerijski (4 cm)</option>
+                        <option value="none" data-frame-opt="0" selected>Bez ukrasnog rama</option>
+                        <option value="bijeli" data-frame-opt="1">Bijeli ukrasni ram</option>
+                        <option value="crni" data-frame-opt="1">Crni ukrasni ram</option>
+                        <option value="zlatni" data-frame-opt="1">Zlatni ukrasni ram</option>
                     </select>
+                    <p id="framePrice" class="frame-note" style="display:none;"></p>
+                    <p class="frame-note frame-stock" style="display:none;">Boju ukrasnog rama potvrđujemo naknadno, u zavisnosti od zaliha. Javimo vam prije izrade ako odabrana boja nije dostupna.</p>
                 </div>
                 <div class="price-wrap">
                     <span class="price-label">Ukupna cijena</span>
@@ -588,9 +595,20 @@
     let srcImg = null, imgScale = 1, imgAngle = 0, imgPanX = 0, imgPanY = 0, dragging = false, dragX = 0, dragY = 0;
 
     function updatePrice() {
-        let base = parseInt(sizeSelect.options[sizeSelect.selectedIndex].dataset.price);
-        let mod = parseInt(depthSelect.options[depthSelect.selectedIndex].dataset.priceModifier);
-        priceDisplay.textContent = (base + mod) + ' KM';
+        const size  = sizeSelect.options[sizeSelect.selectedIndex];
+        const base  = parseInt(size.dataset.price);
+        const hocu  = depthSelect.options[depthSelect.selectedIndex].dataset.frameOpt === '1';
+        const ram   = hocu ? parseInt(size.dataset.frame || '0') : 0;
+        priceDisplay.textContent = (base + ram) + ' KM';
+
+        const nota  = document.getElementById('framePrice');
+        const zalihe= document.querySelector('.frame-stock');
+        if (hocu) {
+            nota.textContent = 'Platno ' + base + ' KM + ukrasni ram ' + ram + ' KM';
+            nota.style.display = 'block'; zalihe.style.display = 'block';
+        } else {
+            nota.style.display = 'none'; zalihe.style.display = 'none';
+        }
     }
     sizeSelect.onchange = updatePrice; depthSelect.onchange = updatePrice;
 
