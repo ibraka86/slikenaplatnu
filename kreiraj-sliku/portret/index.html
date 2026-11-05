@@ -551,14 +551,10 @@
             <div class="editor-wrapper">
                 <div class="editor-toolbar">
                     <button class="toolbar-btn" id="btnAddImage"><span class="ms">add_photo_alternate</span> Dodaj Sliku</button>
-                    <button class="toolbar-btn" id="btnAddText"><span class="ms">title</span> Tekst</button>
                     <button class="toolbar-btn" id="btnAddDesign"><span class="ms">auto_awesome_mosaic</span> Dizajn</button>
                 </div>
                 <div class="preview-area">
                     <div class="side-tools">
-                        <button class="side-btn" id="btnZoomIn"><span class="ms">zoom_in</span></button>
-                        <button class="side-btn" id="btnZoomOut"><span class="ms">zoom_out</span></button>
-                        <button class="side-btn" id="btnRotate"><span class="ms">rotate_right</span></button>
                         <button class="side-btn" id="btnDelete"><span class="ms">delete</span></button>
                     </div>
                     <div class="canvas-container-wrap">
@@ -653,9 +649,9 @@
     window.onmousemove = e => { if(!dragging) return; imgPanX += e.clientX - dragX; imgPanY += e.clientY - dragY; dragX = e.clientX; dragY = e.clientY; render(); };
     window.onmouseup = () => dragging = false;
 
-    document.getElementById('btnZoomIn').onclick = () => { imgScale *= 1.1; render(); };
-    document.getElementById('btnZoomOut').onclick = () => { imgScale /= 1.1; render(); };
-    document.getElementById('btnRotate').onclick = () => { imgAngle = (imgAngle + 90) % 360; render(); };
+    (document.getElementById('btnZoomIn')||document.createElement('button')).onclick = () => { imgScale *= 1.1; render(); };
+    (document.getElementById('btnZoomOut')||document.createElement('button')).onclick = () => { imgScale /= 1.1; render(); };
+    (document.getElementById('btnRotate')||document.createElement('button')).onclick = () => { imgAngle = (imgAngle + 90) % 360; render(); };
     document.getElementById('btnDelete').onclick = () => { srcImg = null; render(); };
 
     document.getElementById('btnAddImage').onclick = () => imageUpload.click();

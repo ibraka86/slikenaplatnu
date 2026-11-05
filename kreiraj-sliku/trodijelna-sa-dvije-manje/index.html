@@ -108,12 +108,12 @@
             border-right: 1px solid rgba(255,255,255,0.1);
         }
 
-        .preview-area { width: 100%; aspect-ratio: 16/9; position: relative; overflow: hidden; background: url('room_mockup.png') center/cover; }
+        .preview-area { width: 100%; aspect-ratio: 1/1; position: relative; overflow: hidden; background: url('room_mockup.png') center/cover; }
 
         /* MULTI-PANEL GRID */
         .panels-grid {
-            position: absolute; top: 15%; left: 50%; transform: translateX(-50%);
-            width: 50%; display: grid; grid-template-columns: 1fr 1.5fr 1fr;
+            position: absolute; top: 12%; left: 50%; transform: translateX(-50%);
+            width: 57%; aspect-ratio: 3/2; display: grid; grid-template-columns: 1fr 1.5fr 1fr;
             gap: 4px; align-items: center; z-index: 3; filter: drop-shadow(0 20px 50px rgba(0,0,0,0.3));
         }
         .panel-canvas { width: 100%; height: 100%; background: #fff; cursor: grab; }
@@ -479,10 +479,8 @@
                 </div>
                 <div class="preview-area">
                     <div class="side-tools">
-                        <button class="side-btn" id="btnZoomIn"><span class="ms">zoom_in</span></button>
-                        <button class="side-btn" id="btnZoomOut"><span class="ms">zoom_out</span></button>
-                        <button class="side-btn" id="btnRotate"><span class="ms">rotate_right</span></button>
-                    </div>
+                    
+                        <button class="side-btn" id="btnDelete" title="Ukloni sliku" style="color: var(--crimson)"><span class="ms">delete</span></button></div>
                     <div class="panels-grid">
                         <div class="panel-wrap"><canvas class="panel-canvas"></canvas></div>
                         <div class="panel-wrap"><canvas class="panel-canvas"></canvas></div>
@@ -585,9 +583,9 @@
     window.onmousemove = e => { if(!dragging) return; imgPanX += e.clientX - lastX; imgPanY += e.clientY - lastY; lastX=e.clientX; lastY=e.clientY; render(); };
     window.onmouseup = () => dragging = false;
 
-    document.getElementById('btnZoomIn').onclick = () => { imgScale *= 1.1; render(); };
-    document.getElementById('btnZoomOut').onclick = () => { imgScale /= 1.1; render(); };
-    document.getElementById('btnRotate').onclick = () => { imgAngle = (imgAngle+90)%360; render(); };
+    (document.getElementById('btnZoomIn')||document.createElement('button')).onclick = () => { imgScale *= 1.1; render(); };
+    (document.getElementById('btnZoomOut')||document.createElement('button')).onclick = () => { imgScale /= 1.1; render(); };
+    (document.getElementById('btnRotate')||document.createElement('button')).onclick = () => { imgAngle = (imgAngle+90)%360; render(); };
     document.getElementById('btnAddImage').onclick = () => imageUpload.click();
 
     imageUpload.onchange = e => {
@@ -755,6 +753,18 @@ klasičan triptih sa tri jednaka dijela je bolji izbor.</p>
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
 })();
+
+    // Ukloni ucitanu sliku
+    (function(){
+      var bd=document.getElementById('btnDelete');
+      if(!bd) return;
+      bd.addEventListener('click', function(){
+        srcImg=null; imgScale=1; imgAngle=0; imgPanX=0; imgPanY=0;
+        var up=document.getElementById('imageUpload'); if(up) up.value='';
+        window._pendingUploadFile=null; window._selectedDesignUrl=null;
+        render();
+      });
+    })();
 </script>
 </body>
 </html>

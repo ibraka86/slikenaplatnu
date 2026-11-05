@@ -343,7 +343,7 @@
         /* REALISTIC ROOM MOCKUP */
         .preview-area {
             width: 100%;
-            aspect-ratio: 1 / 1; /* Generated room_mockup is square */
+            aspect-ratio: 1/1; /* Generated room_mockup is square */
             height: auto;
             position: relative;
             overflow: hidden;
@@ -699,10 +699,6 @@
                         <span class="ms">add_photo_alternate</span>
                         Dodaj Sliku
                     </button>
-                    <button class="toolbar-btn" id="btnAddText">
-                        <span class="ms">title</span>
-                        Dodaj Tekst
-                    </button>
                     <button class="toolbar-btn" id="btnAddDesign">
                         <span class="ms">auto_awesome_mosaic</span>
                         Naš Dizajn
@@ -713,9 +709,6 @@
                 <div class="preview-area">
                     
                     <div class="side-tools">
-                        <button class="side-btn" id="btnZoomIn" title="Uveličaj sloj"><span class="ms">zoom_in</span></button>
-                        <button class="side-btn" id="btnZoomOut" title="Umanji sloj"><span class="ms">zoom_out</span></button>
-                        <button class="side-btn" id="btnRotate" title="Rotiraj"><span class="ms">rotate_right</span></button>
                         <button class="side-btn" id="btnDelete" title="Obriši" style="color: var(--crimson)"><span class="ms">delete</span></button>
                     </div>
 
@@ -1062,7 +1055,7 @@ glavni motiv nije blizu ivica.</p>
     });
 
     // Toolbar
-    document.getElementById('btnAddText').addEventListener('click', () => {
+    (document.getElementById('btnAddText')||document.createElement('button')).addEventListener('click', () => {
         alert('Funkcija dodavanja teksta dolazi uskoro!');
     });
     // Design Modal - dinamičko učitavanje iz nas-dizajn/manifest.json
@@ -1126,9 +1119,9 @@ glavni motiv nije blizu ivica.</p>
 
 
     // Side tools
-    document.getElementById('btnZoomIn').addEventListener('click',  () => { imgScale *= 1.15; render(); });
-    document.getElementById('btnZoomOut').addEventListener('click', () => { imgScale = Math.max(0.2, imgScale * 0.87); render(); });
-    document.getElementById('btnRotate').addEventListener('click',  () => { imgAngle = (imgAngle + 15) % 360; render(); });
+    (document.getElementById('btnZoomIn')||document.createElement('button')).addEventListener('click',  () => { imgScale *= 1.15; render(); });
+    (document.getElementById('btnZoomOut')||document.createElement('button')).addEventListener('click', () => { imgScale = Math.max(0.2, imgScale * 0.87); render(); });
+    (document.getElementById('btnRotate')||document.createElement('button')).addEventListener('click',  () => { imgAngle = (imgAngle + 15) % 360; render(); });
     document.getElementById('btnDelete').addEventListener('click',  () => {
         srcImg = null; imgScale = 1; imgAngle = 0; imgPanX = 0; imgPanY = 0; render();
     });
