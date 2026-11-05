@@ -356,6 +356,17 @@
     
         .frame-note { font-size: 13px; line-height: 1.6; color: var(--mute); margin-top: 10px; }
         .frame-note#framePrice { color: var(--ink-soft); font-weight: 500; }
+    
+        /* ── Vizuelni prikaz ukrasnog rama u previewu ──
+           box-shadow sa spreadom ne mijenja layout, pa canvas i dalje
+           crta u istoj povrsini kao i bez rama. */
+        .panel-canvas { transition: box-shadow .25s ease; }
+        body[data-ram="bijeli"] .panel-canvas {
+            box-shadow: 0 0 0 4px #FBFAF7, 0 0 0 9px #ECE8DE, 0 0 0 10px rgba(0,0,0,.16), 0 10px 26px rgba(0,0,0,.20); }
+        body[data-ram="crni"] .panel-canvas {
+            box-shadow: 0 0 0 4px #24262B, 0 0 0 9px #121317, 0 0 0 10px rgba(0,0,0,.45), 0 10px 26px rgba(0,0,0,.30); }
+        body[data-ram="zlatni"] .panel-canvas {
+            box-shadow: 0 0 0 4px #EBD79A, 0 0 0 9px #B8902F, 0 0 0 10px rgba(0,0,0,.28), 0 10px 26px rgba(0,0,0,.25); }
     </style>
     <script type="application/ld+json">
 {
@@ -780,6 +791,7 @@ upravo ono što ih čini dobrim.</p>
       var hoce=d.options[d.selectedIndex].getAttribute('data-frame-opt')==='1';
       var ram=hoce?parseInt(o.getAttribute('data-frame')||'0',10):0;
       p.textContent=(base+ram)+' KM';
+      document.body.setAttribute('data-ram', hoce ? d.value : '');
       if(hoce){ nota.textContent='Platno '+base+' KM + ukrasni ram '+ram+' KM';
                 nota.style.display='block'; zalihe.style.display='block'; }
       else    { nota.style.display='none'; zalihe.style.display='none'; }
