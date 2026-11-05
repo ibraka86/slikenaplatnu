@@ -474,15 +474,15 @@
                 <div class="options-group">
                     <label style="font-weight:600; font-size:12px; text-transform:uppercase; margin-bottom:8px; display:block;">Ukupna Dimenzija</label>
                     <select class="select-box" id="sizeSelect">
-                        <option value="90x60" data-price="140" data-frame="113">90x60 cm (Set)</option>
-                        <option value="120x80" data-price="190" selected data-frame="151">120x80 cm (Set)</option>
-                        <option value="150x100" data-price="250" data-frame="189">150x100 cm (Set)</option>
-                        <option value="180x120" data-price="330" data-frame="227">180x120 cm (Set)</option>
+                        <option value="90x60" data-price="140">90x60 cm (Set)</option>
+                        <option value="120x80" data-price="190" selected>120x80 cm (Set)</option>
+                        <option value="150x100" data-price="250">150x100 cm (Set)</option>
+                        <option value="180x120" data-price="330">180x120 cm (Set)</option>
                     </select>
                 </div>
                 <div class="options-group">
                     <label class="options-group-title" style="font-weight:600; font-size:12px; text-transform:uppercase; margin-bottom:8px; display:block;">Ukrasni ram</label>
-                    <select class="select-box" id="depthSelect">
+                    <select class="select-box" id="depthSelect" data-ram-upit="1">
                         <option value="none" data-frame-opt="0" selected>Bez ukrasnog rama</option>
                         <option value="bijeli" data-frame-opt="1">Bijeli ukrasni ram</option>
                         <option value="crni" data-frame-opt="1">Crni ukrasni ram</option>
@@ -709,7 +709,7 @@ sredini, jer će ga razmak presjeći.</p>
       p.textContent=(base+ram)+' KM';
       document.body.setAttribute('data-ram', hoce ? d.value : '');
       if(hoce){ nota.textContent = naupit
-                  ? 'Ukoliko želite ukrasni ram, navedite u napomeni prilikom narudžbe.'
+                  ? 'Ukoliko želite ukrasni ram, navedite u napomeni prilikom narudžbe - cijenu rama javljamo naknadno.'
                   : 'Platno '+base+' KM + ukrasni ram '+ram+' KM';
                 nota.style.display='block'; zalihe.style.display='block'; }
       else    { nota.style.display='none'; zalihe.style.display='none'; }
