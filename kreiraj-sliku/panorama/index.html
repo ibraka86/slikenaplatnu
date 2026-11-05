@@ -343,7 +343,7 @@
         /* REALISTIC ROOM MOCKUP */
         .preview-area {
             width: 100%;
-            aspect-ratio: 1 / 1; /* Generated room_mockup is square */
+            aspect-ratio: 1/1; /* Generated room_mockup is square */
             height: auto;
             position: relative;
             overflow: hidden;
@@ -479,6 +479,37 @@
         .srodni-list a:hover { border-color:var(--magenta); color:var(--magenta); }
         @media(max-width:860px){ .pinfo-grid { grid-template-columns:1fr; gap:36px; } }
 
+    
+        .frame-note { font-size: 13px; line-height: 1.6; color: var(--mute); margin-top: 10px; }
+        .frame-note#framePrice { color: var(--ink-soft); font-weight: 500; }
+    
+        /* ── Vizuelni prikaz ukrasnog rama u previewu ──
+           Debljina se racuna iz sirine platna (--ram-w, postavlja JS), pa ram
+           izgleda jednako na desktopu i na mobitelu. box-shadow sa spreadom ne
+           ulazi u layout, pa canvas zadrzi svoju povrsinu crtanja. */
+        .panel-canvas { --ram-w: 9px; transition: box-shadow .25s ease; }
+        body[data-ram="bijeli"] .panel-canvas {
+            box-shadow: 0 0 0 calc(var(--ram-w) * .45) #FBFAF7,
+                        0 0 0 var(--ram-w) #ECE8DE,
+                        0 0 0 calc(var(--ram-w) + 1px) rgba(0,0,0,.16),
+                        0 10px 26px rgba(0,0,0,.20); }
+        body[data-ram="crni"] .panel-canvas {
+            box-shadow: 0 0 0 calc(var(--ram-w) * .45) #24262B,
+                        0 0 0 var(--ram-w) #121317,
+                        0 0 0 calc(var(--ram-w) + 1px) rgba(0,0,0,.45),
+                        0 10px 26px rgba(0,0,0,.30); }
+        body[data-ram="zlatni"] .panel-canvas {
+            box-shadow: 0 0 0 calc(var(--ram-w) * .45) #C9A449,
+                        0 0 0 var(--ram-w) #9C7B22,
+                        0 0 0 calc(var(--ram-w) + 1px) rgba(0,0,0,.32),
+                        0 10px 26px rgba(0,0,0,.25); }
+    
+        /* Dugme za brisanje - manje na mobilnoj da ne prekriva sliku */
+        @media(max-width: 768px){
+            .side-tools { right: 8px; top: 8px; gap: 6px; }
+            .side-btn { width: 28px; height: 28px; }
+            .side-btn .ms { font-size: 16px; }
+        }
     </style>
     <script type="application/ld+json">
 {
@@ -666,10 +697,6 @@
                         <span class="ms">add_photo_alternate</span>
                         Dodaj Sliku
                     </button>
-                    <button class="toolbar-btn" id="btnAddText">
-                        <span class="ms">title</span>
-                        Dodaj Tekst
-                    </button>
                     <button class="toolbar-btn" id="btnAddDesign">
                         <span class="ms">auto_awesome_mosaic</span>
                         Naš Dizajn
@@ -680,9 +707,6 @@
                 <div class="preview-area">
                     
                     <div class="side-tools">
-                        <button class="side-btn" id="btnZoomIn" title="Uveličaj sloj"><span class="ms">zoom_in</span></button>
-                        <button class="side-btn" id="btnZoomOut" title="Umanji sloj"><span class="ms">zoom_out</span></button>
-                        <button class="side-btn" id="btnRotate" title="Rotiraj"><span class="ms">rotate_right</span></button>
                         <button class="side-btn" id="btnDelete" title="Obriši" style="color: var(--crimson)"><span class="ms">delete</span></button>
                     </div>
 
@@ -705,19 +729,23 @@
                 <div class="options-group">
                     <label class="options-group-title">Ukupna dimenzija (cm)</label>
                     <select class="select-box" id="sizeSelect">
-                        <option value="100x40" data-price="120">100x40 cm</option>
-                        <option value="120x50" data-price="145" selected>120x50 cm</option>
-                        <option value="150x60" data-price="180">150x60 cm</option>
-                        <option value="200x80" data-price="265">200x80 cm</option>
+                        <option value="100x40" data-price="120" data-frame="59">100x40 cm</option>
+                        <option value="120x50" data-price="145" selected data-frame="71">120x50 cm</option>
+                        <option value="150x60" data-price="180" data-frame="88">150x60 cm</option>
+                        <option value="200x80" data-price="265" data-frame="118">200x80 cm</option>
                     </select>
                 </div>
-
                 <div class="options-group">
-                    <label class="options-group-title">Debljina okvira (cm)</label>
+                    <label class="options-group-title" style="font-weight:600; font-size:12px; text-transform:uppercase; margin-bottom:8px; display:block;">Ukrasni drveni ram</label>
                     <select class="select-box" id="depthSelect">
-                        <option value="standard" data-price-modifier="0" selected>Standardni (2 cm)</option>
-                        <option value="gallery" data-price-modifier="25">Galerijski (4 cm) - Premium</option>
+                        <option value="none" data-frame-opt="0" selected>Bez ukrasnog rama (samo drveni blind ram)</option>
+                        <option value="bijeli" data-frame-opt="1">Bijeli ukrasni drveni ram</option>
+                        <option value="crni" data-frame-opt="1">Crni ukrasni drveni ram</option>
+                        <option value="zlatni" data-frame-opt="1">Zlatni ukrasni drveni ram</option>
                     </select>
+                    <p class="frame-note frame-blind">Drveni blind ram je uključen u cijenu proizvoda.</p>
+                    <p id="framePrice" class="frame-note" style="display:none;"></p>
+                    <p class="frame-note frame-stock" style="display:none;">Boju ukrasnog drvenog rama potvrđujemo naknadno, u zavisnosti od zaliha. Javimo vam prije izrade ako odabrana boja nije dostupna.</p>
                 </div>
                 
                 <div class="options-group" style="margin-top: 30px; display:none;">
@@ -992,7 +1020,7 @@ telefon spaja više kadrova.</p>
     });
 
     // Toolbar
-    document.getElementById('btnAddText').addEventListener('click', () => {
+    (document.getElementById('btnAddText')||document.createElement('button')).addEventListener('click', () => {
         alert('Funkcija dodavanja teksta dolazi uskoro!');
     });
     // Design Modal - dinamičko učitavanje iz nas-dizajn/manifest.json
@@ -1056,9 +1084,9 @@ telefon spaja više kadrova.</p>
 
 
     // Side tools
-    document.getElementById('btnZoomIn').addEventListener('click',  () => { imgScale *= 1.15; render(); });
-    document.getElementById('btnZoomOut').addEventListener('click', () => { imgScale = Math.max(0.2, imgScale * 0.87); render(); });
-    document.getElementById('btnRotate').addEventListener('click',  () => { imgAngle = (imgAngle + 15) % 360; render(); });
+    (document.getElementById('btnZoomIn')||document.createElement('button')).addEventListener('click',  () => { imgScale *= 1.15; render(); });
+    (document.getElementById('btnZoomOut')||document.createElement('button')).addEventListener('click', () => { imgScale = Math.max(0.2, imgScale * 0.87); render(); });
+    (document.getElementById('btnRotate')||document.createElement('button')).addEventListener('click',  () => { imgAngle = (imgAngle + 15) % 360; render(); });
     document.getElementById('btnDelete').addEventListener('click',  () => {
         srcImg = null; imgScale = 1; imgAngle = 0; imgPanX = 0; imgPanY = 0; render();
     });
@@ -1090,5 +1118,44 @@ telefon spaja više kadrova.</p>
 
 </script>
     <script src="../../js/cart-logic.js"></script>
+
+<script>
+/* Ukrasni ram - cijena po obimu platna, racuna se preko postojece logike */
+(function(){
+  function init(){
+    var s=document.getElementById('sizeSelect'), d=document.getElementById('depthSelect'),
+        p=document.getElementById('priceDisplay'), nota=document.getElementById('framePrice'),
+        zalihe=document.querySelector('.frame-stock');
+    if(!s||!d||!p) return;
+    function osvjezi(){
+      var o=s.options[s.selectedIndex];
+      var base=parseInt(o.getAttribute('data-price')||'0',10);
+      var hoce=d.options[d.selectedIndex].getAttribute('data-frame-opt')==='1';
+      var naupit=d.getAttribute('data-ram-upit')==='1';
+      var ram=(hoce && !naupit)?parseInt(o.getAttribute('data-frame')||'0',10):0;
+      p.textContent=(base+ram)+' KM';
+      document.body.setAttribute('data-ram', hoce ? d.value : '');
+      skaliraj();
+      if(hoce){ nota.textContent = naupit
+                  ? 'Ukoliko želite ukrasni drveni ram, navedite u napomeni prilikom narudžbe - cijenu rama javljamo naknadno.'
+                  : 'Platno '+base+' KM + ukrasni drveni ram '+ram+' KM';
+                nota.style.display='block'; zalihe.style.display='block'; }
+      else    { nota.style.display='none'; zalihe.style.display='none'; }
+    }
+    function skaliraj(){
+      // debljina rama = 2.5% sirine platna, ogranicena na 3-12 px
+      document.querySelectorAll('.panel-canvas').forEach(function(c){
+        var w=c.getBoundingClientRect().width;
+        if(!w) return;
+        c.style.setProperty('--ram-w', Math.max(3, Math.min(12, Math.round(w*0.025)))+'px');
+      });
+    }
+    addEventListener('resize', skaliraj);
+    s.addEventListener('change',osvjezi); d.addEventListener('change',osvjezi);
+    osvjezi();
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+})();
+</script>
 </body>
 </html>

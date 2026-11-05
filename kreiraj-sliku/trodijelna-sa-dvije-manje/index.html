@@ -108,13 +108,13 @@
             border-right: 1px solid rgba(255,255,255,0.1);
         }
 
-        .preview-area { width: 100%; aspect-ratio: 16/9; position: relative; overflow: hidden; background: url('room_mockup.png') center/cover; }
+        .preview-area { width: 100%; aspect-ratio: 1/1; position: relative; overflow: hidden; background: url('room_mockup.png') center/cover; }
 
         /* MULTI-PANEL GRID */
         .panels-grid {
-            position: absolute; top: 15%; left: 50%; transform: translateX(-50%);
-            width: 50%; display: grid; grid-template-columns: 1fr 1.5fr 1fr;
-            gap: 4px; align-items: center; z-index: 3; filter: drop-shadow(0 20px 50px rgba(0,0,0,0.3));
+            position: absolute; top: 12%; left: 50%; transform: translateX(-50%);
+            width: 52%; aspect-ratio: 3/2; display: grid; grid-template-columns: 1fr 1.5fr 1fr;
+            gap: 10px; align-items: center; z-index: 3; filter: drop-shadow(0 20px 50px rgba(0,0,0,0.3));
         }
         .panel-canvas { width: 100%; height: 100%; background: #fff; cursor: grab; }
         .panel-wrap { height: 100%; aspect-ratio: auto; }
@@ -278,6 +278,17 @@
         .srodni-list a:hover { border-color:var(--magenta); color:var(--magenta); }
         @media(max-width:860px){ .pinfo-grid { grid-template-columns:1fr; gap:36px; } }
 
+    
+        .frame-note { font-size: 13px; line-height: 1.6; color: var(--mute); margin-top: 10px; }
+        .frame-note#framePrice { color: var(--ink-soft); font-weight: 500; }
+    
+    
+        /* Dugme za brisanje - manje na mobilnoj da ne prekriva sliku */
+        @media(max-width: 768px){
+            .side-tools { right: 8px; top: 8px; gap: 6px; }
+            .side-btn { width: 28px; height: 28px; }
+            .side-btn .ms { font-size: 16px; }
+        }
     </style>
     <script type="application/ld+json">
 {
@@ -455,10 +466,8 @@
                 </div>
                 <div class="preview-area">
                     <div class="side-tools">
-                        <button class="side-btn" id="btnZoomIn"><span class="ms">zoom_in</span></button>
-                        <button class="side-btn" id="btnZoomOut"><span class="ms">zoom_out</span></button>
-                        <button class="side-btn" id="btnRotate"><span class="ms">rotate_right</span></button>
-                    </div>
+                    
+                        <button class="side-btn" id="btnDelete" title="Ukloni sliku" style="color: var(--crimson)"><span class="ms">delete</span></button></div>
                     <div class="panels-grid">
                         <div class="panel-wrap"><canvas class="panel-canvas"></canvas></div>
                         <div class="panel-wrap"><canvas class="panel-canvas"></canvas></div>
@@ -477,6 +486,10 @@
                         <option value="120x80" data-price="190">120x80 cm (Set)</option>
                         <option value="150x100" data-price="250">150x100 cm (Set)</option>
                     </select>
+                </div>
+                <div class="options-group">
+                    <p class="frame-note frame-blind">Drveni blind ram je uključen u cijenu proizvoda.</p>
+                    <p class="frame-note">Moguće je dodati i ukrasni drveni ram - navedite u napomeni prilikom narudžbe, pa vam cijenu saopštavamo naknadno.</p>
                 </div>
                 <div class="price-wrap">
                     <span>Ukupna cijena</span>
@@ -549,9 +562,9 @@
     window.onmousemove = e => { if(!dragging) return; imgPanX += e.clientX - lastX; imgPanY += e.clientY - lastY; lastX=e.clientX; lastY=e.clientY; render(); };
     window.onmouseup = () => dragging = false;
 
-    document.getElementById('btnZoomIn').onclick = () => { imgScale *= 1.1; render(); };
-    document.getElementById('btnZoomOut').onclick = () => { imgScale /= 1.1; render(); };
-    document.getElementById('btnRotate').onclick = () => { imgAngle = (imgAngle+90)%360; render(); };
+    (document.getElementById('btnZoomIn')||document.createElement('button')).onclick = () => { imgScale *= 1.1; render(); };
+    (document.getElementById('btnZoomOut')||document.createElement('button')).onclick = () => { imgScale /= 1.1; render(); };
+    (document.getElementById('btnRotate')||document.createElement('button')).onclick = () => { imgAngle = (imgAngle+90)%360; render(); };
     document.getElementById('btnAddImage').onclick = () => imageUpload.click();
 
     imageUpload.onchange = e => {
@@ -680,6 +693,7 @@ klasičan triptih sa tri jednaka dijela je bolji izbor.</p>
         </div>
     </div>
 </footer>
+
 
 </body>
 </html>
