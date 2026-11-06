@@ -2192,10 +2192,45 @@
         const wrap = video.parentElement;
         function naSliku() { if (wrap) wrap.classList.add('video-fallback'); }
 
+        // Video traje 5,21 s, ali na kraju četkica legne razvučena preko
+        // platna i slika djeluje nedovršeno. Zaustavlja se na 4,88 s: tu je
+        // četkica zadnji put na vrhu poteza, a slika je puna.
+        //
+        // Izvorni video ima vodeni žig ("AI") fiksiran u gornjem desnom
+        // uglu. Vidi se samo dok tamna drška četkice prolazi ispod njega -
+        // na frejmovima 75-87 i 107-116. Zato se ne smije stati u tim
+        // rasponima, inače žig trajno stoji na naslovnoj. Ovdje stajemo na
+        // frejm 117-118, gdje je to polje čisto bijelo.
+        //
+        // Alternativa bez žiga i sa manjom četkicom je 3,67 s (frejm 88),
+        // ali je slika tamo tanja - bez zelene i tirkizne.
+        const STANI = 4.88;
+
         video.loop = false;
         video.preload = 'auto';
 
-        // Bez ovoga bi se video vratio na prvi, prazan frejm.
+        let stao = false;
+        function mozdaStani() {
+            if (stao || video.currentTime < STANI) return false;
+            stao = true;
+            video.pause();
+            return true;
+        }
+
+        // requestVideoFrameCallback se javlja na svaki frejm, pa je rez tačan.
+        // timeupdate ide tek oko 4 puta u sekundi i zna prebaciti, ali vraćanje
+        // unazad nije opcija - server ne šalje Accept-Ranges, pa premotavanje
+        // ne radi. Zato prvo tačan put, a timeupdate samo kao rezerva.
+        if (video.requestVideoFrameCallback) {
+            const tik = function () {
+                if (!mozdaStani()) video.requestVideoFrameCallback(tik);
+            };
+            video.requestVideoFrameCallback(tik);
+        } else {
+            video.addEventListener('timeupdate', mozdaStani);
+        }
+
+        // Ako zaustavljanje omaši, bar ne vraćaj na prvi, prazan frejm.
         video.addEventListener('ended', function () { video.pause(); });
         video.addEventListener('error', naSliku);
 
