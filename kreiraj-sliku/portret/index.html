@@ -575,11 +575,11 @@
                 <div class="options-group">
                     <label class="options-group-title">Dimenzija (cm)</label>
                     <select class="select-box" id="sizeSelect">
-                        <option value="30x40" data-price="90" data-frame="29">30x40 cm</option>
-                        <option value="40x60" data-price="105" selected data-frame="42">40x60 cm</option>
-                        <option value="50x70" data-price="115" data-frame="50">50x70 cm</option>
-                        <option value="60x80" data-price="130" data-frame="59">60x80 cm</option>
-                        <option value="70x100" data-price="160" data-frame="71">70x100 cm</option>
+                        <option value="30x40" data-price="90" data-frame="30">30x40 cm</option>
+                        <option value="40x60" data-price="105" selected data-frame="45">40x60 cm</option>
+                        <option value="50x70" data-price="115" data-frame="55">50x70 cm</option>
+                        <option value="60x80" data-price="130" data-frame="60">60x80 cm</option>
+                        <option value="70x100" data-price="160" data-frame="75">70x100 cm</option>
                     </select>
                 </div>
                 <div class="options-group">
@@ -659,7 +659,10 @@
     (document.getElementById('btnZoomIn')||document.createElement('button')).onclick = () => { imgScale *= 1.1; render(); };
     (document.getElementById('btnZoomOut')||document.createElement('button')).onclick = () => { imgScale /= 1.1; render(); };
     (document.getElementById('btnRotate')||document.createElement('button')).onclick = () => { imgAngle = (imgAngle + 90) % 360; render(); };
-    document.getElementById('btnDelete').onclick = () => { srcImg = null; render(); };
+    document.getElementById('btnDelete').onclick = () => { srcImg = null; render();
+        var _u=document.getElementById('imageUpload'); if(_u) _u.value='';
+        window._pendingUploadFile=null; window._selectedDesignUrl=null;
+    };
 
     document.getElementById('btnAddImage').onclick = () => imageUpload.click();
     imageUpload.onchange = e => {

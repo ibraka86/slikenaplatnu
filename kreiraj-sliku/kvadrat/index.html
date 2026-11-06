@@ -576,10 +576,10 @@
                     <label class="options-group-title">Dimenzija (cm)</label>
                     <select class="select-box" id="sizeSelect">
                         <option value="30x30" data-price="85" data-frame="25">30x30 cm</option>
-                        <option value="40x40" data-price="95" selected data-frame="34">40x40 cm</option>
-                        <option value="50x50" data-price="105" data-frame="42">50x50 cm</option>
-                        <option value="60x60" data-price="120" data-frame="50">60x60 cm</option>
-                        <option value="80x80" data-price="150" data-frame="67">80x80 cm</option>
+                        <option value="40x40" data-price="95" selected data-frame="35">40x40 cm</option>
+                        <option value="50x50" data-price="105" data-frame="45">50x50 cm</option>
+                        <option value="60x60" data-price="120" data-frame="55">60x60 cm</option>
+                        <option value="80x80" data-price="150" data-frame="70">80x80 cm</option>
                     </select>
                 </div>
                 <div class="options-group">
@@ -659,7 +659,10 @@
     (document.getElementById('btnZoomIn')||document.createElement('button')).onclick = () => { imgScale *= 1.1; render(); };
     (document.getElementById('btnZoomOut')||document.createElement('button')).onclick = () => { imgScale /= 1.1; render(); };
     (document.getElementById('btnRotate')||document.createElement('button')).onclick = () => { imgAngle = (imgAngle + 90) % 360; render(); };
-    document.getElementById('btnDelete').onclick = () => { srcImg = null; render(); };
+    document.getElementById('btnDelete').onclick = () => { srcImg = null; render();
+        var _u=document.getElementById('imageUpload'); if(_u) _u.value='';
+        window._pendingUploadFile=null; window._selectedDesignUrl=null;
+    };
 
     document.getElementById('btnAddImage').onclick = () => imageUpload.click();
     imageUpload.onchange = e => {

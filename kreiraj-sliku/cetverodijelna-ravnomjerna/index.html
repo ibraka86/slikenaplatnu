@@ -1075,6 +1075,8 @@ triptiha, pazite da najvažniji detalj ne padne tačno na liniju razmaka.</p>
     (document.getElementById('btnRotate')||document.createElement('button')).addEventListener('click',  () => { imgAngle = (imgAngle + 15) % 360; render(); });
     document.getElementById('btnDelete').addEventListener('click',  () => {
         srcImg = null; imgScale = 1; imgAngle = 0; imgPanX = 0; imgPanY = 0; render();
+        var _u=document.getElementById('imageUpload'); if(_u) _u.value='';
+        window._pendingUploadFile=null; window._selectedDesignUrl=null;
     });
 
     // Gap slider
