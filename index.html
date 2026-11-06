@@ -578,6 +578,14 @@
            platno). Video bi tu ionako stajao na prvom, praznom frejmu kad
            browser blokira autoplay, a povlačio bi 1,3 MB preko mobilnih podataka. */
         .hero-still { display: none; }
+        /* Ako browser odbije autoplay, umjesto praznog platna ide isti obojeni
+           frejm koji se koristi na mobitelu. */
+        .hero-video-wrap.video-fallback video { display: none; }
+        .hero-video-wrap.video-fallback .hero-still { display: block; width: 100%; }
+        .hero-video-wrap.video-fallback .hero-still img {
+            display: block; width: 100%; height: auto;
+            object-fit: contain; max-height: 90vh; margin: 0 auto;
+        }
         @media(max-width:1024px){
             .hero-video-wrap video { display: none; }
             .hero-still { display: block; width: 100%; }
@@ -2165,87 +2173,41 @@
         });
     });
 
-    // ── Hero Video Scroll Scrub + Pin ──
-    (function() {
+    // ── Hero Video: pusti jednom i stani na obojenom platnu ──
+    // Ranije je ovdje bio scrub vezan za skrol, sa pinom od oko 1560px. Scrub
+    // traži da server šalje Accept-Ranges za video.mp4; nginx ga gzipuje pa
+    // byte range otpada, Chrome tada prijavi seekable=0 i tiho ignoriše
+    // currentTime - platno je ostajalo prazno koliko god se skrolalo. Sada
+    // video odsvira jednom i stane na posljednjem frejmu: bez zavisnosti od
+    // zaglavlja servera, bez pina ispred sadržaja, i posjetilac odmah vidi
+    // gotovo platno umjesto praznog.
+    (function () {
         const video = document.getElementById('heroVideo');
         if (!video) return;
 
-        video.pause();
-        video.currentTime = 0;
-
-        // Scrub traži cijeli fajl u bufferu; na mobitelu video se samo pusti
-        // jednom pa nema razloga rano povlačiti 1.3 MB preko mobilnih podataka.
-        if (matchMedia('(min-width: 1025px)').matches) {
-            video.preload = 'auto';
-            video.load();
-        }
-
-        // Ispod 1025px video se ne koristi (CSS prikazuje statičnu sliku), pa
-        // ga ne diramo - play() bi na prvi dodir povukao cijeli fajl.
+        // Ispod 1025px CSS već prikazuje statičnu obojenu sliku, pa video ne
+        // diramo - povukao bi 1,3 MB preko mobilnih podataka bez potrebe.
         if (!matchMedia('(min-width: 1025px)').matches) return;
 
-        // iOS ne dekodira frejmove dok se video bar jednom ne pusti korisničkom
-        // gestom - bez ovoga scrubbing na iPadu u landscapeu stoji na prvom frejmu.
-        let unlocked = false;
-        function unlock() {
-            if (unlocked) return;
-            unlocked = true;
+        const wrap = video.parentElement;
+        function naSliku() { if (wrap) wrap.classList.add('video-fallback'); }
+
+        video.loop = false;
+        video.preload = 'auto';
+
+        // Bez ovoga bi se video vratio na prvi, prazan frejm.
+        video.addEventListener('ended', function () { video.pause(); });
+        video.addEventListener('error', naSliku);
+
+        function pusti() {
             const p = video.play();
-            if (p && p.then) p.then(() => video.pause()).catch(() => {});
-            else video.pause();
-        }
-        ['touchstart', 'pointerdown'].forEach(ev =>
-            document.addEventListener(ev, unlock, { once: true, passive: true })
-        );
-
-        // Desktop / tablet u landscapeu - hero stane u ekran, pin ima smisla
-        function desktopScrub() {
-            // 300px of scroll per second of video - feel free to tune
-            const scrollDist = Math.ceil(video.duration * 300);
-
-            ScrollTrigger.create({
-                trigger: '.hero-section',
-                start: 'top top',
-                end: '+=' + scrollDist,
-                pin: true,
-                scrub: 0.6,
-                onUpdate(self) {
-                    video.currentTime = self.progress * video.duration;
-                }
-            });
+            if (p && p.catch) p.catch(naSliku);
         }
 
-        function init() {
-            if (!video.duration) return;
+        if (video.readyState >= 3) pusti();
+        else video.addEventListener('canplay', pusti, { once: true });
 
-            // gsap.matchMedia() je aktuelni API; ScrollTrigger.matchMedia() je
-            // deprecated od 3.11. Ako nijedan ne postoji, radije napravi trigger
-            // direktno nego da cijeli efekat tiho otpadne.
-            if (gsap.matchMedia) {
-                const mm = gsap.matchMedia();
-                mm.add('(min-width: 1025px)', desktopScrub);
-            } else if (ScrollTrigger.matchMedia) {
-                ScrollTrigger.matchMedia({
-                    '(min-width: 1025px)': desktopScrub
-                });
-            } else {
-                desktopScrub();
-            }
-        }
-
-        if (video.readyState >= 1) {
-            init();
-        } else {
-            video.addEventListener('loadedmetadata', init, { once: true });
-        }
-
-        // Adresna traka na mobitelu mijenja visinu viewporta usred skrola -
-        // bez refresha pin ostaje na starim mjerama i layout poskoči.
-        let rt;
-        addEventListener('resize', () => {
-            clearTimeout(rt);
-            rt = setTimeout(() => ScrollTrigger.refresh(), 200);
-        });
+        video.load();
     })();
 
 </script>
