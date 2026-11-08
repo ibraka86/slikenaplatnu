@@ -507,17 +507,17 @@
                 <div class="options-group">
                     <label class="options-group-title" style="font-weight:600; font-size:12px; text-transform:uppercase; margin-bottom:8px; display:block;">Dodatni ukrasni ram</label>
                     <select class="select-box" id="depthSelect">
-                        <option value="none" data-frame-opt="0" selected>Bez ukrasnog rama (samo standardni drveni ram)</option>
-                        <option value="bijeli" data-frame-opt="1">Bijeli ukrasni drveni ram</option>
-                        <option value="crni" data-frame-opt="1">Crni ukrasni drveni ram</option>
-                        <option value="zlatni" data-frame-opt="1">Zlatni ukrasni drveni ram</option>
+                        <option value="none" data-frame-opt="0" selected>Bez dodatnog ukrasnog rama (samo standardni drveni ram)</option>
+                        <option value="bijeli" data-frame-opt="1">Bijeli ukrasni ram</option>
+                        <option value="crni" data-frame-opt="1">Crni ukrasni ram</option>
+                        <option value="zlatni" data-frame-opt="1">Zlatni ukrasni ram</option>
                     </select>
                     <p class="frame-note frame-blind">Standardni drveni ram je uključen u cijenu.</p>
                     <p id="framePrice" class="frame-note" style="display:none;"></p>
                     <p class="frame-note frame-stock" style="display:none;">Boju dodatnog ukrasnog rama potvrđujemo naknadno, u zavisnosti od zaliha. Javimo vam prije izrade ako odabrana boja nije dostupna.</p>
                 </div>
                 <div class="price-wrap">
-                    <span>Ukupna cijena</span>
+                    <span id="priceLabel">Slika sa drvenim ramom</span>
                     <span class="price-amount" id="priceDisplay">105 KM</span>
                 </div>
                 <button class="btn-grad" id="addToCartBtn" style="width:100%; margin-top:30px;">Dodaj u korpu</button>
@@ -712,6 +712,7 @@ panorama bolje popunjavaju prostor.</p>
   function init(){
     var s=document.getElementById('sizeSelect'), d=document.getElementById('depthSelect'),
         p=document.getElementById('priceDisplay'), nota=document.getElementById('framePrice'),
+        oznaka=document.getElementById('priceLabel'),
         zalihe=document.querySelector('.frame-stock');
     if(!s||!d||!p) return;
     function osvjezi(){
@@ -721,11 +722,13 @@ panorama bolje popunjavaju prostor.</p>
       var naupit=d.getAttribute('data-ram-upit')==='1';
       var ram=(hoce && !naupit)?parseInt(o.getAttribute('data-frame')||'0',10):0;
       p.textContent=(base+ram)+' KM';
+      if(oznaka) oznaka.textContent = hoce ? 'Slika sa drvenim ramom + ukrasni ram'
+                                           : 'Slika sa drvenim ramom';
       document.body.setAttribute('data-ram', hoce ? d.value : '');
       skaliraj();
       if(hoce){ nota.textContent = naupit
                   ? 'Ukoliko želite dodatni ukrasni ram, navedite u napomeni prilikom narudžbe - cijenu rama javljamo naknadno.'
-                  : 'Platno '+base+' KM + dodatni ukrasni ram '+ram+' KM';
+                  : 'Slika sa drvenim ramom '+base+' KM + dodatni ukrasni ram '+ram+' KM';
                 nota.style.display='block'; zalihe.style.display='block'; }
       else    { nota.style.display='none'; zalihe.style.display='none'; }
     }
