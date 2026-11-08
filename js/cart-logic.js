@@ -126,7 +126,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const order = {
                 product: productName,
                 size: sizeSelect ? sizeSelect.options[sizeSelect.selectedIndex].text : 'Standard',
-                depth: depthSelect ? depthSelect.options[depthSelect.selectedIndex].text : 'Standard',
+                // Višedijelni formati nemaju izbor rama. Ranije je ovdje stajalo
+                // 'Standard', pa je kupcu u pregledu i u mejlu pisalo "Okvir:
+                // Standard" iako ništa nije birao - zvučalo je kao da je neki
+                // okvir uračunat, što je upravo nesporazum koji izbjegavamo.
+                depth: depthSelect ? depthSelect.options[depthSelect.selectedIndex].text
+                                   : 'Bez dodatnog ukrasnog rama',
                 price: priceDisp ? priceDisp.textContent.trim() : '0 KM',
                 gap: gapRange ? gapRange.value + 'px' : 'N/A',
                 imageUrl: imageUrl,

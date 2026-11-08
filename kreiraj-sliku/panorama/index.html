@@ -481,6 +481,7 @@
 
     
         .frame-note { font-size: 13px; line-height: 1.6; color: var(--mute); margin-top: 10px; }
+        .frame-note.frame-blind { font-weight: 600; color: var(--ink); }
         .frame-note#framePrice { color: var(--ink-soft); font-weight: 500; }
     
         /* ── Vizuelni prikaz ukrasnog rama u previewu ──
@@ -575,10 +576,10 @@
         },
         {
           "@type": "Question",
-          "name": "Kolika je razlika između standardnog i galerijskog rama?",
+          "name": "Da li je ram uključen u cijenu?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Standardni ram je dubine 2 cm i slika stoji skoro uz zid. Galerijski je 4 cm, pa platno izlazi iz zida i baca sjenu - izgleda masivnije i skuplje. Na većim dimenzijama preporučujemo galerijski jer tanak ram uz veliku površinu djeluje nesrazmjerno."
+            "text": "Standardni drveni ram na koji je platno zategnuto je uključen u cijenu - to je konstrukcija zbog koje slika stoji ravno i zategnuto. Dodatni ukrasni ram (bijeli, crni ili zlatni) je zaseban izbor koji se doplaćuje i nije uračunat u prikazanu cijenu platna."
           }
         },
         {
@@ -736,16 +737,16 @@
                     </select>
                 </div>
                 <div class="options-group">
-                    <label class="options-group-title" style="font-weight:600; font-size:12px; text-transform:uppercase; margin-bottom:8px; display:block;">Ukrasni drveni ram</label>
+                    <label class="options-group-title" style="font-weight:600; font-size:12px; text-transform:uppercase; margin-bottom:8px; display:block;">Dodatni ukrasni ram</label>
                     <select class="select-box" id="depthSelect">
-                        <option value="none" data-frame-opt="0" selected>Bez ukrasnog rama (samo drveni blind ram)</option>
+                        <option value="none" data-frame-opt="0" selected>Bez ukrasnog rama (samo standardni drveni ram)</option>
                         <option value="bijeli" data-frame-opt="1">Bijeli ukrasni drveni ram</option>
                         <option value="crni" data-frame-opt="1">Crni ukrasni drveni ram</option>
                         <option value="zlatni" data-frame-opt="1">Zlatni ukrasni drveni ram</option>
                     </select>
-                    <p class="frame-note frame-blind">Drveni blind ram je uključen u cijenu proizvoda.</p>
+                    <p class="frame-note frame-blind">Standardni drveni ram je uključen u cijenu.</p>
                     <p id="framePrice" class="frame-note" style="display:none;"></p>
-                    <p class="frame-note frame-stock" style="display:none;">Boju ukrasnog drvenog rama potvrđujemo naknadno, u zavisnosti od zaliha. Javimo vam prije izrade ako odabrana boja nije dostupna.</p>
+                    <p class="frame-note frame-stock" style="display:none;">Boju dodatnog ukrasnog rama potvrđujemo naknadno, u zavisnosti od zaliha. Javimo vam prije izrade ako odabrana boja nije dostupna.</p>
                 </div>
                 
                 <div class="options-group" style="margin-top: 30px; display:none;">
@@ -812,7 +813,7 @@ telefon spaja više kadrova.</p>
                 <h2 class="pinfo-faq-title">Česta pitanja</h2>
                 <div class="pfaq">
 <details><summary><h3>Koliko mi treba rezolucija fotografije?</h3></summary><p>Pošaljite fotografiju koju imate. Mi je pripremamo za print i uvećavamo kad zatreba, pa rezolucija nije uslov za narudžbu. Veća fotografija daje oštriji otisak, pa ako imate original iz galerije telefona ili sa fotoaparata, radije pošaljite njega. Ako procijenimo da na izabranoj dimenziji neće dobro izgledati, javit ćemo vam prije štampe.</p></details>
-<details><summary><h3>Kolika je razlika između standardnog i galerijskog rama?</h3></summary><p>Standardni ram je dubine 2 cm i slika stoji skoro uz zid. Galerijski je 4 cm, pa platno izlazi iz zida i baca sjenu - izgleda masivnije i skuplje. Na većim dimenzijama preporučujemo galerijski jer tanak ram uz veliku površinu djeluje nesrazmjerno.</p></details>
+<details><summary><h3>Da li je ram uključen u cijenu?</h3></summary><p>Standardni drveni ram na koji je platno zategnuto je uključen u cijenu - to je konstrukcija zbog koje slika stoji ravno i zategnuto. Dodatni ukrasni ram (bijeli, crni ili zlatni) je zaseban izbor koji se doplaćuje i nije uračunat u prikazanu cijenu platna.</p></details>
 <details><summary><h3>Kako se slika kači na zid?</h3></summary><p>Svaka slika stiže spremna za kačenje, sa pričvršćenim nosačem na zadnjoj strani. Preporučena visina je da centar slike bude na oko 145–150 cm od poda - to je visina očiju prosječne odrasle osobe.</p></details>
 </div>
             </div>
@@ -1139,8 +1140,8 @@ telefon spaja više kadrova.</p>
       document.body.setAttribute('data-ram', hoce ? d.value : '');
       skaliraj();
       if(hoce){ nota.textContent = naupit
-                  ? 'Ukoliko želite ukrasni drveni ram, navedite u napomeni prilikom narudžbe - cijenu rama javljamo naknadno.'
-                  : 'Platno '+base+' KM + ukrasni drveni ram '+ram+' KM';
+                  ? 'Ukoliko želite dodatni ukrasni ram, navedite u napomeni prilikom narudžbe - cijenu rama javljamo naknadno.'
+                  : 'Platno '+base+' KM + dodatni ukrasni ram '+ram+' KM';
                 nota.style.display='block'; zalihe.style.display='block'; }
       else    { nota.style.display='none'; zalihe.style.display='none'; }
     }
