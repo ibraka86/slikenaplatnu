@@ -758,7 +758,7 @@
                 </div>
 
                 <div class="price-wrap">
-                    <span class="price-label" id="priceLabel">Slika sa drvenim ramom</span>
+                    <span class="price-label">Ukupna cijena</span>
                     <span class="price-amount" id="priceDisplay">145 KM</span>
                 </div>
 
@@ -1128,7 +1128,6 @@ telefon spaja više kadrova.</p>
   function init(){
     var s=document.getElementById('sizeSelect'), d=document.getElementById('depthSelect'),
         p=document.getElementById('priceDisplay'), nota=document.getElementById('framePrice'),
-        oznaka=document.getElementById('priceLabel'),
         zalihe=document.querySelector('.frame-stock');
     if(!s||!d||!p) return;
     function osvjezi(){
@@ -1138,8 +1137,6 @@ telefon spaja više kadrova.</p>
       var naupit=d.getAttribute('data-ram-upit')==='1';
       var ram=(hoce && !naupit)?parseInt(o.getAttribute('data-frame')||'0',10):0;
       p.textContent=(base+ram)+' KM';
-      if(oznaka) oznaka.textContent = hoce ? 'Slika sa drvenim ramom + ukrasni ram'
-                                           : 'Slika sa drvenim ramom';
       document.body.setAttribute('data-ram', hoce ? d.value : '');
       skaliraj();
       if(hoce){ nota.textContent = naupit

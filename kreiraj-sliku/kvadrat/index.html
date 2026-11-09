@@ -596,7 +596,7 @@
                     <p class="frame-note frame-stock" style="display:none;">Boju dodatnog ukrasnog rama potvrđujemo naknadno, u zavisnosti od zaliha. Javimo vam prije izrade ako odabrana boja nije dostupna.</p>
                 </div>
                 <div class="price-wrap">
-                    <span class="price-label" id="priceLabel">Slika sa drvenim ramom</span>
+                    <span class="price-label">Ukupna cijena</span>
                     <span class="price-amount" id="priceDisplay">95 KM</span>
                 </div>
                 <button class="btn-grad" id="addToCartBtn" style="width: 100%; margin-top: 30px; padding: 18px;">Dodaj u korpu</button>
@@ -801,7 +801,6 @@ upravo ono što ih čini dobrim.</p>
   function init(){
     var s=document.getElementById('sizeSelect'), d=document.getElementById('depthSelect'),
         p=document.getElementById('priceDisplay'), nota=document.getElementById('framePrice'),
-        oznaka=document.getElementById('priceLabel'),
         zalihe=document.querySelector('.frame-stock');
     if(!s||!d||!p) return;
     function osvjezi(){
@@ -811,8 +810,6 @@ upravo ono što ih čini dobrim.</p>
       var naupit=d.getAttribute('data-ram-upit')==='1';
       var ram=(hoce && !naupit)?parseInt(o.getAttribute('data-frame')||'0',10):0;
       p.textContent=(base+ram)+' KM';
-      if(oznaka) oznaka.textContent = hoce ? 'Slika sa drvenim ramom + ukrasni ram'
-                                           : 'Slika sa drvenim ramom';
       document.body.setAttribute('data-ram', hoce ? d.value : '');
       skaliraj();
       if(hoce){ nota.textContent = naupit
