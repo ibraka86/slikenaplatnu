@@ -1,0 +1,20 @@
+{
+  "_style": "interior photography, camera straight on and level with the empty wall, wall perfectly parallel to the sensor, soft natural daylight from a side window, calm neutral palette, realistic materials, shallow depth of field on the foreground only, wall itself in sharp focus",
+  "_tail": "the wall is completely bare - no artwork, no posters, no picture frames, no mirrors, no shelves and no wall decoration of any kind, a wide uninterrupted expanse of empty wall in the upper half of the frame, photorealistic, 35mm lens, no text, no watermark, no people",
+
+  "dnevna-01": { "prompt": "a bright Scandinavian living room, a low linen sofa against a warm white wall, a small walnut side table, a fiddle leaf fig in a ceramic pot, light oak floor and a jute rug", "size": [1024, 1024] },
+  "dnevna-02": { "prompt": "a modern living room with a deep green velvet sofa against a soft greige wall, a brass floor lamp, a round marble coffee table, herringbone parquet", "size": [1024, 1024] },
+  "dnevna-03": { "prompt": "a warm rustic living room, a beige boucle armchair and a wooden bench against a lime plaster wall in a sand tone, dried pampas in a clay vase", "size": [1024, 1024] },
+
+  "spavaca-01": { "prompt": "a serene bedroom, an upholstered oatmeal headboard against a pale warm white wall, white linen bedding, two small wooden nightstands with matte black lamps", "size": [1024, 1024] },
+  "spavaca-02": { "prompt": "a moody bedroom with a deep charcoal wall behind a low walnut bed, cream bedding, a single rattan pendant lamp, soft morning light", "size": [1024, 1024] },
+
+  "trpezarija-01": { "prompt": "a dining room, an oak table with four pale fabric chairs against a smooth off white wall, a linen pendant lamp above the table, a bowl of lemons", "size": [1024, 1024] },
+  "trpezarija-02": { "prompt": "a dining nook with a round marble table and black metal chairs against a muted sage green wall, a sideboard in light wood", "size": [1024, 1024] },
+
+  "hodnik-01": { "prompt": "an entrance hallway, a slim console table in light oak against a bare white wall, a ceramic vase with eucalyptus, a woven basket on the floor, terrazzo tiles", "size": [1024, 1024] },
+
+  "radni-01": { "prompt": "a calm home office, a light oak desk against a warm grey wall, a wooden chair, a small lamp and a closed notebook, nothing on the wall", "size": [1024, 1024] },
+
+  "djecija-01": { "prompt": "a soft childrens room, a small white bed with pastel bedding against a pale blush wall, a low bookshelf with the spines facing out, a knitted basket of toys", "size": [1024, 1024] }
+}
