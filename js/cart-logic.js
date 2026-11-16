@@ -95,6 +95,27 @@ document.addEventListener('DOMContentLoaded', () => {
             const gapRange    = document.getElementById('gapRange');
             const imageInput  = document.getElementById('imageUpload');
 
+            // GA4: šalje se odmah na klik, prije uploada. Upload zna trajati i
+            // po minut na slaboj vezi, pa ako ga neko ne dočeka, ovaj događaj
+            // je jedini trag da je htio naručiti. Razlika između add_to_cart i
+            // begin_checkout pokazuje koliko ih se izgubi baš na uploadu.
+            if (window.gtag) {
+                const cijena = priceDisp ? parseInt(priceDisp.textContent, 10) || 0 : 0;
+                gtag('event', 'add_to_cart', {
+                    currency: 'BAM',
+                    value: cijena,
+                    items: [{
+                        item_name: productName,
+                        item_variant: sizeSelect ? sizeSelect.options[sizeSelect.selectedIndex].text : '',
+                        item_category: depthSelect
+                            ? depthSelect.options[depthSelect.selectedIndex].text
+                            : 'Bez dodatnog ukrasnog rama',
+                        price: cijena,
+                        quantity: 1
+                    }]
+                });
+            }
+
             cartBtn.innerHTML = '<span class="ms">sync</span> Pripremam...';
             cartBtn.style.opacity = '0.7';
             cartBtn.disabled = true;

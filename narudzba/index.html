@@ -444,6 +444,21 @@
                 : `, Slika: nije dodata`;
         hiddenOrderDetails.value = `Proizvod: ${orderData.product}, Dimenzija: ${orderData.size}, Okvir: ${orderData.depth}, Razmak: ${orderData.gap}, Dostava: 11 KM${imageNote}`;
         hiddenTotalPrice.value = totalPrice + ' KM (cijena ' + orderData.price + ' + dostava 11 KM)';
+
+        // GA4: kupac je stvarno stigao do korpe sa proizvodom u njoj.
+        if (window.gtag) {
+            gtag('event', 'begin_checkout', {
+                currency: 'BAM',
+                value: totalPrice,
+                items: [{
+                    item_name: orderData.product,
+                    item_variant: orderData.size,
+                    item_category: orderData.depth,
+                    price: basePrice,
+                    quantity: 1
+                }]
+            });
+        }
     } else {
         itemsContainer.innerHTML = '<p style="color:red">Vaša korpa je prazna. Molimo odaberite proizvod.</p>';
         document.getElementById('submitBtn').disabled = true;
@@ -470,6 +485,27 @@
         .then(async (response) => {
             let res = await response.json();
             if (response.status == 200) {
+                // GA4: ovo je narudžba. Šalje se tek kad Web3Forms potvrdi
+                // prijem, pa broji samo stvarno poslate, ne i pokušaje.
+                // Označi "purchase" kao ključni događaj u GA4 (Admin ->
+                // Events), inače se ne pojavi u izvještaju o konverzijama.
+                if (window.gtag) {
+                    const osnovna = parseInt(orderData.price, 10) || 0;
+                    gtag('event', 'purchase', {
+                        transaction_id: 'nar-' + Date.now(),
+                        currency: 'BAM',
+                        value: osnovna + 11,
+                        shipping: 11,
+                        items: [{
+                            item_name: orderData.product,
+                            item_variant: orderData.size,
+                            item_category: orderData.depth,
+                            price: osnovna,
+                            quantity: 1
+                        }]
+                    });
+                }
+
                 // Success
                 document.getElementById('checkout-main').style.display = 'none';
                 document.getElementById('success-msg').style.display = 'block';
