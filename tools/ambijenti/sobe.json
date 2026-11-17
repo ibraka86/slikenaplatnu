@@ -1,0 +1,14 @@
+{
+ "_opis": "Slobodan zid po sobi (px na slici 1024x1024). cx = sredina platna, yb = donja ivica, A = povrsina platna, wmax/ytop = granice (namjestaj, lampe, plafon). 'uspravno' = posebno mjesto za uske uspravne radove.",
+ "dnevna-01":     {"cx": 555, "yb": 500, "A": 106800, "wmax": 560, "ytop": 120},
+ "dnevna-02":     {"cx": 560, "yb": 560, "A": 122500, "wmax": 600, "ytop": 130, "xmin": 215},
+ "dnevna-03":     {"cx": 565, "yb": 640, "A": 135000, "wmax": 500, "ytop": 100},
+ "spavaca-01":    {"cx": 517, "yb": 520, "A": 140000, "wmax": 600, "ytop": 100},
+ "spavaca-02":    {"cx": 530, "yb": 600, "A": 102400, "wmax": 600, "ytop": 110, "xmin": 205},
+ "trpezarija-01": {"cx": 690, "yb": 620, "A": 118680, "wmax": 560, "ytop": 90,  "xmin": 405},
+ "trpezarija-02": {"cx": 540, "yb": 590, "A": 129600, "wmax": 640, "ytop": 70},
+ "hodnik-01":     {"cx": 521, "yb": 420, "A": 108680, "wmax": 640, "ytop": 60,
+                   "uspravno": {"cx": 521, "yb": 465, "ytop": 60}},
+ "radni-01":      {"cx": 575, "yb": 640, "A": 144400, "wmax": 680, "ytop": 80},
+ "djecija-01":    {"cx": 560, "yb": 640, "A": 102400, "wmax": 680, "ytop": 100}
+}
